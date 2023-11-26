@@ -1,14 +1,6 @@
 import { createScene } from './scene';
+import { CustomWindow } from './types';
 import './main.css';
-
-interface CustomWindow extends Window {
-  scene?: {
-    start: () => void;
-    onMouseDown?: (event: MouseEvent) => void;
-    onMouseUp?: (event: MouseEvent) => void;
-    onMouseMove?: (event: MouseEvent) => void;
-  };
-}
 
 declare let window: CustomWindow;
 
