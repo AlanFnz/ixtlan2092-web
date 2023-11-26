@@ -1,14 +1,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'html/index.html',
-    }),
-    // Copy game assets from static directory, to the webpack output
-    new CopyPlugin({
-      patterns: [{ from: 'static', to: 'static' }],
     }),
   ],
   entry: './src/main.ts',
