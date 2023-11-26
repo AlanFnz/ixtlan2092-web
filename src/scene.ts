@@ -23,10 +23,23 @@ export function createScene() {
   renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
   gameWindow.appendChild(renderer.domElement);
 
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-  const mesh = new THREE.Mesh(geometry, material);
+  // Create a sample mesh
+  const mesh = createSampleMesh();
   scene.add(mesh);
+
+  // Handle window resizing
+  function onWindowResize() {
+    if (!gameWindow) return;
+    camera.aspect = gameWindow.offsetWidth / gameWindow.offsetHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
+  }
+
+  function createSampleMesh() {
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    return new THREE.Mesh(geometry, material);
+  }
 
   function draw() {
     mesh.rotation.x += 0.01;
@@ -35,10 +48,12 @@ export function createScene() {
   }
 
   function start() {
+    window.addEventListener('resize', onWindowResize, false);
     renderer.setAnimationLoop(draw);
   }
 
   function stop() {
+    window.removeEventListener('resize', onWindowResize, false);
     renderer.setAnimationLoop(null);
   }
 
@@ -47,7 +62,7 @@ export function createScene() {
   }
 
   function onMouseUp() {
-    console.log('mouseUp'); 
+    console.log('mouseUp');
   }
 
   function onMouseMove() {
