@@ -1,25 +1,26 @@
 import * as THREE from 'three';
+import { createCamera } from './camera';
 
 export function createScene() {
   // Initial scene setup
   const gameWindow = document.getElementById('render-target');
   if (!gameWindow) {
     console.error('Failed to find the render target element!');
-    return;
+    throw new Error('Failed to find the render target element');
   }
 
   // Create scene
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x7777777);
 
-  // Create a camera with a perspective projection.
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    gameWindow.offsetWidth / gameWindow.offsetHeight,
-    0.1,
-    1000
-  );
-  camera.position.z = 5; // Elevate camera from origin
+  // Create camera
+  const { camera, onMouseDown, onMouseUp, onMouseMove } =
+    createCamera(gameWindow) ?? {};
+
+  if (!camera) {
+    console.error('Failed to create camera!');
+    throw new Error('Failed to create camera or camera not found');
+  }
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
@@ -31,7 +32,7 @@ export function createScene() {
 
   // Handle window resizing
   function onWindowResize() {
-    if (!gameWindow) return;
+    if (!gameWindow || !camera) return;
     camera.aspect = gameWindow.offsetWidth / gameWindow.offsetHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
@@ -44,8 +45,6 @@ export function createScene() {
   }
 
   function draw() {
-    mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.01;
     renderer.render(scene, camera);
   }
 
@@ -59,24 +58,13 @@ export function createScene() {
     renderer.setAnimationLoop(null);
   }
 
-  function onMouseDown() {
-    console.log('mouseDown');
-  }
-
-  function onMouseUp() {
-    console.log('mouseUp');
-  }
-
-  function onMouseMove() {
-    console.log('mouseMove');
-  }
+  document.addEventListener('mousedown', onMouseDown, false);
+  document.addEventListener('mouseup', onMouseUp, false);
+  document.addEventListener('mousemove', (event) => onMouseMove(event), false);
 
   return {
     start,
     stop,
-    onMouseDown,
-    onMouseUp,
-    onMouseMove,
   };
 }
 
