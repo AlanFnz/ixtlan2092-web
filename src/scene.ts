@@ -17,7 +17,7 @@ export function createScene() {
     0.1,
     1000
   );
-  camera.position.z = 5 ; // Elevate camera from origin
+  camera.position.z = 5; // Elevate camera from origin
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
@@ -42,9 +42,24 @@ export function createScene() {
     renderer.setAnimationLoop(null);
   }
 
+  function onMouseDown() {
+    console.log('mouseDown');
+  }
+
+  function onMouseUp() {
+    console.log('mouseUp'); 
+  }
+
+  function onMouseMove() {
+    console.log('mouseMove');
+  }
+
   return {
     start,
     stop,
+    onMouseDown,
+    onMouseUp,
+    onMouseMove,
   };
 }
 
