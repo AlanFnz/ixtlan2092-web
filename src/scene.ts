@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { createCamera } from './camera';
+import { createCamera } from './camera/camera';
 
 export function createScene() {
   // Initial scene setup

@@ -1,13 +1,18 @@
 import * as THREE from 'three';
-
-// Constants
-const DEG2RAD = Math.PI / 180;
-const LEFT_MOUSE_BUTTON = 0;
-const MIDDLE_MOUSE_BUTTON = 1;
-const RIGHT_MOUSE_BUTTON = 2;
-const MIN_CAMERA_RADIUS = 2;
-const MAX_CAMERA_RADIUS = 10;
-const Y_AXIS = new THREE.Vector3(0, 1, 0);
+import {
+  DEG2RAD,
+  LEFT_MOUSE_BUTTON,
+  MIDDLE_MOUSE_BUTTON,
+  RIGHT_MOUSE_BUTTON,
+  MIN_CAMERA_RADIUS,
+  MAX_CAMERA_RADIUS,
+  Y_AXIS,
+  ROTATION_SENSITIVITY,
+  PAN_SENSITIVITY,
+  ZOOM_SENSITIVITY,
+  MIN_CAMERA_ELEVATION,
+  MAX_CAMERA_ELEVATION,
+} from './constants';
 
 export function createCamera(
   gameWindow: HTMLElement,
@@ -29,7 +34,7 @@ export function createCamera(
   let cameraOrigin = new THREE.Vector3();
   let cameraRadius = 4;
   let cameraAzimuth = 0;
-  let cameraElevation = 0;
+  let cameraElevation = MIN_CAMERA_ELEVATION;
   let isLeftMouseDown = false;
   let isMiddleMouseDown = false;
   let isRightMouseDown = false;
@@ -98,9 +103,12 @@ export function createCamera(
 
     // Handle rotation
     if (isLeftMouseDown) {
-      cameraAzimuth += -(deltaX * 0.5);
-      cameraElevation += -(deltaY * 0.5);
-      cameraElevation = Math.min(180, Math.max(0, cameraElevation));
+      cameraAzimuth += -(deltaX * ROTATION_SENSITIVITY);
+      cameraElevation += -(deltaY * ROTATION_SENSITIVITY);
+      cameraElevation = Math.min(
+        MAX_CAMERA_ELEVATION,
+        Math.max(MIN_CAMERA_ELEVATION, cameraElevation)
+      );
       updateCameraPosition();
     }
 
@@ -115,14 +123,14 @@ export function createCamera(
         cameraAzimuth * DEG2RAD
       );
 
-      cameraOrigin.add(forward.multiplyScalar(-0.01 * deltaY));
-      cameraOrigin.add(left.multiplyScalar(-0.01 * deltaX));
+      cameraOrigin.add(forward.multiplyScalar(PAN_SENSITIVITY * deltaY));
+      cameraOrigin.add(left.multiplyScalar(PAN_SENSITIVITY * deltaX));
       updateCameraPosition();
     }
 
     // Handle zoom
     if (isRightMouseDown) {
-      cameraRadius += deltaY * 0.02;
+      cameraRadius += deltaY * ZOOM_SENSITIVITY;
       cameraRadius = Math.min(
         MAX_CAMERA_RADIUS,
         Math.max(MIN_CAMERA_RADIUS, cameraRadius)
