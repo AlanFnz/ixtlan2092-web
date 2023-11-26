@@ -17,6 +17,7 @@ export function createScene() {
     0.1,
     1000
   );
+  camera.position.z = 5 ; // Elevate camera from origin
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
@@ -28,6 +29,8 @@ export function createScene() {
   scene.add(mesh);
 
   function draw() {
+    mesh.rotation.x += 0.01;
+    mesh.rotation.y += 0.01;
     renderer.render(scene, camera);
   }
 
