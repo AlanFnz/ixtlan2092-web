@@ -6,7 +6,7 @@ export function createScene() {
   const gameWindow = document.getElementById('render-target');
   if (!gameWindow) {
     console.error('Failed to find the render target element!');
-    throw new Error('Failed to find the render target element');
+    throw new Error('Failed to find the render target element!');
   }
 
   // Create scene
@@ -15,7 +15,7 @@ export function createScene() {
 
   // Create camera
   const { camera, onMouseDown, onMouseUp, onMouseMove } =
-    createCamera(gameWindow) ?? {};
+    createCamera(gameWindow);
 
   if (!camera) {
     console.error('Failed to create camera!');
@@ -58,6 +58,7 @@ export function createScene() {
     renderer.setAnimationLoop(null);
   }
 
+  // Add listeners
   document.addEventListener('mousedown', onMouseDown, false);
   document.addEventListener('mouseup', onMouseUp, false);
   document.addEventListener('mousemove', (event) => onMouseMove(event), false);

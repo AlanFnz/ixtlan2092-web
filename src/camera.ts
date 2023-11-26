@@ -6,15 +6,6 @@ export function createCamera(gameWindow: HTMLElement): {
   onMouseUp: () => void;
   onMouseMove: (event: MouseEvent) => void;
 } {
-  if (!gameWindow) {
-    console.error('Failed to find the render target element!');
-    return {
-      camera: new THREE.PerspectiveCamera(75, 1, 0.1, 1000), // Default values
-      onMouseDown: () => {},
-      onMouseUp: () => {},
-      onMouseMove: () => {},
-    };
-  }
   // Create a camera with a perspective projection.
   const camera = new THREE.PerspectiveCamera(
     75,
