@@ -13,18 +13,17 @@ export function createScene() {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x7777777);
 
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
+  gameWindow.appendChild(renderer.domElement);
+
   // Create camera
-  const { camera, onMouseDown, onMouseUp, onMouseMove } =
-    createCamera(gameWindow);
+  const camera = createCamera(gameWindow, renderer);
 
   if (!camera) {
     console.error('Failed to create camera!');
     throw new Error('Failed to create camera or camera not found');
   }
-
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
-  gameWindow.appendChild(renderer.domElement);
 
   // Create a sample mesh
   const mesh = createSampleMesh();
@@ -33,9 +32,7 @@ export function createScene() {
   // Handle window resizing
   function onWindowResize() {
     if (!gameWindow || !camera) return;
-    camera.aspect = gameWindow.offsetWidth / gameWindow.offsetHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
+    camera.onWindowResize();
   }
 
   function createSampleMesh() {
@@ -45,7 +42,7 @@ export function createScene() {
   }
 
   function draw() {
-    renderer.render(scene, camera);
+    renderer.render(scene, camera.camera);
   }
 
   function start() {
@@ -56,6 +53,18 @@ export function createScene() {
   function stop() {
     window.removeEventListener('resize', onWindowResize, false);
     renderer.setAnimationLoop(null);
+  }
+
+  function onMouseDown() {
+    camera.onMouseDown();
+  }
+
+  function onMouseUp() {
+    camera.onMouseUp();
+  }
+
+  function onMouseMove(event: MouseEvent) {
+    camera.onMouseMove(event);
   }
 
   // Add listeners

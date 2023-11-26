@@ -1,10 +1,14 @@
 import * as THREE from 'three';
 
-export function createCamera(gameWindow: HTMLElement): {
+export function createCamera(
+  gameWindow: HTMLElement,
+  renderer: THREE.WebGLRenderer
+): {
   camera: THREE.PerspectiveCamera;
   onMouseDown: () => void;
   onMouseUp: () => void;
   onMouseMove: (event: MouseEvent) => void;
+  onWindowResize: () => void;
 } {
   // Create a camera with a perspective projection.
   const camera = new THREE.PerspectiveCamera(
@@ -36,18 +40,26 @@ export function createCamera(gameWindow: HTMLElement): {
     camera.updateMatrix();
   }
 
+  // Handle window resizing
+  function onWindowResize() {
+    if (!gameWindow || !camera) return;
+    camera.aspect = gameWindow.offsetWidth / gameWindow.offsetHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
+  }
+
   function onMouseDown() {
-    console.log('mouseDown');
+    console.log('camera mouseDown');
     isMouseDown = true;
   }
 
   function onMouseUp() {
-    console.log('mouseUp');
+    console.log('camera mouseUp');
     isMouseDown = false;
   }
 
   function onMouseMove(event: MouseEvent) {
-    console.log('mouseMove');
+    console.log('camera mouseMove');
     if (isMouseDown) {
       cameraAzimuth += -((event.clientX - prevMouseX) * 0.5);
       cameraElevation += -((event.clientY - prevMouseY) * 0.5);
@@ -64,6 +76,7 @@ export function createCamera(gameWindow: HTMLElement): {
     onMouseDown,
     onMouseUp,
     onMouseMove,
+    onWindowResize,
   };
 }
 
