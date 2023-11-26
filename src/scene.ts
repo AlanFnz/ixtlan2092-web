@@ -8,9 +8,11 @@ export function createScene() {
     return;
   }
 
+  // Create scene
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x7777777);
 
+  // Create a camera with a perspective projection.
   const camera = new THREE.PerspectiveCamera(
     75,
     gameWindow.offsetWidth / gameWindow.offsetHeight,
