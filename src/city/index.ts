@@ -1,9 +1,6 @@
-interface Tile {
-  x: number;
-  y: number;
-}
+import { City, Tile } from './constants';
 
-export function createCity(size: number) {
+export function createCity(size: number): City {
   const data: Tile[][] = [];
 
   function initData() {
