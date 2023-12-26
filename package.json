@@ -26,5 +26,8 @@
   "scripts": {
     "dev": "webpack serve --config ./webpack.dev.js",
     "build": "webpack --config ./webpack.prod.js"
+  },
+  "dependencies": {
+    "three": "^0.160.0"
   }
 }
