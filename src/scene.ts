@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { createCamera } from './camera';
+import { City } from './city/constants';
 
 export function createScene() {
   // Initial scene setup
@@ -25,22 +26,38 @@ export function createScene() {
     throw new Error('Failed to create camera or camera not found');
   }
 
-  // Create a sample mesh
-  const mesh = createSampleMesh();
-  scene.add(mesh);
-
   // Handle window resizing
   function onWindowResize() {
     if (!gameWindow || !camera) return;
     camera.onWindowResize();
   }
 
-  function createSampleMesh() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    return new THREE.Mesh(geometry, material);
+  // Init scene
+  let meshes = [];
+  function initScene(city: City) {
+    scene.clear();
+    meshes = [];
+
+    for (let x = 0; x < city.size; x++) {
+      const column = [];
+
+      for (let y = 0; y < city.size; y++) {
+        // Load the mesh/3D object corresponding to the tile at (x,y)
+        // Add mesh to the scene
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.position.set(x, 0, y);
+        scene.add(mesh);
+
+        // Add mesh to meshes array
+        column.push(mesh);
+      }
+      meshes.push(column);
+    }
   }
 
+  // Render and interaction handlers
   function draw() {
     renderer.render(scene, camera.camera);
   }
@@ -73,6 +90,7 @@ export function createScene() {
   document.addEventListener('mousemove', (event) => onMouseMove(event), false);
 
   return {
+    initScene,
     start,
     stop,
   };

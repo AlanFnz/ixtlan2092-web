@@ -1,9 +1,11 @@
+import { City } from './city/constants';
+
 export interface CustomWindow extends Window {
   scene?: {
+    initScene: (city: City) => void;
     start: () => void;
-    onMouseDown?: (event: MouseEvent) => void;
-    onMouseUp?: (event: MouseEvent) => void;
-    onMouseMove?: (event: MouseEvent) => void;
+    stop: () => void;
   };
+  city: City;
 }
 
