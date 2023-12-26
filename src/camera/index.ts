@@ -12,6 +12,8 @@ import {
   ZOOM_SENSITIVITY,
   MIN_CAMERA_ELEVATION,
   MAX_CAMERA_ELEVATION,
+  INIT_CAMERA_ELEVATION,
+  INIT_CAMERA_AZIMUTH,
 } from './constants';
 
 export function createCamera(
@@ -32,9 +34,9 @@ export function createCamera(
     1000
   );
   let cameraOrigin = new THREE.Vector3();
-  let cameraRadius = 4;
-  let cameraAzimuth = 0;
-  let cameraElevation = MIN_CAMERA_ELEVATION;
+  let cameraRadius = (MIN_CAMERA_RADIUS + MAX_CAMERA_RADIUS) / 2;
+  let cameraAzimuth = INIT_CAMERA_AZIMUTH;
+  let cameraElevation = INIT_CAMERA_ELEVATION;
   let isLeftMouseDown = false;
   let isMiddleMouseDown = false;
   let isRightMouseDown = false;
