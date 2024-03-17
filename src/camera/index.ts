@@ -24,6 +24,7 @@ export function createCamera(
   onMouseDown: (event: MouseEvent) => void;
   onMouseUp: (event: MouseEvent) => void;
   onMouseMove: (event: MouseEvent) => void;
+  onMouseWheel: (event: WheelEvent) => void;
   onTouchStart: (event: TouchEvent) => void;
   onTouchMove: (event: TouchEvent) => void;
   onTouchEnd: (event: TouchEvent) => void;
@@ -147,6 +148,23 @@ export function createCamera(
     prevMouseY = event.clientY;
   }
 
+  function onMouseWheel(event: WheelEvent): void {
+    event.preventDefault();
+
+    const deltaX = event.deltaX;
+    const deltaY = event.deltaY;
+
+    // Translate the wheel movement into panning
+    const forward = new THREE.Vector3(0, 0, 1).applyQuaternion(
+      camera.quaternion
+    );
+    const right = new THREE.Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
+
+    // Adjust panning direction and speed based on the delta values
+    camera.position.addScaledVector(forward, -deltaY * PAN_SENSITIVITY);
+    camera.position.addScaledVector(right, -deltaX * PAN_SENSITIVITY);
+  }
+
   function onTouchStart(event: TouchEvent): void {
     if (event.touches.length === 2) {
       isPanning = true;
@@ -205,6 +223,7 @@ export function createCamera(
     onMouseDown,
     onMouseUp,
     onMouseMove,
+    onMouseWheel,
     onTouchStart,
     onTouchMove,
     onTouchEnd,
