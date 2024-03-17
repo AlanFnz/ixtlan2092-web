@@ -32,12 +32,12 @@ export function createCamera(
 } {
   // Create a camera with a perspective projection.
   const camera = new THREE.PerspectiveCamera(
-    75,
+    45,
     gameWindow.offsetWidth / gameWindow.offsetHeight,
     0.1,
     1000
   );
-  let cameraOrigin = new THREE.Vector3();
+  let cameraOrigin = new THREE.Vector3(6, 3, 0); // TODO: find a better way to center based on city size
   let cameraRadius = (MIN_CAMERA_RADIUS + MAX_CAMERA_RADIUS) / 2;
   let cameraAzimuth = INIT_CAMERA_AZIMUTH;
   let cameraElevation = INIT_CAMERA_ELEVATION;
