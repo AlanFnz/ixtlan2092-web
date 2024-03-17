@@ -45,7 +45,7 @@ export function createScene() {
         // Load the mesh/3D object corresponding to the tile at (x,y)
         // Add mesh to the scene
         const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const material = new THREE.MeshLambertMaterial({ color: 0x00aa00 });
         const mesh = new THREE.Mesh(geometry, material);
         mesh.position.set(x, 0, y);
         scene.add(mesh);
@@ -62,10 +62,10 @@ export function createScene() {
 
   function setupLights() {
     const lights = [
-      new THREE.AmbientLight(0xffffff, 0.3),
-      new THREE.DirectionalLight(0xffffff, 0.3),
-      new THREE.DirectionalLight(0xffffff, 0.3),
-      new THREE.DirectionalLight(0xffffff, 0.3),
+      new THREE.AmbientLight(0xffffff, 0.8),
+      new THREE.DirectionalLight(0xffffff, 0.8),
+      new THREE.DirectionalLight(0xffffff, 0.8),
+      new THREE.DirectionalLight(0xffffff, 0.8),
     ];
 
     lights[1]?.position?.set(0, 1, 0);
