@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { createCamera } from '../camera';
 import { City } from '../city/constants';
+import { createGrass } from '../city/cityAssets';
 
 export function createScene() {
   // Initial scene setup
@@ -43,15 +44,10 @@ export function createScene() {
 
       for (let y = 0; y < city.size; y++) {
         // Load the mesh/3D object corresponding to the tile at (x,y)
-        // Add mesh to the scene
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshLambertMaterial({ color: 0x00aa00 });
-        const mesh = new THREE.Mesh(geometry, material);
-        mesh.position.set(x, 0, y);
-        scene.add(mesh);
-
-        // Add mesh to meshes array
-        column.push(mesh);
+        // Add grass
+        const grassMesh = createGrass(x, y);
+        scene.add(grassMesh);
+        column.push(grassMesh);
       }
       meshes.push(column);
     }
