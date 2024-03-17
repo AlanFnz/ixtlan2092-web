@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { createCamera } from '../camera';
 import { City } from '../city/constants';
-import { createGrass } from '../city/cityAssets';
+import { createBuilding, createGrass } from '../city/cityAssets';
 
 export function createScene() {
   // Initial scene setup
@@ -44,10 +44,18 @@ export function createScene() {
 
       for (let y = 0; y < city.size; y++) {
         // Load the mesh/3D object corresponding to the tile at (x,y)
-        // Add grass
+        // Grass
         const grassMesh = createGrass(x, y);
         scene.add(grassMesh);
         column.push(grassMesh);
+
+        // Building
+        const tile = city.data[x][y];
+        if (tile.building) {
+          const buildingMesh = createBuilding(x, y);
+          scene.add(buildingMesh);
+          column.push(buildingMesh);
+        }
       }
       meshes.push(column);
     }

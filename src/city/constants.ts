@@ -1,6 +1,7 @@
 interface Tile {
   x: number;
   y: number;
+  building: boolean;
 }
 
 interface City {
