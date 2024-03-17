@@ -24,6 +24,9 @@ export function createCamera(
   onMouseDown: (event: MouseEvent) => void;
   onMouseUp: (event: MouseEvent) => void;
   onMouseMove: (event: MouseEvent) => void;
+  onTouchStart: (event: TouchEvent) => void;
+  onTouchMove: (event: TouchEvent) => void;
+  onTouchEnd: (event: TouchEvent) => void;
   onWindowResize: () => void;
 } {
   // Create a camera with a perspective projection.
@@ -37,9 +40,11 @@ export function createCamera(
   let cameraRadius = (MIN_CAMERA_RADIUS + MAX_CAMERA_RADIUS) / 2;
   let cameraAzimuth = INIT_CAMERA_AZIMUTH;
   let cameraElevation = INIT_CAMERA_ELEVATION;
+  let startTouches: { x: number; y: number } = { x: 0, y: 0 };
   let isLeftMouseDown = false;
   let isMiddleMouseDown = false;
   let isRightMouseDown = false;
+  let isPanning = false;
   let prevMouseX = 0;
   let prevMouseY = 0;
   updateCameraPosition();
@@ -68,7 +73,6 @@ export function createCamera(
   }
 
   function onMouseDown(event: MouseEvent) {
-    console.log('camera mouseDown');
     if (event.button === LEFT_MOUSE_BUTTON) {
       isLeftMouseDown = true;
     }
@@ -83,7 +87,6 @@ export function createCamera(
   }
 
   function onMouseUp(event: MouseEvent) {
-    console.log('camera mouseUp');
     if (event.button === LEFT_MOUSE_BUTTON) {
       isLeftMouseDown = false;
     }
@@ -98,7 +101,7 @@ export function createCamera(
   }
 
   function onMouseMove(event: MouseEvent) {
-    console.log('camera mouseMove');
+    console.log('camera mouseMove', event.buttons);
 
     const deltaX = event.clientX - prevMouseX;
     const deltaY = event.clientY - prevMouseY;
@@ -144,11 +147,67 @@ export function createCamera(
     prevMouseY = event.clientY;
   }
 
+  function onTouchStart(event: TouchEvent): void {
+    if (event.touches.length === 2) {
+      isPanning = true;
+      startTouches = getAverageTouchPosition(event.touches);
+      event.preventDefault();
+    }
+  }
+
+  function onTouchMove(event: TouchEvent): void {
+    if (isPanning && event.touches.length === 2) {
+      const currentTouches = getAverageTouchPosition(event.touches);
+      const deltaX: number = currentTouches.x - startTouches.x;
+      const deltaY: number = currentTouches.y - startTouches.y;
+
+      const forward = new THREE.Vector3(0, 0, 1).applyAxisAngle(
+        Y_AXIS,
+        cameraAzimuth * DEG2RAD
+      );
+      const left = new THREE.Vector3(1, 0, 0).applyAxisAngle(
+        Y_AXIS,
+        cameraAzimuth * DEG2RAD
+      );
+
+      cameraOrigin.add(forward.multiplyScalar(-PAN_SENSITIVITY * deltaY));
+      cameraOrigin.add(left.multiplyScalar(-PAN_SENSITIVITY * deltaX));
+      updateCameraPosition();
+
+      startTouches = currentTouches; // Update the start position for the next move
+      event.preventDefault();
+    }
+  }
+
+  function onTouchEnd(event: TouchEvent): void {
+    if (event.touches.length < 2) {
+      isPanning = false;
+    }
+  }
+
+  function getAverageTouchPosition(touches: TouchList): {
+    x: number;
+    y: number;
+  } {
+    let avgX: number = 0;
+    let avgY: number = 0;
+    for (let i = 0; i < touches.length; i++) {
+      avgX += touches[i].clientX;
+      avgY += touches[i].clientY;
+    }
+    avgX /= touches.length;
+    avgY /= touches.length;
+    return { x: avgX, y: avgY };
+  }
+
   return {
     camera,
     onMouseDown,
     onMouseUp,
     onMouseMove,
+    onTouchStart,
+    onTouchMove,
+    onTouchEnd,
     onWindowResize,
   };
 }

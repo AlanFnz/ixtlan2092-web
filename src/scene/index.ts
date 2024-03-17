@@ -97,11 +97,23 @@ export function createScene() {
   function onMouseMove(event: MouseEvent) {
     camera.onMouseMove(event);
   }
+  function onTouchStart(event: TouchEvent) {
+    camera.onTouchStart(event);
+  }
+  function onTouchMove(event: TouchEvent) {
+    camera.onTouchMove(event);
+  }
+  function onTouchEnd(event: TouchEvent) {
+    camera.onTouchEnd(event);
+  }
 
   // Add listeners
   document.addEventListener('mousedown', onMouseDown, false);
   document.addEventListener('mouseup', onMouseUp, false);
   document.addEventListener('mousemove', (event) => onMouseMove(event), false);
+  document.addEventListener('touchstart', onTouchStart, { passive: false });
+  document.addEventListener('touchmove', onTouchMove, { passive: false });
+  document.addEventListener('touchend', onTouchEnd);
 
   return {
     initScene,
