@@ -18,7 +18,8 @@ import {
 
 export function createCamera(
   gameWindow: HTMLElement,
-  renderer: THREE.WebGLRenderer
+  renderer: THREE.WebGLRenderer,
+  citySize: number
 ): {
   camera: THREE.PerspectiveCamera;
   onMouseDown: (event: MouseEvent) => void;
@@ -32,12 +33,12 @@ export function createCamera(
 } {
   // Create a camera with a perspective projection.
   const camera = new THREE.PerspectiveCamera(
-    45,
+    75,
     gameWindow.offsetWidth / gameWindow.offsetHeight,
     0.1,
     1000
   );
-  let cameraOrigin = new THREE.Vector3(6, 3, 0); // TODO: find a better way to center based on city size
+  let cameraOrigin = new THREE.Vector3(citySize / 2, 0, citySize / 2);
   let cameraRadius = (MIN_CAMERA_RADIUS + MAX_CAMERA_RADIUS) / 2;
   let cameraAzimuth = INIT_CAMERA_AZIMUTH;
   let cameraElevation = INIT_CAMERA_ELEVATION;

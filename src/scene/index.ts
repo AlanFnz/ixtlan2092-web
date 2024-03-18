@@ -3,7 +3,7 @@ import { createCamera } from '../camera';
 import { City } from '../city/constants';
 import { createBuilding, createGrass } from '../city/cityAssets';
 
-export function createScene() {
+export function createScene(citySize: number) {
   // Initial scene setup
   const gameWindow = document.getElementById('render-target');
   if (!gameWindow) {
@@ -20,7 +20,7 @@ export function createScene() {
   gameWindow.appendChild(renderer.domElement);
 
   // Create camera
-  const camera = createCamera(gameWindow, renderer);
+  const camera = createCamera(gameWindow, renderer, citySize);
 
   if (!camera) {
     console.error('Failed to create camera!');

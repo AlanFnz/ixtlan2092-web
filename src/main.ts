@@ -4,10 +4,11 @@ import './main.css';
 import { createCity } from './city';
 
 declare let window: CustomWindow;
+const CITY_SIZE = 8;
 
 window.onload = () => {
-  window.scene = createScene();
-  window.city = createCity(8);
+  window.scene = createScene(CITY_SIZE);
+  window.city = createCity(CITY_SIZE);
 
   if (window.scene) {
     window.scene.start();
