@@ -106,34 +106,26 @@ export function createCamera(
     const deltaX = event.clientX - prevMouseX;
     const deltaY = event.clientY - prevMouseY;
 
-    // Handle rotation
     if (isLeftMouseDown) {
-      cameraAzimuth += -(deltaX * ROTATION_SENSITIVITY);
-      cameraElevation += -(deltaY * ROTATION_SENSITIVITY);
-      cameraElevation = Math.min(
-        MAX_CAMERA_ELEVATION,
-        Math.max(MIN_CAMERA_ELEVATION, cameraElevation)
-      );
+      if (event.ctrlKey) {
+        handlePanning(deltaY, deltaX);
+      } else {
+        // Rotation
+        cameraAzimuth += -(deltaX * ROTATION_SENSITIVITY);
+        cameraElevation += -(deltaY * ROTATION_SENSITIVITY);
+        cameraElevation = Math.min(
+          MAX_CAMERA_ELEVATION,
+          Math.max(MIN_CAMERA_ELEVATION, cameraElevation)
+        );
+      }
       updateCameraPosition();
     }
 
-    // Handle panning
     if (isMiddleMouseDown) {
-      const forward = new THREE.Vector3(0, 0, 1).applyAxisAngle(
-        Y_AXIS,
-        cameraAzimuth * DEG2RAD
-      );
-      const left = new THREE.Vector3(1, 0, 0).applyAxisAngle(
-        Y_AXIS,
-        cameraAzimuth * DEG2RAD
-      );
-
-      cameraOrigin.add(forward.multiplyScalar(PAN_SENSITIVITY * deltaY));
-      cameraOrigin.add(left.multiplyScalar(PAN_SENSITIVITY * deltaX));
-      updateCameraPosition();
+      handlePanning(deltaY, deltaX);
     }
 
-    // Handle zoom
+    // Zoom
     if (isRightMouseDown) {
       cameraRadius += deltaY * ZOOM_SENSITIVITY;
       cameraRadius = Math.min(
@@ -150,18 +142,15 @@ export function createCamera(
   function onMouseWheel(event: WheelEvent): void {
     event.preventDefault();
 
-    const deltaX = event.deltaX;
-    const deltaY = event.deltaY;
+    const zoomAmount = event.deltaY * ZOOM_SENSITIVITY;
 
-    // Translate the wheel movement into panning
-    const forward = new THREE.Vector3(0, 0, 1).applyQuaternion(
-      camera.quaternion
+    cameraRadius += zoomAmount;
+    cameraRadius = Math.max(
+      MIN_CAMERA_RADIUS,
+      Math.min(MAX_CAMERA_RADIUS, cameraRadius)
     );
-    const right = new THREE.Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
 
-    // Adjust panning direction and speed based on the delta values
-    camera.position.addScaledVector(forward, -deltaY * PAN_SENSITIVITY);
-    camera.position.addScaledVector(right, -deltaX * PAN_SENSITIVITY);
+    updateCameraPosition();
   }
 
   function onTouchStart(event: TouchEvent): void {
@@ -215,6 +204,22 @@ export function createCamera(
     avgX /= touches.length;
     avgY /= touches.length;
     return { x: avgX, y: avgY };
+  }
+
+  function handlePanning(deltaY: number, deltaX: number) {
+    const forward = new THREE.Vector3(0, 0, 1).applyAxisAngle(
+      Y_AXIS,
+      cameraAzimuth * DEG2RAD
+    );
+    const left = new THREE.Vector3(1, 0, 0).applyAxisAngle(
+      Y_AXIS,
+      cameraAzimuth * DEG2RAD
+    );
+
+    cameraOrigin.add(forward.multiplyScalar(PAN_SENSITIVITY * deltaY));
+    cameraOrigin.add(left.multiplyScalar(PAN_SENSITIVITY * deltaX));
+
+    updateCameraPosition();
   }
 
   return {
