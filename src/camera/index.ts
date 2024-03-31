@@ -103,8 +103,6 @@ export function createCamera(
   }
 
   function onMouseMove(event: MouseEvent) {
-    console.log('camera mouseMove', event.buttons);
-
     const deltaX = event.clientX - prevMouseX;
     const deltaY = event.clientY - prevMouseY;
 
