@@ -1,16 +1,21 @@
 import { createScene } from '../scene';
 import { CustomWindow } from '../types';
 import { createCity } from '../city';
+import config from './config';
 
-const CITY_SIZE = 8;
 declare let window: CustomWindow;
-export function createGame() {
-  window.scene = createScene(CITY_SIZE);
-  window.city = createCity(CITY_SIZE);
 
-  if (window.scene) {
-    window.scene.start();
-    window.scene.initScene(window.city);
+export function createGame() {
+  const scene = createScene(config.CITY_SIZE);
+  const city = createCity(config.CITY_SIZE);
+
+  const game = {
+    update() {},
+  };
+
+  if (scene) {
+    scene.start();
+    scene.initScene(city);
   }
 }
 
