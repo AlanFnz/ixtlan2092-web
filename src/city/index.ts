@@ -1,3 +1,4 @@
+import { ASSET_ID } from '../assets';
 import { City, Tile } from './constants';
 
 export function createCity(size: number): City {
@@ -14,9 +15,12 @@ export function createCity(size: number): City {
           update() {
             const x = Math.random();
             if (x < 0.01) {
-              if (this.building === 'building-2') this.building = 'building-3';
-              if (this.building === 'building-1') this.building = 'building-2';
-              if (this.building === undefined) this.building = 'building-1';
+              if (this.building === ASSET_ID.BUILDING_2)
+                this.building = ASSET_ID.BUILDING_3;
+              if (this.building === ASSET_ID.BUILDING_1)
+                this.building = ASSET_ID.BUILDING_2;
+              if (this.building === undefined)
+                this.building = ASSET_ID.BUILDING_1;
             }
           },
         };

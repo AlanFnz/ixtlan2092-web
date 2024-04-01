@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { createCamera } from '../camera';
 import { City } from '../city/constants';
-import { createAssetInstance } from '../assets';
+import { ASSET_ID, createAssetInstance } from '../assets';
 
 export function createScene(citySize: number) {
   // Initial scene setup
@@ -46,7 +46,7 @@ export function createScene(citySize: number) {
       for (let y = 0; y < city.size; y++) {
         // Load the mesh/3D object corresponding to the tile at (x,y)
         // Grass
-        const grassMesh = createAssetInstance('grass', x, y);
+        const grassMesh = createAssetInstance(ASSET_ID.GRASS, x, y);
         if (grassMesh) {
           scene.add(grassMesh);
           column.push(grassMesh);
