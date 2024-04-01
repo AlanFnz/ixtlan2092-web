@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { createCamera } from '../camera';
 import { City } from '../city/constants';
-import { createBuilding, createGrass } from '../city/cityAssets';
+import { createBuilding, createGrass } from '../assets';
 
 export function createScene(citySize: number) {
   // Initial scene setup
