@@ -63,10 +63,8 @@ export function createScene(citySize: number) {
       for (let y = 0; y < city.size; y++) {
         // Buildings
         const tile = city.data[x][y];
-        console.log(tile);
         if (tile.building?.startsWith('building')) {
           const height = Number(tile.building.slice(-1));
-          console.log(height);
           const buildingMesh = createBuilding(x, y, height);
 
           if (buildings[x] && buildings[x][y]) scene.remove(buildings[x][y]);
