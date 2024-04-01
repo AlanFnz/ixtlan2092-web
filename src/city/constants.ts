@@ -1,7 +1,7 @@
 interface Tile {
   x: number;
   y: number;
-  building: string | undefined;
+  buildingId: string | undefined;
   update: () => void;
 }
 

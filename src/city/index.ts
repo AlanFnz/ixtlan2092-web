@@ -11,16 +11,16 @@ export function createCity(size: number): City {
         const tile: Tile = {
           x,
           y,
-          building: undefined,
+          buildingId: undefined,
           update() {
             const x = Math.random();
             if (x < 0.01) {
-              if (this.building === ASSET_ID.BUILDING_2)
-                this.building = ASSET_ID.BUILDING_3;
-              if (this.building === ASSET_ID.BUILDING_1)
-                this.building = ASSET_ID.BUILDING_2;
-              if (this.building === undefined)
-                this.building = ASSET_ID.BUILDING_1;
+              if (this.buildingId === ASSET_ID.BUILDING_2)
+                this.buildingId = ASSET_ID.BUILDING_3;
+              if (this.buildingId === ASSET_ID.BUILDING_1)
+                this.buildingId = ASSET_ID.BUILDING_2;
+              if (this.buildingId === undefined)
+                this.buildingId = ASSET_ID.BUILDING_1;
             }
           },
         };

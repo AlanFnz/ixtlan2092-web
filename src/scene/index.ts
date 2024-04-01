@@ -39,6 +39,7 @@ export function createScene(citySize: number) {
 
   function initScene(city: City) {
     scene.clear();
+    buildings = Array.from({ length: city.size }, () => new Array(city.size).fill(undefined));
 
     for (let x = 0; x < city.size; x++) {
       const column = [];
@@ -63,17 +64,20 @@ export function createScene(citySize: number) {
   function update(city: City) {
     for (let x = 0; x < city.size; x++) {
       for (let y = 0; y < city.size; y++) {
-        // Buildings
-        const tile = city.data[x][y];
-        if (tile.building?.startsWith('building')) {
-          const height = Number(tile.building.slice(-1));
-          const buildingMesh = createAssetInstance(tile.building, x, y);
+        const currendBuildingId = buildings[x][y]?.userData?.id;
+        const newBuildingId = city.data[x][y]?.buildingId;
 
-          if (buildingMesh) {
-            if (buildings[x] && buildings[x][y]) scene.remove(buildings[x][y]);
-            scene.add(buildingMesh);
-            if (buildings[x] && buildings[x][y]) buildings[x][y] = buildingMesh;
-          }
+        // If the player removes a building, remove it from the scene
+        if (!newBuildingId && currendBuildingId) {
+          scene.remove(buildings[x][y]);
+          buildings[x][y] = undefined;
+        }
+
+        // If the data model has changed, update the mesh
+        if (newBuildingId && newBuildingId !== currendBuildingId) {
+          scene.remove(buildings[x][y]);
+          buildings[x][y] = createAssetInstance(newBuildingId, x, y);
+          scene.add(buildings[x][y]);
         }
       }
     }
