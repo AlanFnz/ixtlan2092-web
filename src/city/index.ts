@@ -11,6 +11,7 @@ export function createCity(size: number): City {
         const tile: Tile = {
           x,
           y,
+          terrainId: ASSET_ID.GRASS,
           buildingId: undefined,
           update() {
             const x = Math.random();
