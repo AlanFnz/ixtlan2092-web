@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { createCamera } from '../camera';
 import { City } from '../city/constants';
-import { createBuilding, createGrass } from '../assets';
+import { createAssetInstance } from '../assets';
 
 export function createScene(citySize: number) {
   // Initial scene setup
@@ -46,9 +46,11 @@ export function createScene(citySize: number) {
       for (let y = 0; y < city.size; y++) {
         // Load the mesh/3D object corresponding to the tile at (x,y)
         // Grass
-        const grassMesh = createGrass(x, y);
-        scene.add(grassMesh);
-        column.push(grassMesh);
+        const grassMesh = createAssetInstance('grass', x, y);
+        if (grassMesh) {
+          scene.add(grassMesh);
+          column.push(grassMesh);
+        }
       }
       terrain.push(column);
       buildings.push(...Array(city.size).fill(undefined));
@@ -65,12 +67,13 @@ export function createScene(citySize: number) {
         const tile = city.data[x][y];
         if (tile.building?.startsWith('building')) {
           const height = Number(tile.building.slice(-1));
-          const buildingMesh = createBuilding(x, y, height);
+          const buildingMesh = createAssetInstance(tile.building, x, y);
 
-          if (buildings[x] && buildings[x][y]) scene.remove(buildings[x][y]);
-
-          scene.add(buildingMesh);
-          if (buildings[x] && buildings[x][y]) buildings[x][y] = buildingMesh;
+          if (buildingMesh) {
+            if (buildings[x] && buildings[x][y]) scene.remove(buildings[x][y]);
+            scene.add(buildingMesh);
+            if (buildings[x] && buildings[x][y]) buildings[x][y] = buildingMesh;
+          }
         }
       }
     }
