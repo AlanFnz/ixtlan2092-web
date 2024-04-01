@@ -7,16 +7,20 @@ export function createCity(size: number): City {
     for (let x = 0; x < size; x++) {
       const column: Tile[] = [];
       for (let y = 0; y < size; y++) {
-        const tile = {
+        const tile: Tile = {
           x,
           y,
-          building: false,
+          building: undefined,
           update() {
-            console.log(`updating tile ${x} ${y}`);
+            const x = Math.random();
+            if (x < 0.01) {
+              if (this.building === 'building-2') this.building = 'building-3';
+              if (this.building === 'building-1') this.building = 'building-2';
+              if (this.building === undefined) this.building = 'building-1';
+            }
           },
         };
         column.push(tile);
-        if (Math.random() > 0.7) tile.building = true;
       }
 
       data.push(column);

@@ -34,10 +34,11 @@ export function createScene(citySize: number) {
   }
 
   // Init scene
-  let meshes = [];
+  let terrain: any[] = [];
+  let buildings: any[] = [];
+
   function initScene(city: City) {
     scene.clear();
-    meshes = [];
 
     for (let x = 0; x < city.size; x++) {
       const column = [];
@@ -48,20 +49,33 @@ export function createScene(citySize: number) {
         const grassMesh = createGrass(x, y);
         scene.add(grassMesh);
         column.push(grassMesh);
-
-        // Building
-        const tile = city.data[x][y];
-        if (tile.building) {
-          const buildingMesh = createBuilding(x, y);
-          scene.add(buildingMesh);
-          column.push(buildingMesh);
-        }
       }
-      meshes.push(column);
+      terrain.push(column);
+      buildings.push(...Array(city.size).fill(undefined));
     }
 
     // Add lights
     setupLights();
+  }
+
+  function update(city: City) {
+    for (let x = 0; x < city.size; x++) {
+      for (let y = 0; y < city.size; y++) {
+        // Buildings
+        const tile = city.data[x][y];
+        console.log(tile);
+        if (tile.building?.startsWith('building')) {
+          const height = Number(tile.building.slice(-1));
+          console.log(height);
+          const buildingMesh = createBuilding(x, y, height);
+
+          if (buildings[x] && buildings[x][y]) scene.remove(buildings[x][y]);
+
+          scene.add(buildingMesh);
+          if (buildings[x] && buildings[x][y]) buildings[x][y] = buildingMesh;
+        }
+      }
+    }
   }
 
   function setupLights() {
@@ -92,10 +106,6 @@ export function createScene(citySize: number) {
   function stop() {
     window.removeEventListener('resize', onWindowResize, false);
     renderer.setAnimationLoop(null);
-  }
-
-  function update(city: City) {
-    console.log('scene update')
   }
 
   function onMouseDown(event: MouseEvent) {
