@@ -10,8 +10,15 @@ export function createGame() {
   const city = createCity(config.CITY_SIZE);
 
   const game = {
-    update() {},
+    update() {
+      city?.update();
+      scene?.update(city);
+    },
   };
+
+  setInterval(() => {
+    game.update();
+  }, 1000)
 
   if (scene) {
     scene.start();

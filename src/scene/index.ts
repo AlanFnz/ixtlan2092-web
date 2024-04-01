@@ -94,6 +94,10 @@ export function createScene(citySize: number) {
     renderer.setAnimationLoop(null);
   }
 
+  function update(city: City) {
+    console.log('scene update')
+  }
+
   function onMouseDown(event: MouseEvent) {
     camera.onMouseDown(event);
   }
@@ -135,6 +139,7 @@ export function createScene(citySize: number) {
     initScene,
     start,
     stop,
+    update,
   };
 }
 
