@@ -1,4 +1,5 @@
 import { City } from './city/constants';
+import { Game } from './game/constants';
 
 export interface CustomWindow extends Window {
   scene?: {
@@ -7,5 +8,6 @@ export interface CustomWindow extends Window {
     stop: () => void;
   };
   city: City;
+  game: Game;
 }
 

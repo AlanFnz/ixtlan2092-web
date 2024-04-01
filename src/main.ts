@@ -1,5 +1,10 @@
 import { createGame } from './game';
+import { CustomWindow } from './types';
 import './main.css';
 
-window.onload = () => createGame();
+declare let window: CustomWindow;
+
+window.onload = () => {
+ window.game = createGame();
+}
 

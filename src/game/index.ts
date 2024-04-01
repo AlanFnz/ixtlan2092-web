@@ -1,13 +1,10 @@
 import { createScene } from '../scene';
-import { CustomWindow } from '../types';
 import { createCity } from '../city';
-import config from './config';
-
-declare let window: CustomWindow;
+import { CITY_SIZE } from './constants';
 
 export function createGame() {
-  const scene = createScene(config.CITY_SIZE);
-  const city = createCity(config.CITY_SIZE);
+  const scene = createScene(CITY_SIZE);
+  const city = createCity(CITY_SIZE);
 
   const game = {
     update() {
@@ -18,11 +15,13 @@ export function createGame() {
 
   setInterval(() => {
     game.update();
-  }, 1000)
+  }, 1000);
 
   if (scene) {
     scene.start();
     scene.initScene(city);
   }
+
+  return game;
 }
 
