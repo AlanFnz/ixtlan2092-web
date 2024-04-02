@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { createCamera } from '../camera';
 import { City } from '../city/constants';
-import { ASSET_ID, createAssetInstance } from '../assets';
+import { createAssetInstance } from '../assets';
 
 export function createScene(citySize: number) {
   // Initial scene setup
@@ -39,18 +39,23 @@ export function createScene(citySize: number) {
 
   function initScene(city: City) {
     scene.clear();
-    buildings = Array.from({ length: city.size }, () => new Array(city.size).fill(undefined));
+    buildings = Array.from({ length: city.size }, () =>
+      new Array(city.size).fill(undefined)
+    );
 
     for (let x = 0; x < city.size; x++) {
       const column = [];
 
       for (let y = 0; y < city.size; y++) {
         // Load the mesh/3D object corresponding to the tile at (x,y)
-        // Grass
-        const grassMesh = createAssetInstance(ASSET_ID.GRASS, x, y);
-        if (grassMesh) {
-          scene.add(grassMesh);
-          column.push(grassMesh);
+        // Terrain
+        const terrainId = city?.data[x][y]?.terrainId;
+        if (terrainId) {
+          const terrainMesh = createAssetInstance(terrainId, x, y);
+          if (terrainMesh) {
+            scene.add(terrainMesh);
+            column.push(terrainMesh);
+          }
         }
       }
       terrain.push(column);

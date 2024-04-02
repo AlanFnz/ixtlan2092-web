@@ -4,30 +4,13 @@ import { City, Tile } from './constants';
 export function createCity(size: number): City {
   const data: Tile[][] = [];
 
-  function initData() {
+  function initData(this: any) {
     for (let x = 0; x < size; x++) {
       const column: Tile[] = [];
       for (let y = 0; y < size; y++) {
-        const tile: Tile = {
-          x,
-          y,
-          terrainId: ASSET_ID.GRASS,
-          buildingId: undefined,
-          update() {
-            const x = Math.random();
-            if (x < 0.01) {
-              if (this.buildingId === ASSET_ID.BUILDING_2)
-                this.buildingId = ASSET_ID.BUILDING_3;
-              if (this.buildingId === ASSET_ID.BUILDING_1)
-                this.buildingId = ASSET_ID.BUILDING_2;
-              if (this.buildingId === undefined)
-                this.buildingId = ASSET_ID.BUILDING_1;
-            }
-          },
-        };
+        const tile: Tile = createTile(x, y);
         column.push(tile);
       }
-
       data.push(column);
     }
   }
@@ -39,6 +22,23 @@ export function createCity(size: number): City {
         data[x][y].update();
       }
     }
+  }
+
+  function createTile(x: number, y: number): Tile {
+    return {
+      x,
+      y,
+      terrainId: ASSET_ID.GRASS,
+      buildingId: undefined,
+      update() {
+        const x = Math.random();
+        if (x < 0.01) {
+          if (this.buildingId === ASSET_ID.BUILDING_2) this.buildingId = ASSET_ID.BUILDING_3;
+          if (this.buildingId === ASSET_ID.BUILDING_1) this.buildingId = ASSET_ID.BUILDING_2;
+          if (this.buildingId === undefined) this.buildingId = ASSET_ID.BUILDING_1;
+        }
+      },
+    };
   }
 
   initData();
