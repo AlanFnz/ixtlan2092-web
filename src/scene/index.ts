@@ -41,6 +41,8 @@ export function createScene(citySize: number) {
   let terrain: any[] = [];
   let buildings: any[] = [];
 
+  let onObjectSelected: any = undefined;
+
   function initScene(city: City) {
     scene.clear();
     buildings = Array.from({ length: city.size }, () =>
@@ -136,6 +138,9 @@ export function createScene(citySize: number) {
       if (selectedObject) selectedObject.material?.emissive?.setHex(0);
       selectedObject = intersections[0]?.object;
       selectedObject?.material?.emissive?.setHex(0x555555);
+      if (onObjectSelected) {
+        onObjectSelected(selectedObject);
+      }
     }
   }
 
@@ -177,6 +182,9 @@ export function createScene(citySize: number) {
     start,
     stop,
     update,
+    setOnObjectSelected(callback: any) {
+      onObjectSelected = callback;
+    },
   };
 }
 

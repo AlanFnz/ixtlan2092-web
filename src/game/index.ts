@@ -20,6 +20,10 @@ export function createGame() {
   if (scene) {
     scene.start();
     scene.initScene(city);
+    scene.setOnObjectSelected((selectedObject: any) => {
+      const { x, y } = selectedObject?.userData;
+      const tile = city?.data[x][y];
+    });
   }
 
   return game;
