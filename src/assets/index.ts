@@ -14,21 +14,21 @@ interface AssetCreators {
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 
 const assets: AssetCreators = {
-  grass: (x: number, y: number) => {
+  [ASSET_ID.GRASS]: (x: number, y: number) => {
     const material = new THREE.MeshLambertMaterial({ color: 0x00aa00 });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.userData = { id: ASSET_ID.GRASS };
     mesh.position.set(x, -0.5, y);
     return mesh;
   },
-  'building-1': (x: number, y: number, height: number) => {
+  [ASSET_ID.BUILDING_1]: (x: number, y: number, height: number) => {
     const material = new THREE.MeshLambertMaterial({ color: 0x777777 });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.userData = { id: ASSET_ID.BUILDING_1 };
     mesh.position.set(x, 0.5, y);
     return mesh;
   },
-  'building-2': (x: number, y: number) => {
+  [ASSET_ID.BUILDING_2]: (x: number, y: number) => {
     const material = new THREE.MeshLambertMaterial({ color: 0x777777 });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.userData = { id: ASSET_ID.BUILDING_2 };
@@ -36,7 +36,7 @@ const assets: AssetCreators = {
     mesh.position.set(x, 1, y);
     return mesh;
   },
-  'building-3': (x: number, y: number) => {
+  [ASSET_ID.BUILDING_3]: (x: number, y: number) => {
     const material = new THREE.MeshLambertMaterial({ color: 0x777777 });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.userData = { id: ASSET_ID.BUILDING_3 };
