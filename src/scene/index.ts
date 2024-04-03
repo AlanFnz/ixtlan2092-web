@@ -34,6 +34,10 @@ export function createScene(citySize: number) {
   }
 
   // Init scene
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+  let selectedObject: any;
+
   let terrain: any[] = [];
   let buildings: any[] = [];
 
@@ -120,6 +124,20 @@ export function createScene(citySize: number) {
 
   function onMouseDown(event: MouseEvent) {
     camera.onMouseDown(event);
+
+    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera.camera);
+
+    let intersections = raycaster.intersectObjects(scene.children, false);
+
+    if (intersections.length > 0) {
+      console.log(intersections);
+      if (selectedObject) selectedObject.material?.emissive?.setHex(0);
+      selectedObject = intersections[0]?.object;
+      selectedObject?.material?.emissive?.setHex(0x555555);
+    }
   }
 
   function onMouseUp(event: MouseEvent) {

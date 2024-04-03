@@ -12,7 +12,6 @@ interface AssetCreators {
 }
 
 const geometry = new THREE.BoxGeometry(1, 1, 1);
-const buildingMaterial = new THREE.MeshLambertMaterial({ color: 0x777777 });
 
 const assets: AssetCreators = {
   grass: (x: number, y: number) => {
@@ -23,20 +22,23 @@ const assets: AssetCreators = {
     return mesh;
   },
   'building-1': (x: number, y: number, height: number) => {
-    const mesh = new THREE.Mesh(geometry, buildingMaterial);
+    const material = new THREE.MeshLambertMaterial({ color: 0x777777 });
+    const mesh = new THREE.Mesh(geometry, material);
     mesh.userData = { id: ASSET_ID.BUILDING_1 };
     mesh.position.set(x, 0.5, y);
     return mesh;
   },
   'building-2': (x: number, y: number) => {
-    const mesh = new THREE.Mesh(geometry, buildingMaterial);
+    const material = new THREE.MeshLambertMaterial({ color: 0x777777 });
+    const mesh = new THREE.Mesh(geometry, material);
     mesh.userData = { id: ASSET_ID.BUILDING_2 };
     mesh.scale.set(1, 2, 1);
     mesh.position.set(x, 1, y);
     return mesh;
   },
   'building-3': (x: number, y: number) => {
-    const mesh = new THREE.Mesh(geometry, buildingMaterial);
+    const material = new THREE.MeshLambertMaterial({ color: 0x777777 });
+    const mesh = new THREE.Mesh(geometry, material);
     mesh.userData = { id: ASSET_ID.BUILDING_3 };
     mesh.scale.set(1, 3, 1);
     mesh.position.set(x, 1.5, y);
