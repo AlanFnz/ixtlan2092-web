@@ -30,14 +30,7 @@ export function createCity(size: number): City {
       y,
       terrainId: ASSET_ID.GRASS,
       buildingId: undefined,
-      update() {
-        const x = Math.random();
-        if (x < 0.01) {
-          if (this.buildingId === ASSET_ID.COMMERCIAL) this.buildingId = ASSET_ID.INDUSTRIAL;
-          if (this.buildingId === ASSET_ID.RESIDENTIAL) this.buildingId = ASSET_ID.COMMERCIAL;
-          if (this.buildingId === undefined) this.buildingId = ASSET_ID.RESIDENTIAL;
-        }
-      },
+      update() {},
     };
   }
 
