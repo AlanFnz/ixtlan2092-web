@@ -1,5 +1,7 @@
 interface Building {
   id: string;
+  height?: number;
+  updated: boolean;
   update: () => void;
 }
 
