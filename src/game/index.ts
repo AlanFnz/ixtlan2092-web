@@ -27,6 +27,14 @@ export function createGame(): Game {
     scene.setOnObjectSelected((selectedObject: any) => {
       const { x, y } = selectedObject?.userData;
       const tile = city?.data[x][y];
+
+      if (activeToolId === 'bulldoze') {
+        tile.buildingId = undefined;
+      } else if (!tile.buildingId) {
+        tile.buildingId = activeToolId;
+      }
+      
+      scene.update(city);
     });
   }
 
