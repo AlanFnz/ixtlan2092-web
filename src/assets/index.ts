@@ -33,7 +33,6 @@ const assets: AssetCreators = {
     const material = new THREE.MeshLambertMaterial({ color: 0xbbbb55 });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.userData = { id: ASSET_ID.COMMERCIAL, x, y };
-    mesh.scale.set(1, 2, 1);
     mesh.position.set(x, 0.5, y);
     return mesh;
   },
@@ -41,7 +40,6 @@ const assets: AssetCreators = {
     const material = new THREE.MeshLambertMaterial({ color: 0x5555bb });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.userData = { id: ASSET_ID.INDUSTRIAL, x, y };
-    mesh.scale.set(1, 3, 1);
     mesh.position.set(x, 0.5, y);
     return mesh;
   },
