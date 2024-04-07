@@ -14,7 +14,6 @@ export function createGame(): Game {
     },
     setActiveToolId(toolId: string) {
       activeToolId = toolId;
-      console.log(activeToolId);
     },
   };
 
