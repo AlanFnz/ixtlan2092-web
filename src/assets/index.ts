@@ -5,6 +5,7 @@ const ASSET_ID = {
   RESIDENTIAL: 'residential',
   COMMERCIAL: 'commercial',
   INDUSTRIAL: 'industrial',
+  ROAD: 'road',
 };
 
 interface AssetCreators {
@@ -33,7 +34,7 @@ const assets: AssetCreators = {
     const mesh = new THREE.Mesh(geometry, material);
     mesh.userData = { id: ASSET_ID.COMMERCIAL, x, y };
     mesh.scale.set(1, 2, 1);
-    mesh.position.set(x, 1, y);
+    mesh.position.set(x, 0.5, y);
     return mesh;
   },
   [ASSET_ID.INDUSTRIAL]: (x: number, y: number) => {
@@ -41,7 +42,15 @@ const assets: AssetCreators = {
     const mesh = new THREE.Mesh(geometry, material);
     mesh.userData = { id: ASSET_ID.INDUSTRIAL, x, y };
     mesh.scale.set(1, 3, 1);
-    mesh.position.set(x, 1.5, y);
+    mesh.position.set(x, 0.5, y);
+    return mesh;
+  },
+  [ASSET_ID.ROAD]: (x: number, y: number) => {
+    const material = new THREE.MeshLambertMaterial({ color: 0x444440 });
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.userData = { id: ASSET_ID.ROAD, x, y };
+    mesh.scale.set(1, 0.1, 1);
+    mesh.position.set(x, 0.05, y);
     return mesh;
   },
 };
