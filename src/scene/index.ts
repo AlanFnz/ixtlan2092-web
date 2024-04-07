@@ -76,7 +76,7 @@ export function createScene(citySize: number) {
     for (let x = 0; x < city.size; x++) {
       for (let y = 0; y < city.size; y++) {
         const currendBuildingId = buildings[x][y]?.userData?.id;
-        const newBuildingId = city.data[x][y]?.buildingId;
+        const newBuildingId = city.data[x][y]?.building?.id;
 
         // If the player removes a building, remove it from the scene
         if (!newBuildingId && currendBuildingId) {

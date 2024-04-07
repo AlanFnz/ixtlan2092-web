@@ -1,11 +1,12 @@
 import * as THREE from 'three';
+import { BUILDING_ID } from '../buildings/constants';
 
 const ASSET_ID = {
   GRASS: 'grass',
-  RESIDENTIAL: 'residential',
-  COMMERCIAL: 'commercial',
-  INDUSTRIAL: 'industrial',
-  ROAD: 'road',
+  RESIDENTIAL: BUILDING_ID.RESIDENTIAL,
+  COMMERCIAL: BUILDING_ID.COMMERCIAL,
+  INDUSTRIAL: BUILDING_ID.INDUSTRIAL,
+  ROAD: BUILDING_ID.ROAD,
 };
 
 interface AssetCreators {

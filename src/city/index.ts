@@ -19,7 +19,7 @@ export function createCity(size: number): City {
     for (let x = 0; x < size; x++) {
       const column: Tile[] = [];
       for (let y = 0; y < size; y++) {
-        data[x][y].update();
+        data[x][y].building?.update();
       }
     }
   }
@@ -29,8 +29,7 @@ export function createCity(size: number): City {
       x,
       y,
       terrainId: ASSET_ID.GRASS,
-      buildingId: undefined,
-      update() {},
+      building: undefined,
     };
   }
 
