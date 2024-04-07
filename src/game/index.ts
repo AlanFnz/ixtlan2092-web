@@ -1,8 +1,9 @@
 import { createScene } from '../scene';
 import { createCity } from '../city';
-import { CITY_SIZE } from './constants';
+import { CITY_SIZE, Game } from './constants';
 
-export function createGame() {
+export function createGame(): Game {
+  let activeToolId = '';
   const scene = createScene(CITY_SIZE);
   const city = createCity(CITY_SIZE);
 
@@ -10,6 +11,10 @@ export function createGame() {
     update() {
       city?.update();
       scene?.update(city);
+    },
+    setActiveToolId(toolId: string) {
+      activeToolId = toolId;
+      console.log(activeToolId);
     },
   };
 

@@ -9,5 +9,6 @@ export interface CustomWindow extends Window {
   };
   city: City;
   game: Game;
+  setActiveTool: (event: any, toolId: string) => void;
 }
 
