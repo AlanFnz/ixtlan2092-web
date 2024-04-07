@@ -4,11 +4,13 @@ import { CITY_SIZE, Game } from './constants';
 import { BUILDING_ID } from '../buildings/constants';
 import buildingFactory from '../buildings';
 import { isActiveToolIdValid } from './utils';
+import { BULLDOZE_ID, createToolbarButtons } from '../ui';
 
 export function createGame(): Game {
   let activeToolId = '';
   const scene = createScene(CITY_SIZE);
   const city = createCity(CITY_SIZE);
+  createToolbarButtons();
 
   const game = {
     update() {
@@ -31,7 +33,7 @@ export function createGame(): Game {
       const { x, y } = selectedObject?.userData;
       const tile = city?.data[x][y];
 
-      if (activeToolId === 'bulldoze' && tile.building && tile.building.id) {
+      if (activeToolId === BULLDOZE_ID && tile.building && tile.building.id) {
         tile.building = undefined;
       } else if (!tile.building) {
         tile.building =

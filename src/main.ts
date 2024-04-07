@@ -4,7 +4,7 @@ import './main.css';
 
 declare let window: CustomWindow;
 
-let selectControl = document.getElementById('button-bulldoze');
+let selectControl: HTMLButtonElement | null;
 
 window.onload = () => {
   window.game = createGame();
@@ -13,7 +13,7 @@ window.onload = () => {
     selectControl = event.target;
     selectControl?.classList.add('selected');
 
-    window.game.setActiveToolId(toolId)
+    window.game.setActiveToolId(toolId);
   };
 };
 
