@@ -2,9 +2,9 @@ import * as THREE from 'three';
 
 const ASSET_ID = {
   GRASS: 'grass',
-  BUILDING_1: 'building-1',
-  BUILDING_2: 'building-2',
-  BUILDING_3: 'building-3',
+  RESIDENTIAL: 'residential',
+  COMMERCIAL: 'commercial',
+  INDUSTRIAL: 'industrial',
 };
 
 interface AssetCreators {
@@ -21,25 +21,25 @@ const assets: AssetCreators = {
     mesh.position.set(x, -0.5, y);
     return mesh;
   },
-  [ASSET_ID.BUILDING_1]: (x: number, y: number, height: number) => {
+  [ASSET_ID.RESIDENTIAL]: (x: number, y: number, height: number) => {
     const material = new THREE.MeshLambertMaterial({ color: 0xbb5555 });
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.userData = { id: ASSET_ID.BUILDING_1, x, y };
+    mesh.userData = { id: ASSET_ID.RESIDENTIAL, x, y };
     mesh.position.set(x, 0.5, y);
     return mesh;
   },
-  [ASSET_ID.BUILDING_2]: (x: number, y: number) => {
+  [ASSET_ID.COMMERCIAL]: (x: number, y: number) => {
     const material = new THREE.MeshLambertMaterial({ color: 0xbbbb55 });
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.userData = { id: ASSET_ID.BUILDING_2, x, y };
+    mesh.userData = { id: ASSET_ID.COMMERCIAL, x, y };
     mesh.scale.set(1, 2, 1);
     mesh.position.set(x, 1, y);
     return mesh;
   },
-  [ASSET_ID.BUILDING_3]: (x: number, y: number) => {
+  [ASSET_ID.INDUSTRIAL]: (x: number, y: number) => {
     const material = new THREE.MeshLambertMaterial({ color: 0x5555bb });
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.userData = { id: ASSET_ID.BUILDING_3, x, y };
+    mesh.userData = { id: ASSET_ID.INDUSTRIAL, x, y };
     mesh.scale.set(1, 3, 1);
     mesh.position.set(x, 1.5, y);
     return mesh;

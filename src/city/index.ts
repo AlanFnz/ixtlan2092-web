@@ -33,9 +33,9 @@ export function createCity(size: number): City {
       update() {
         const x = Math.random();
         if (x < 0.01) {
-          if (this.buildingId === ASSET_ID.BUILDING_2) this.buildingId = ASSET_ID.BUILDING_3;
-          if (this.buildingId === ASSET_ID.BUILDING_1) this.buildingId = ASSET_ID.BUILDING_2;
-          if (this.buildingId === undefined) this.buildingId = ASSET_ID.BUILDING_1;
+          if (this.buildingId === ASSET_ID.COMMERCIAL) this.buildingId = ASSET_ID.INDUSTRIAL;
+          if (this.buildingId === ASSET_ID.RESIDENTIAL) this.buildingId = ASSET_ID.COMMERCIAL;
+          if (this.buildingId === undefined) this.buildingId = ASSET_ID.RESIDENTIAL;
         }
       },
     };
