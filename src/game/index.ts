@@ -31,13 +31,15 @@ export function createGame(): Game {
     scene.initScene(city);
     scene.setOnObjectSelected((selectedObject: any) => {
       const { x, y } = selectedObject?.userData;
-      const tile = city?.data[x][y];
+      const tile = x && y && city?.data[x][y];
 
-      if (activeToolId === BULLDOZE_ID && tile.building && tile.building.id) {
-        tile.building = undefined;
-      } else if (!tile.building) {
-        tile.building =
-          buildingFactory[activeToolId] && buildingFactory[activeToolId]();
+      if (tile) {
+        if (activeToolId === BULLDOZE_ID && tile.building && tile.building.id) {
+          tile.building = undefined;
+        } else if (!tile.building) {
+          tile.building =
+            buildingFactory[activeToolId] && buildingFactory[activeToolId]();
+        }
       }
 
       scene.update(city);
