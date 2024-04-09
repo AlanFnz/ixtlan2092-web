@@ -15,8 +15,11 @@ export function createScene(citySize: number) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x7777777);
 
+  // Renderer config
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   gameWindow.appendChild(renderer.domElement);
 
   // Create camera
@@ -106,18 +109,19 @@ export function createScene(citySize: number) {
   }
 
   function setupLights() {
-    const lights = [
-      new THREE.AmbientLight(0xffffff, 0.8),
-      new THREE.DirectionalLight(0xffffff, 0.8),
-      new THREE.DirectionalLight(0xffffff, 0.8),
-      new THREE.DirectionalLight(0xffffff, 0.8),
-    ];
-
-    lights[1]?.position?.set(0, 1, 0);
-    lights[2]?.position?.set(1, 1, 0);
-    lights[3]?.position?.set(0, 1, 1);
-
-    scene.add(...lights);
+    const sun = new THREE.DirectionalLight(0xffffff, 1);
+    sun.position.set(20, 20, 20);
+    sun.castShadow = true;
+    sun.shadow.camera.left = -10;
+    sun.shadow.camera.right = 10;
+    sun.shadow.camera.top = 0;
+    sun.shadow.camera.bottom = -10;
+    sun.shadow.mapSize.width = 1024;
+    sun.shadow.mapSize.height = 1024;
+    sun.shadow.camera.near = 0.5;
+    sun.shadow.camera.far = 50;
+    scene.add(sun);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.3));
   }
 
   // Render and interaction handlers
