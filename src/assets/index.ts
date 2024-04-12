@@ -33,6 +33,8 @@ const assets: AssetCreators = {
     mesh.userData = { id: ASSET_ID.RESIDENTIAL, x, y };
     if (data?.height) mesh.scale.set(1, data?.height, 1);
     mesh.position.set(x, 0.5, y);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
     return mesh;
   },
   [ASSET_ID.COMMERCIAL]: (x: number, y: number, data: Building | undefined) => {
@@ -41,6 +43,8 @@ const assets: AssetCreators = {
     mesh.userData = { id: ASSET_ID.COMMERCIAL, x, y };
     if (data?.height) mesh.scale.set(1, data?.height, 1);
     mesh.position.set(x, 0.5, y);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
     return mesh;
   },
   [ASSET_ID.INDUSTRIAL]: (x: number, y: number, data: Building | undefined) => {
@@ -49,6 +53,8 @@ const assets: AssetCreators = {
     mesh.userData = { id: ASSET_ID.INDUSTRIAL, x, y };
     if (data?.height) mesh.scale.set(1, data?.height, 1);
     mesh.position.set(x, 0.5, y);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
     return mesh;
   },
   [ASSET_ID.ROAD]: (x: number, y: number) => {
