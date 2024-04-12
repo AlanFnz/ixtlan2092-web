@@ -5,7 +5,9 @@
     "allowJs": true,
     "checkJs": false,
     "target": "es2017",
-    "module": "commonjs"
+    "module": "commonjs",
+    "typeRoots": ["./node_modules/@types", "./src"],
+    "types": ["images"]
   },
   "include": ["**/*.ts"]
 }

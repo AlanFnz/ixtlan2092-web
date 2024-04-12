@@ -1,8 +1,15 @@
 import * as THREE from 'three';
 import { BUILDING_ID, Building } from '../buildings/constants';
+import {
+  getSideMaterial,
+  getTexture,
+  getTopMaterial,
+  isValidTextureKey,
+} from './textures';
 
 const ASSET_ID = {
   GRASS: 'grass',
+  GROUND: 'ground',
   RESIDENTIAL: BUILDING_ID.RESIDENTIAL,
   COMMERCIAL: BUILDING_ID.COMMERCIAL,
   INDUSTRIAL: BUILDING_ID.INDUSTRIAL,
@@ -13,76 +20,84 @@ interface AssetCreators {
   [key: string]: (...args: any[]) => THREE.Mesh;
 }
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-
+const cube = new THREE.BoxGeometry(1, 1, 1);
 
 const assets: AssetCreators = {
-  [ASSET_ID.GRASS]: (x: number, y: number) => {
-    const material = new THREE.MeshLambertMaterial({ color: 0x00aa00 });
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.userData = { id: ASSET_ID.GRASS, x, y };
+  [ASSET_ID.GROUND]: (x: number, y: number) => {
+    const material = new THREE.MeshLambertMaterial({
+      map: getTexture('grass'),
+    });
+    const mesh = new THREE.Mesh(cube, material);
+    mesh.userData = { id: 'grass', x, y };
     mesh.position.set(x, -0.5, y);
-    mesh.castShadow = true;
     mesh.receiveShadow = true;
     return mesh;
   },
-  [ASSET_ID.RESIDENTIAL]: (
-    x: number,
-    y: number,
-    data: Building | undefined
-  ) => {
-    const material = new THREE.MeshLambertMaterial({ color: 0xbb5555 });
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.userData = { id: ASSET_ID.RESIDENTIAL, x, y };
-    if (data?.height) mesh.scale.set(1, data?.height, 1);
-    mesh.position.set(x, 0.5, y);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    return mesh;
-  },
-  [ASSET_ID.COMMERCIAL]: (x: number, y: number, data: Building | undefined) => {
-    const material = new THREE.MeshLambertMaterial({ color: 0xbbbb55 });
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.userData = { id: ASSET_ID.COMMERCIAL, x, y };
-    if (data?.height) mesh.scale.set(1, data?.height, 1);
-    mesh.position.set(x, 0.5, y);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    return mesh;
-  },
-  [ASSET_ID.INDUSTRIAL]: (x: number, y: number, data: Building | undefined) => {
-    const material = new THREE.MeshLambertMaterial({ color: 0x5555bb });
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.userData = { id: ASSET_ID.INDUSTRIAL, x, y };
-    if (data?.height) mesh.scale.set(1, data?.height, 1);
-    mesh.position.set(x, 0.5, y);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    return mesh;
-  },
+  [ASSET_ID.RESIDENTIAL]: (x: number, y: number, data: Building) =>
+    createZoneMesh(x, y, data),
+  [ASSET_ID.COMMERCIAL]: (x: number, y: number, data: Building) =>
+    createZoneMesh(x, y, data),
+  [ASSET_ID.INDUSTRIAL]: (x: number, y: number, data: Building) =>
+    createZoneMesh(x, y, data),
   [ASSET_ID.ROAD]: (x: number, y: number) => {
-    const material = new THREE.MeshLambertMaterial({ color: 0x444440 });
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.userData = { id: ASSET_ID.ROAD, x, y };
-    mesh.scale.set(1, 0.1, 1);
-    mesh.position.set(x, 0.05, y);
-    mesh.castShadow = true;
+    const material = new THREE.MeshLambertMaterial({ color: 0x222222 });
+    const mesh = new THREE.Mesh(cube, material);
+    mesh.userData = { id: 'road', x, y };
+    mesh.scale.set(1, 0.02, 1);
+    mesh.position.set(x, 0.01, y);
     mesh.receiveShadow = true;
     return mesh;
   },
 };
 
 function createAssetInstance(
-  assetId: string,
+  type: string,
   x: number,
   y: number,
   data: Building | undefined
 ) {
-  if (assetId in assets) {
-    return assets[assetId](x, y, data);
+  if (type in assets) {
+    return assets[type](x, y, data);
   } else {
-    console.warn(`Asset id ${assetId} is not found`);
+    console.warn(`Asset id ${type} is not found`);
   }
+}
+
+function createZoneMesh(x: number, y: number, data: Building): THREE.Mesh {
+  const textureName = data.type + data.style;
+
+  if (!data || !isValidTextureKey(textureName)) {
+    return new THREE.Mesh(
+      cube,
+      new THREE.MeshBasicMaterial({ color: 0x888888 })
+    );
+  }
+  const topMaterial = getTopMaterial(0x555555);
+  const sideMaterial = getSideMaterial(textureName);
+
+  let materialArray = [
+    sideMaterial, // +X
+    sideMaterial, // -X
+    topMaterial, // +Y
+    topMaterial, // -Y
+    sideMaterial, // +Z
+    sideMaterial, // -Z
+  ];
+
+  let mesh = new THREE.Mesh(cube, materialArray);
+  mesh.userData = { x, y };
+
+  if (data.height) {
+    mesh.scale.set(0.8, (data.height - 0.95) / 2, 0.8);
+    mesh.material.forEach(
+      (material) => data.height && material.map?.repeat.set(1, data.height - 1)
+    );
+    mesh.position.set(x, (data.height - 0.95) / 4, y);
+  }
+
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  return mesh;
 }
 
 export { ASSET_ID, createAssetInstance };

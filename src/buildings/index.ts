@@ -3,7 +3,8 @@ import { BUILDING_ID, Building, BuildingFactory } from './constants';
 const buildingFactory: BuildingFactory = {
   [BUILDING_ID.RESIDENTIAL]: (): Building => {
     return {
-      id: BUILDING_ID.RESIDENTIAL,
+      type: BUILDING_ID.RESIDENTIAL,
+      style: Math.floor(3 * Math.random()) + 1,
       height: 1,
       updated: true,
       update: function () {
@@ -18,7 +19,8 @@ const buildingFactory: BuildingFactory = {
   },
   [BUILDING_ID.COMMERCIAL]: (): Building => {
     return {
-      id: BUILDING_ID.COMMERCIAL,
+      type: BUILDING_ID.COMMERCIAL,
+      style: Math.floor(3 * Math.random()) + 1,
       height: 1,
       updated: true,
       update: function () {
@@ -33,7 +35,8 @@ const buildingFactory: BuildingFactory = {
   },
   [BUILDING_ID.INDUSTRIAL]: (): Building => {
     return {
-      id: BUILDING_ID.INDUSTRIAL,
+      type: BUILDING_ID.INDUSTRIAL,
+      style: Math.floor(3 * Math.random()) + 1,
       height: 1,
       updated: true,
       update: function () {
@@ -48,7 +51,8 @@ const buildingFactory: BuildingFactory = {
   },
   [BUILDING_ID.ROAD]: (): Building => {
     return {
-      id: BUILDING_ID.ROAD,
+      type: BUILDING_ID.ROAD,
+      style: Math.floor(3 * Math.random()) + 1,
       updated: true,
       update: function () {
         this.updated = false;

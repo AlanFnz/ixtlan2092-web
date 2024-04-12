@@ -9,7 +9,7 @@ interface Tile {
 
 interface City {
   size: number;
-  data: Tile[][];
+  tiles: Tile[][];
   update: () => void;
 }
 

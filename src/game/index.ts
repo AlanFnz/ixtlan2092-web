@@ -31,7 +31,7 @@ export function createGame(): Game {
     scene.initScene(city);
     scene.setOnObjectSelected((selectedObject: any) => {
       const { x, y } = selectedObject?.userData;
-      const tile = x && y && city?.data[x][y];
+      const tile = x && y && city?.tiles[x][y];
 
       if (tile) {
         if (activeToolId === BULLDOZE_ID && tile.building && tile.building.id) {

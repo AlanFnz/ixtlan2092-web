@@ -59,13 +59,13 @@ export function createScene(citySize: number) {
       for (let y = 0; y < city.size; y++) {
         // Load the mesh/3D object corresponding to the tile at (x,y)
         // Terrain
-        const terrainId = city?.data[x][y]?.terrainId;
+        const terrainId = city?.tiles[x][y]?.terrainId;
         if (terrainId) {
           const terrainMesh = createAssetInstance(
             terrainId,
             x,
             y,
-            city?.data[x][y]?.building
+            city?.tiles[x][y]?.building
           );
           if (terrainMesh) {
             scene.add(terrainMesh);
@@ -84,7 +84,7 @@ export function createScene(citySize: number) {
   function update(city: City) {
     for (let x = 0; x < city.size; x++) {
       for (let y = 0; y < city.size; y++) {
-        const tile = city.data[x][y];
+        const tile = city.tiles[x][y];
         const existingBuildingMesh = buildings[x][y];
 
         // If the player removes a building, remove it from the scene
@@ -97,7 +97,7 @@ export function createScene(citySize: number) {
         if (tile.building && tile.building.updated) {
           scene.remove(existingBuildingMesh);
           buildings[x][y] = createAssetInstance(
-            tile.building.id,
+            tile.building.type,
             x,
             y,
             tile.building
