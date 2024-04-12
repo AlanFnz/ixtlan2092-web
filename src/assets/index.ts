@@ -21,6 +21,8 @@ const assets: AssetCreators = {
     const mesh = new THREE.Mesh(geometry, material);
     mesh.userData = { id: ASSET_ID.GRASS, x, y };
     mesh.position.set(x, -0.5, y);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
     return mesh;
   },
   [ASSET_ID.RESIDENTIAL]: (
@@ -63,6 +65,8 @@ const assets: AssetCreators = {
     mesh.userData = { id: ASSET_ID.ROAD, x, y };
     mesh.scale.set(1, 0.1, 1);
     mesh.position.set(x, 0.05, y);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
     return mesh;
   },
 };

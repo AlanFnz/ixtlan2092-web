@@ -18,6 +18,7 @@ export function createScene(citySize: number) {
   // Renderer config
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
+  renderer.setClearColor(0x000000, 0);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   gameWindow.appendChild(renderer.domElement);
@@ -109,8 +110,8 @@ export function createScene(citySize: number) {
   }
 
   function setupLights() {
-    const sun = new THREE.DirectionalLight(0xffffff, 1);
-    sun.position.set(20, 20, 20);
+    const sun = new THREE.DirectionalLight(0xffffff, 4);
+    sun.position.set(20, 10, 20);
     sun.castShadow = true;
     sun.shadow.camera.left = -10;
     sun.shadow.camera.right = 10;
@@ -121,7 +122,7 @@ export function createScene(citySize: number) {
     sun.shadow.camera.near = 0.5;
     sun.shadow.camera.far = 50;
     scene.add(sun);
-    scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+    scene.add(new THREE.AmbientLight(0xffffff, 1));
   }
 
   // Render and interaction handlers
