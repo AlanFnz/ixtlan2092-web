@@ -106,7 +106,7 @@ export function createCamera(
     const deltaX = event.clientX - prevMouseX;
     const deltaY = event.clientY - prevMouseY;
 
-    if (isLeftMouseDown) {
+    if (isRightMouseDown) {
       if (event.ctrlKey) {
         handlePanning(deltaY, deltaX);
       } else {
@@ -125,23 +125,14 @@ export function createCamera(
       handlePanning(deltaY, deltaX);
     }
 
-    // Zoom
-    if (isRightMouseDown) {
-      cameraRadius += deltaY * ZOOM_SENSITIVITY;
-      cameraRadius = Math.min(
-        MAX_CAMERA_RADIUS,
-        Math.max(MIN_CAMERA_RADIUS, cameraRadius)
-      );
-      updateCameraPosition();
-    }
-
     prevMouseX = event.clientX;
     prevMouseY = event.clientY;
   }
-
+  
   function onMouseWheel(event: WheelEvent): void {
     event.preventDefault();
-
+    
+    // Zoom
     const zoomAmount = event.deltaY * ZOOM_SENSITIVITY;
 
     cameraRadius += zoomAmount;
