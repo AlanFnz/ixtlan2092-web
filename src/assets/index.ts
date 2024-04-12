@@ -15,6 +15,15 @@ interface AssetCreators {
 
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 
+export const loader = new THREE.TextureLoader();
+export function loadTexture(url: string) {
+  const tex = loader.load(url)
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(1, 1);
+  return tex;
+}
+
 const assets: AssetCreators = {
   [ASSET_ID.GRASS]: (x: number, y: number) => {
     const material = new THREE.MeshLambertMaterial({ color: 0x00aa00 });
