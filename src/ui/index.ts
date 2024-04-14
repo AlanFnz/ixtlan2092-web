@@ -4,6 +4,8 @@ import { CustomWindow } from '../types.js';
 declare let window: CustomWindow;
 export const BULLDOZE_ID = 'bulldoze';
 export const BULLDOZE_UI_TEXT = 'BULLDOZE';
+export const PAUSE_BUTTON_ID = 'button-pause';
+export const PAUSE_UI_TEXT = 'PAUSE';
 
 export function createToolbarButtons() {
   const toolbar = document.getElementById('ui-toolbar');
@@ -33,5 +35,13 @@ export function createToolbarButtons() {
 
     toolbar.appendChild(button);
   });
+
+  // Create pause button
+  const pauseButton = document.createElement('button');
+  pauseButton.id = PAUSE_BUTTON_ID;
+  pauseButton.className = 'ui-button';
+  pauseButton.textContent = PAUSE_UI_TEXT;
+  pauseButton.onclick = () => window.game.togglePause(); // Directly toggle pause without event argument
+  toolbar.appendChild(pauseButton);
 }
 
