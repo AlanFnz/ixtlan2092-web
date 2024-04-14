@@ -24,17 +24,17 @@ export function createScene(citySize: number) {
   gameWindow.appendChild(renderer.domElement);
 
   // Create camera
-  const camera = createCameraManager(gameWindow, renderer, citySize);
+  const cameraManager = createCameraManager(gameWindow, renderer, citySize);
 
-  if (!camera) {
+  if (!cameraManager) {
     console.error('Failed to create camera!');
     throw new Error('Failed to create camera or camera not found');
   }
 
   // Handle window resizing
   function onWindowResize() {
-    if (!gameWindow || !camera) return;
-    camera.onWindowResize();
+    if (!gameWindow || !cameraManager) return;
+    cameraManager.onWindowResize();
   }
 
   // Init scene
@@ -127,7 +127,7 @@ export function createScene(citySize: number) {
 
   // Render and interaction handlers
   function draw() {
-    renderer.render(scene, camera.camera);
+    renderer.render(scene, cameraManager.camera);
   }
 
   function start() {
@@ -141,12 +141,12 @@ export function createScene(citySize: number) {
   }
 
   function onMouseDown(event: MouseEvent) {
-    camera.onMouseDown(event);
+    cameraManager.onMouseDown(event);
 
     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
     mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
-    raycaster.setFromCamera(mouse, camera.camera);
+    raycaster.setFromCamera(mouse, cameraManager.camera);
 
     let intersections = raycaster.intersectObjects(scene.children, false);
 
@@ -161,27 +161,27 @@ export function createScene(citySize: number) {
   }
 
   function onMouseUp(event: MouseEvent) {
-    camera.onMouseUp(event);
+    cameraManager.onMouseUp(event);
   }
 
   function onMouseMove(event: MouseEvent) {
-    camera.onMouseMove(event);
+    cameraManager.onMouseMove(event);
   }
 
   function onWheel(event: WheelEvent) {
-    camera.onMouseWheel(event);
+    cameraManager.onMouseWheel(event);
   }
 
   function onTouchStart(event: TouchEvent) {
-    camera.onTouchStart(event);
+    cameraManager.onTouchStart(event);
   }
 
   function onTouchMove(event: TouchEvent) {
-    camera.onTouchMove(event);
+    cameraManager.onTouchMove(event);
   }
 
   function onTouchEnd(event: TouchEvent) {
-    camera.onTouchEnd(event);
+    cameraManager.onTouchEnd(event);
   }
 
   // Add listeners
@@ -198,6 +198,7 @@ export function createScene(citySize: number) {
     start,
     stop,
     update,
+    cameraManager,
     setOnObjectSelected(callback: any) {
       onObjectSelected = callback;
     },
