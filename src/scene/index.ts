@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { createCamera } from '../camera';
+import { createCameraManager } from '../camera';
 import { City } from '../city/constants';
 import { createAssetInstance } from '../assets';
 
@@ -24,7 +24,7 @@ export function createScene(citySize: number) {
   gameWindow.appendChild(renderer.domElement);
 
   // Create camera
-  const camera = createCamera(gameWindow, renderer, citySize);
+  const camera = createCameraManager(gameWindow, renderer, citySize);
 
   if (!camera) {
     console.error('Failed to create camera!');

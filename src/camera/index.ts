@@ -7,16 +7,17 @@ import {
   MIN_CAMERA_RADIUS,
   MAX_CAMERA_RADIUS,
   Y_AXIS,
-  ROTATION_SENSITIVITY,
+  AZIMUTH_SENSITIVITY,
   PAN_SENSITIVITY,
   ZOOM_SENSITIVITY,
   MIN_CAMERA_ELEVATION,
   MAX_CAMERA_ELEVATION,
   INIT_CAMERA_ELEVATION,
   INIT_CAMERA_AZIMUTH,
+  ELEVATION_SENSITIVITY,
 } from './constants';
 
-export function createCamera(
+export function createCameraManager(
   gameWindow: HTMLElement,
   renderer: THREE.WebGLRenderer,
   citySize: number
@@ -111,8 +112,8 @@ export function createCamera(
         handlePanning(deltaY, deltaX);
       } else {
         // Rotation
-        cameraAzimuth += -(deltaX * ROTATION_SENSITIVITY);
-        cameraElevation += -(deltaY * ROTATION_SENSITIVITY);
+        cameraAzimuth += -(deltaX * AZIMUTH_SENSITIVITY);
+        cameraElevation += -(deltaY * ELEVATION_SENSITIVITY);
         cameraElevation = Math.min(
           MAX_CAMERA_ELEVATION,
           Math.max(MIN_CAMERA_ELEVATION, cameraElevation)

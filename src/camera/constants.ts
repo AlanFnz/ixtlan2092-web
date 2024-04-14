@@ -13,7 +13,8 @@ export const MIN_CAMERA_ELEVATION = 10;
 export const MAX_CAMERA_ELEVATION = 90;
 export const INIT_CAMERA_AZIMUTH = 135;
 
-export const ROTATION_SENSITIVITY = 0.5;
+export const AZIMUTH_SENSITIVITY = 0.2;
+export const ELEVATION_SENSITIVITY = 0.02;
 export const ZOOM_SENSITIVITY = 0.02;
 export const PAN_SENSITIVITY = -0.03;
 
