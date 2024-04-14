@@ -8,20 +8,30 @@ export const BULLDOZE_UI_TEXT = 'BULLDOZE';
 export function createToolbarButtons() {
   const toolbar = document.getElementById('ui-toolbar');
 
+  if (!toolbar) {
+    console.error('Toolbar element not found!');
+    return;
+  }
+
+  // Create bulldoze button
   const bulldozeButton = document.createElement('button');
   bulldozeButton.id = 'button-bulldoze';
   bulldozeButton.className = 'ui-button';
   bulldozeButton.textContent = BULLDOZE_UI_TEXT;
+  bulldozeButton.dataset.type = BULLDOZE_ID; // Set data-type attribute for bulldoze
   bulldozeButton.onclick = (event) => window.game.onToolSelected(event);
-  toolbar?.appendChild(bulldozeButton);
+  toolbar.appendChild(bulldozeButton);
 
-  Object.entries(BUILDING_ID).forEach(([key]) => {
+  // Create buttons for each building type using BUILDING_ID
+  Object.entries(BUILDING_ID).forEach(([key, value]) => {
     const button = document.createElement('button');
+    button.id = `button-${value}`; // Set id based on the building type
     button.className = 'ui-button';
-    button.textContent = key;
+    button.textContent = key.charAt(0) + key.slice(1).toLowerCase(); // Capitalize the first letter
+    button.dataset.type = value; // Set data-type attribute for identifying the tool
     button.onclick = (event) => window.game.onToolSelected(event);
 
-    toolbar?.appendChild(button);
+    toolbar.appendChild(button);
   });
 }
 
