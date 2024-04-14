@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { createCameraManager } from '../camera';
 import { City } from '../city/constants';
 import { createAssetInstance } from '../assets';
+import { Building } from '../buildings/constants';
 
 export function createScene(citySize: number) {
   // Initial scene setup
@@ -13,7 +14,6 @@ export function createScene(citySize: number) {
 
   // Create scene
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x7777777);
 
   // Renderer config
   const renderer = new THREE.WebGLRenderer();
@@ -40,8 +40,8 @@ export function createScene(citySize: number) {
   // Init scene
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
-  let selectedObject: any;
-
+  let activeObject: any = undefined;
+  let hoverObject: any = undefined;
   let terrain: any[] = [];
   let buildings: any[] = [];
 
@@ -125,24 +125,8 @@ export function createScene(citySize: number) {
     scene.add(new THREE.AmbientLight(0xffffff, 1));
   }
 
-  // Render and interaction handlers
-  function draw() {
-    renderer.render(scene, cameraManager.camera);
-  }
-
-  function start() {
-    window.addEventListener('resize', onWindowResize, false);
-    renderer.setAnimationLoop(draw);
-  }
-
-  function stop() {
-    window.removeEventListener('resize', onWindowResize, false);
-    renderer.setAnimationLoop(null);
-  }
-
-  function onMouseDown(event: MouseEvent) {
-    cameraManager.onMouseDown(event);
-
+  function getSelectedObject(event: MouseEvent) {
+    // Compute normalized mouse coordinates
     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
     mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
@@ -151,54 +135,81 @@ export function createScene(citySize: number) {
     let intersections = raycaster.intersectObjects(scene.children, false);
 
     if (intersections.length > 0) {
-      if (selectedObject) selectedObject.material?.emissive?.setHex(0);
-      selectedObject = intersections[0]?.object;
-      selectedObject?.material?.emissive?.setHex(0x555555);
-      if (onObjectSelected) {
-        onObjectSelected(selectedObject);
-      }
+      return intersections[0].object;
+    } else {
+      return null;
     }
   }
 
-  function onMouseUp(event: MouseEvent) {
-    cameraManager.onMouseUp(event);
+  function setHighlightedObject(object: THREE.Object3D | null) {
+    // Unhighlight the previously hovered object (if it isn't currently selected)
+    if (hoverObject && hoverObject !== activeObject) {
+      setObjectEmission(hoverObject, 0x000000);
+    }
+
+    hoverObject = object;
+
+    if (hoverObject) {
+      // Highlight the new hovered object (if it isn't currently selected))
+      setObjectEmission(hoverObject, 0x555555);
+    }
   }
 
-  function onMouseMove(event: MouseEvent) {
-    cameraManager.onMouseMove(event);
+  function setActiveObject(object: Building) {
+    // Clear highlight on previously active object
+    setObjectEmission(activeObject, 0x000000);
+    activeObject = object;
+    // Highlight new active object
+    setObjectEmission(activeObject, 0xaaaa55);
   }
 
-  function onWheel(event: WheelEvent) {
-    cameraManager.onMouseWheel(event);
+  function setObjectEmission(object: THREE.Object3D, color: number) {
+    if (!object) return;
+
+    // Ensure the object is a Mesh and has a material property before attempting to modify the emissive color.
+    if (object instanceof THREE.Mesh) {
+      const materials = Array.isArray(object.material)
+        ? object.material
+        : [object.material];
+
+      materials.forEach((material) => {
+        if (
+          material instanceof THREE.MeshStandardMaterial ||
+          material instanceof THREE.MeshPhongMaterial
+        ) {
+          material.emissive.setHex(color);
+        }
+      });
+    }
   }
 
-  function onTouchStart(event: TouchEvent) {
-    cameraManager.onTouchStart(event);
+  // Render and interaction handlers
+  function draw() {
+    renderer.render(scene, cameraManager.camera);
   }
 
-  function onTouchMove(event: TouchEvent) {
-    cameraManager.onTouchMove(event);
+  function start() {
+    renderer.setAnimationLoop(draw);
   }
 
-  function onTouchEnd(event: TouchEvent) {
-    cameraManager.onTouchEnd(event);
+  function stop() {
+    window.removeEventListener('resize', onWindowResize, false);
+    renderer.setAnimationLoop(null);
   }
-
-  // Add listeners
-  document.addEventListener('mousedown', onMouseDown, false);
-  document.addEventListener('mouseup', onMouseUp, false);
-  document.addEventListener('mousemove', (event) => onMouseMove(event), false);
-  document.addEventListener('wheel', onWheel, { passive: false });
-  document.addEventListener('touchstart', onTouchStart, { passive: false });
-  document.addEventListener('touchmove', onTouchMove, { passive: false });
-  document.addEventListener('touchend', onTouchEnd);
 
   return {
+    // Props
+    cameraManager,
+
+    // Methods
     initScene,
     start,
     stop,
     update,
-    cameraManager,
+    onWindowResize,
+    setActiveObject,
+    getSelectedObject,
+    setHighlightedObject,
     setOnObjectSelected(callback: any) {
       onObjectSelected = callback;
     },
