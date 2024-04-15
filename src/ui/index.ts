@@ -29,12 +29,26 @@ export function createToolbarButtons() {
     const button = document.createElement('button');
     button.id = `button-${value}`; // Set id based on the building type
     button.className = 'ui-button';
-    button.textContent = key.charAt(0) + key.slice(1).toLowerCase(); // Capitalize the first letter
+    button.textContent = key;
     button.dataset.type = value; // Set data-type attribute for identifying the tool
     button.onclick = (event) => window.game.onToolSelected(event);
 
     toolbar.appendChild(button);
   });
+
+  // Create info panel
+  const infoPanel = document.createElement('div');
+  infoPanel.id = 'info-panel';
+  infoPanel.className = 'ui-container';
+  toolbar.appendChild(infoPanel);
+
+  const infoTitle = document.createElement('h1');
+  infoTitle.textContent = 'INFO';
+  infoPanel.appendChild(infoTitle);
+
+  const selectedObjectInfo = document.createElement('div');
+  selectedObjectInfo.id = 'selected-object-info';
+  infoPanel.appendChild(selectedObjectInfo);
 
   // Create pause button
   const pauseButton = document.createElement('button');
