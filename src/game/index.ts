@@ -81,14 +81,10 @@ export function createGame(): Game {
 
   function onToolSelected(event: MouseEvent) {
     if (event.target instanceof HTMLElement) {
-      if (selectedControl) {
-        selectedControl.classList.remove('selected');
-      }
+      if (selectedControl) selectedControl.classList.remove('selected');
       selectedControl = event.target;
       selectedControl?.classList.add('selected');
-
       activeToolId = selectedControl?.getAttribute('data-type');
-      console.log(activeToolId);
     }
   }
 
@@ -120,19 +116,15 @@ export function createGame(): Game {
   }
 
   function bulldoze(tile: Tile) {
-    console.log(activeToolId);
     tile.building = undefined;
     scene.update(city);
-    console.log(tile);
   }
 
   function placeBuilding(tile: Tile) {
-    console.log(activeToolId);
     if (activeToolId) {
       tile.building = buildingFactory[activeToolId]();
       scene.update(city);
     }
-    console.log(tile);
   }
 
   setInterval(() => {
