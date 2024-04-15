@@ -6,14 +6,14 @@ import { BULLDOZE_ID, createToolbarButtons } from '../ui';
 import { Tile } from '../city/constants';
 
 export function createGame(): Game {
-  let selectedControl: HTMLElement | null =
-    document.getElementById('button-select');
+  createToolbarButtons();
+  const scene = createScene(CITY_SIZE);
+  const city = createCity(CITY_SIZE);
+
+  let selectedControl: HTMLElement | null = document.getElementById('button-select');
   let activeToolId: string | null = 'select';
   let isPaused = false;
   let lastMove: any = new Date(); // Last time mouse was moved
-  const scene = createScene(CITY_SIZE);
-  const city = createCity(CITY_SIZE);
-  createToolbarButtons();
 
   function update() {
     if (isPaused) return;
