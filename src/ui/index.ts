@@ -2,6 +2,8 @@ import { BUILDING_ID } from '../buildings/constants';
 import { CustomWindow } from '../types.js';
 
 declare let window: CustomWindow;
+export const SELECT_ID = 'select';
+export const SELECT_UI_TEXT = 'SELECT';
 export const BULLDOZE_ID = 'bulldoze';
 export const BULLDOZE_UI_TEXT = 'BULLDOZE';
 export const PAUSE_BUTTON_ID = 'button-pause';
@@ -15,12 +17,21 @@ export function createToolbarButtons() {
     return;
   }
 
-  // Create bulldoze button
+  // Select button
+  const selectButton = document.createElement('button');
+  selectButton.id = `button-${SELECT_ID}`;
+  selectButton.className = 'ui-button selected';
+  selectButton.textContent = SELECT_UI_TEXT;
+  selectButton.dataset.type = SELECT_ID;
+  selectButton.onclick = (event) => window.game.onToolSelected(event);
+  toolbar.appendChild(selectButton);
+
+  // Bulldoze button
   const bulldozeButton = document.createElement('button');
-  bulldozeButton.id = 'button-bulldoze';
+  bulldozeButton.id = `button-${BULLDOZE_ID}`;
   bulldozeButton.className = 'ui-button';
   bulldozeButton.textContent = BULLDOZE_UI_TEXT;
-  bulldozeButton.dataset.type = BULLDOZE_ID; // Set data-type attribute for bulldoze
+  bulldozeButton.dataset.type = BULLDOZE_ID;
   bulldozeButton.onclick = (event) => window.game.onToolSelected(event);
   toolbar.appendChild(bulldozeButton);
 
@@ -55,7 +66,7 @@ export function createToolbarButtons() {
   pauseButton.id = PAUSE_BUTTON_ID;
   pauseButton.className = 'ui-button';
   pauseButton.textContent = PAUSE_UI_TEXT;
-  pauseButton.onclick = () => window.game.togglePause(); // Directly toggle pause without event argument
+  pauseButton.onclick = () => window.game.togglePause();
   toolbar.appendChild(pauseButton);
 }
 
