@@ -1,9 +1,16 @@
 import { BUILDING_ID } from '../buildings/constants';
 import { CustomWindow } from '../types.js';
-import { BULLDOZE_ID, BULLDOZE_UI_TEXT, INFO_UI_TEXT, PAUSE_BUTTON_ID, PAUSE_UI_TEXT, SELECT_ID, SELECT_UI_TEXT } from './constants';
+import {
+  BULLDOZE_ID,
+  BULLDOZE_UI_TEXT,
+  INFO_UI_TEXT,
+  PAUSE_BUTTON_ID,
+  PAUSE_UI_TEXT,
+  SELECT_ID,
+  SELECT_UI_TEXT,
+} from './constants';
 
 declare let window: CustomWindow;
-
 
 export function createToolbarButtons() {
   const toolbar = document.getElementById('ui-toolbar');
