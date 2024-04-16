@@ -2,15 +2,17 @@ import buildingFactory from '../buildings';
 import { createScene } from '../scene';
 import { createCity } from '../city';
 import { CITY_SIZE, Game } from './constants';
-import { BULLDOZE_ID, createToolbarButtons } from '../ui';
+import { createToolbarButtons } from '../ui';
 import { Tile } from '../city/constants';
+import { BULLDOZE_ID } from '../ui/constants';
 
 export function createGame(): Game {
   createToolbarButtons();
   const scene = createScene(CITY_SIZE);
   const city = createCity(CITY_SIZE);
 
-  let selectedControl: HTMLElement | null = document.getElementById('button-select');
+  let selectedControl: HTMLElement | null =
+    document.getElementById('button-select');
   let activeToolId: string | null = 'select';
   let isPaused = false;
   let lastMove: any = new Date(); // Last time mouse was moved

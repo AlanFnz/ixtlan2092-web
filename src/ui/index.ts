@@ -1,13 +1,9 @@
 import { BUILDING_ID } from '../buildings/constants';
 import { CustomWindow } from '../types.js';
+import { BULLDOZE_ID, BULLDOZE_UI_TEXT, INFO_UI_TEXT, PAUSE_BUTTON_ID, PAUSE_UI_TEXT, SELECT_ID, SELECT_UI_TEXT } from './constants';
 
 declare let window: CustomWindow;
-export const SELECT_ID = 'select';
-export const SELECT_UI_TEXT = 'SELECT';
-export const BULLDOZE_ID = 'bulldoze';
-export const BULLDOZE_UI_TEXT = 'BULLDOZE';
-export const PAUSE_BUTTON_ID = 'button-pause';
-export const PAUSE_UI_TEXT = 'PAUSE';
+
 
 export function createToolbarButtons() {
   const toolbar = document.getElementById('ui-toolbar');
@@ -54,7 +50,7 @@ export function createToolbarButtons() {
   toolbar.appendChild(infoPanel);
 
   const infoTitle = document.createElement('h1');
-  infoTitle.textContent = 'INFO';
+  infoTitle.textContent = INFO_UI_TEXT;
   infoPanel.appendChild(infoTitle);
 
   const selectedObjectInfo = document.createElement('div');
