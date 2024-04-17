@@ -1,9 +1,4 @@
-const BUILDING_ID = {
-  RESIDENTIAL: 'residential',
-  COMMERCIAL: 'commercial',
-  INDUSTRIAL: 'industrial',
-  ROAD: 'road',
-};
+import { BUILDING_ID } from "../buildings/constants";
 
 function isActiveToolIdValid(
   toolId: string

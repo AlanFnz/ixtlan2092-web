@@ -11,10 +11,10 @@ interface BuildingFactory {
 }
 
 const BUILDING_ID = {
-  RESIDENTIAL: 'residential',
-  COMMERCIAL: 'commercial',
-  INDUSTRIAL: 'industrial',
-  ROAD: 'road',
+  RESIDENTIAL: 'RESIDENTIAL',
+  COMMERCIAL: 'COMMERCIAL',
+  INDUSTRIAL: 'INDUSTRIAL',
+  ROAD: 'ROAD',
 };
 
 export { Building, BuildingFactory, BUILDING_ID };
