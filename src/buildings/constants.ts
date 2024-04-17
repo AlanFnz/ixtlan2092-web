@@ -6,10 +6,6 @@ interface Building {
   update: (this: Building) => void;
 }
 
-interface BuildingFactory {
-  [key: string]: () => Building;
-}
-
 const BUILDING_ID = {
   RESIDENTIAL: 'RESIDENTIAL',
   COMMERCIAL: 'COMMERCIAL',
@@ -17,5 +13,5 @@ const BUILDING_ID = {
   ROAD: 'ROAD',
 };
 
-export { Building, BuildingFactory, BUILDING_ID };
+export { Building, BUILDING_ID };
 
