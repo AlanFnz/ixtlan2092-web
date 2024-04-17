@@ -1,5 +1,5 @@
-import { ASSET_ID } from '../assets';
 import { City, Tile } from './constants';
+import { createTile } from './tile';
 
 export function createCity(size: number): City {
   const tiles: Tile[][] = [];
@@ -22,15 +22,6 @@ export function createCity(size: number): City {
         tiles[x][y].building?.update();
       }
     }
-  }
-
-  function createTile(x: number, y: number): Tile {
-    return {
-      x,
-      y,
-      terrainId: ASSET_ID.GROUND,
-      building: undefined,
-    };
   }
 
   initData();
