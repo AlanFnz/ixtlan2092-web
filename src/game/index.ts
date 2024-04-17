@@ -4,7 +4,7 @@ import { CITY_SIZE, Game } from './constants';
 import { createToolbarButtons } from '../ui';
 import { Tile } from '../city/constants';
 import { BULLDOZE_ID } from '../ui/constants';
-import { createBuilding, isValidBuildingId } from '../buildings';
+import { createBuilding, isValidBuildingId } from '../city/building';
 
 export function createGame(): Game {
   createToolbarButtons();

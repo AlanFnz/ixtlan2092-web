@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { BUILDING_ID, Building } from '../buildings/constants';
+import { BUILDING_ID, Building } from '../city/building/constants';
 import {
   getSideMaterial,
   getTexture,

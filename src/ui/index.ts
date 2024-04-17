@@ -1,4 +1,4 @@
-import { BUILDING_ID } from '../buildings/constants';
+import { BUILDING_ID } from '../city/building/constants';
 import { CustomWindow } from '../types.js';
 import {
   BULLDOZE_ID,

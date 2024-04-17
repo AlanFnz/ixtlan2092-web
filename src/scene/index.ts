@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { createCameraManager } from '../camera';
 import { City } from '../city/constants';
 import { createAssetInstance } from '../assets';
-import { Building } from '../buildings/constants';
+import { Building } from '../city/building/constants';
 
 export function createScene(citySize: number) {
   // Initial scene setup

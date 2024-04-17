@@ -1,4 +1,4 @@
-import { Building } from "../buildings/constants";
+import { Building } from "./building/constants";
 
 interface Tile {
   x: number;
