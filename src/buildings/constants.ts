@@ -3,7 +3,7 @@ interface Building {
   style: number;
   height?: number;
   updated: boolean;
-  update: () => void;
+  update: (this: Building) => void;
 }
 
 interface BuildingFactory {

@@ -1,10 +1,10 @@
-import buildingFactory from '../buildings';
 import { createScene } from '../scene';
 import { createCity } from '../city';
 import { CITY_SIZE, Game } from './constants';
 import { createToolbarButtons } from '../ui';
 import { Tile } from '../city/constants';
 import { BULLDOZE_ID } from '../ui/constants';
+import { createBuilding, isValidBuildingId } from '../buildings';
 
 export function createGame(): Game {
   createToolbarButtons();
@@ -123,8 +123,8 @@ export function createGame(): Game {
   }
 
   function placeBuilding(tile: Tile) {
-    if (activeToolId) {
-      tile.building = buildingFactory[activeToolId]();
+    if (activeToolId && isValidBuildingId(activeToolId)) {
+      tile.building = createBuilding(activeToolId);
       scene.update(city);
     }
   }
@@ -143,9 +143,12 @@ export function createGame(): Game {
       if (tile) {
         if (activeToolId === BULLDOZE_ID && tile.building && tile.building.id) {
           tile.building = undefined;
-        } else if (!tile.building && activeToolId) {
-          tile.building =
-            buildingFactory[activeToolId] && buildingFactory[activeToolId]();
+        } else if (
+          !tile.building &&
+          activeToolId &&
+          isValidBuildingId(activeToolId)
+        ) {
+          tile.building = createBuilding(activeToolId);
         }
       }
 
