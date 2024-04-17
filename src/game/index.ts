@@ -97,7 +97,9 @@ export function createGame(): Game {
     }
 
     const { x, y } = object.userData;
-    const tile = city.tiles[x][y];
+    const tile = city.tiles && city.tiles[x] && city.tiles[x][y];
+
+    if (!tile) return;
 
     // If bulldoze is active, delete the building
     if (activeToolId === 'select') {
@@ -118,12 +120,13 @@ export function createGame(): Game {
   }
 
   function bulldoze(tile: Tile) {
+    if (!tile) return;
     tile.building = undefined;
     scene.update(city);
   }
 
   function placeBuilding(tile: Tile) {
-    if (activeToolId && isValidBuildingId(activeToolId)) {
+    if (tile && activeToolId && isValidBuildingId(activeToolId)) {
       tile.building = createBuilding(activeToolId);
       scene.update(city);
     }

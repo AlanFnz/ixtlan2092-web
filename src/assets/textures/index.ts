@@ -1,39 +1,39 @@
 import * as THREE from 'three';
 import grassTexture from './grass.png';
-import residential1 from './residential1.png';
-import residential2 from './residential2.png';
-import residential3 from './residential3.png';
-import commercial1 from './commercial1.png';
-import commercial2 from './commercial2.png';
-import commercial3 from './commercial3.png';
-import industrial1 from './industrial1.png';
-import industrial2 from './industrial2.png';
-import industrial3 from './industrial3.png';
+import RESIDENTIAL1 from './RESIDENTIAL1.png';
+import RESIDENTIAL2 from './RESIDENTIAL2.png';
+import RESIDENTIAL3 from './RESIDENTIAL3.png';
+import COMMERCIAL1 from './COMMERCIAL1.png';
+import COMMERCIAL2 from './COMMERCIAL2.png';
+import COMMERCIAL3 from './COMMERCIAL3.png';
+import INDUSTRIAL1 from './INDUSTRIAL1.png';
+import INDUSTRIAL2 from './INDUSTRIAL2.png';
+import INDUSTRIAL3 from './INDUSTRIAL3.png';
 
 const loader = new THREE.TextureLoader();
 type TextureKey =
-  | 'grass'
-  | 'residential1'
-  | 'residential2'
-  | 'residential3'
-  | 'commercial1'
-  | 'commercial2'
-  | 'commercial3'
-  | 'industrial1'
-  | 'industrial2'
-  | 'industrial3';
+  | 'GRASS'
+  | 'RESIDENTIAL1'
+  | 'RESIDENTIAL2'
+  | 'RESIDENTIAL3'
+  | 'COMMERCIAL1'
+  | 'COMMERCIAL2'
+  | 'COMMERCIAL3'
+  | 'INDUSTRIAL1'
+  | 'INDUSTRIAL2'
+  | 'INDUSTRIAL3';
 
-const textures: Record<TextureKey, THREE.Texture> = {
-  grass: loadTexture(grassTexture),
-  residential1: loadTexture(residential1),
-  residential2: loadTexture(residential2),
-  residential3: loadTexture(residential3),
-  commercial1: loadTexture(commercial1),
-  commercial2: loadTexture(commercial2),
-  commercial3: loadTexture(commercial3),
-  industrial1: loadTexture(industrial1),
-  industrial2: loadTexture(industrial2),
-  industrial3: loadTexture(industrial3),
+const textures: Record<TextureKey | string, THREE.Texture> = {
+  GRASS: loadTexture(grassTexture),
+  RESIDENTIAL1: loadTexture(RESIDENTIAL1),
+  RESIDENTIAL2: loadTexture(RESIDENTIAL2),
+  RESIDENTIAL3: loadTexture(RESIDENTIAL3),
+  COMMERCIAL1: loadTexture(COMMERCIAL1),
+  COMMERCIAL2: loadTexture(COMMERCIAL2),
+  COMMERCIAL3: loadTexture(COMMERCIAL3),
+  INDUSTRIAL1: loadTexture(INDUSTRIAL1),
+  INDUSTRIAL2: loadTexture(INDUSTRIAL2),
+  INDUSTRIAL3: loadTexture(INDUSTRIAL3),
 };
 
 function getTopMaterial(color: THREE.Color | number | string) {
@@ -56,7 +56,7 @@ function loadTexture(url: string) {
   return tex;
 }
 
-const getTexture = (type: TextureKey) => textures[type];
+const getTexture = (type: TextureKey | string) => textures[type];
 
 export {
   TextureKey,

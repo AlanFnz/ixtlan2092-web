@@ -8,8 +8,8 @@ import {
 } from './textures';
 
 const ASSET_ID = {
-  GRASS: 'grass',
-  GROUND: 'ground',
+  GRASS: 'GRASS',
+  GROUND: 'GROUND',
   RESIDENTIAL: BUILDING_ID.RESIDENTIAL,
   COMMERCIAL: BUILDING_ID.COMMERCIAL,
   INDUSTRIAL: BUILDING_ID.INDUSTRIAL,
@@ -25,10 +25,10 @@ const cube = new THREE.BoxGeometry(1, 1, 1);
 const assets: AssetCreators = {
   [ASSET_ID.GROUND]: (x: number, y: number) => {
     const material = new THREE.MeshLambertMaterial({
-      map: getTexture('grass'),
+      map: getTexture(ASSET_ID.GRASS),
     });
     const mesh = new THREE.Mesh(cube, material);
-    mesh.userData = { id: 'grass', x, y };
+    mesh.userData = { id: ASSET_ID.GRASS, x, y };
     mesh.position.set(x, -0.5, y);
     mesh.receiveShadow = true;
     return mesh;
@@ -42,7 +42,7 @@ const assets: AssetCreators = {
   [ASSET_ID.ROAD]: (x: number, y: number) => {
     const material = new THREE.MeshLambertMaterial({ color: 0x222222 });
     const mesh = new THREE.Mesh(cube, material);
-    mesh.userData = { id: 'road', x, y };
+    mesh.userData = { id: BUILDING_ID.ROAD, x, y };
     mesh.scale.set(1, 0.02, 1);
     mesh.position.set(x, 0.01, y);
     mesh.receiveShadow = true;
