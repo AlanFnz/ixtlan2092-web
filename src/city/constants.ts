@@ -1,5 +1,6 @@
-import { ActiveToolId } from "../game/constants";
-import { Building } from "./building/constants";
+import { ActiveToolId } from '../game/constants';
+import { Building } from './building/constants';
+import { Citizen } from './citizen/constants';
 
 interface Tile {
   x: number;
@@ -13,6 +14,7 @@ interface Tile {
 interface City {
   size: number;
   tiles: Tile[][];
+  citizens: Citizen[];
   update: () => void;
 }
 

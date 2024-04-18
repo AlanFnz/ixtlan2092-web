@@ -1,12 +1,13 @@
+import { Building } from '../building/constants';
 import { City } from '../constants';
 import { Citizen } from './constants';
 
-function createCitizen(): Citizen {
+function createCitizen(residence: Building): Citizen {
   return {
     // props
     name: 'James',
     surname: 'Page',
-    residence: null,
+    residence,
 
     // functions
     update(city: City) {

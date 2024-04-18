@@ -1,9 +1,14 @@
+import { Citizen } from '../citizen/constants';
+import { City } from '../constants';
+
 interface Building {
   type: string;
   style: number;
   height?: number;
   updated: boolean;
-  update: (this: Building) => void;
+  citizens?: Citizen[];
+  maxCitizens?: number;
+  update: (city: City) => void;
 }
 
 const BUILDING_ID = {
