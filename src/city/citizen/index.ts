@@ -2,12 +2,12 @@ import { Building } from '../building/constants';
 import { City } from '../constants';
 import { Citizen } from './constants';
 
-function createCitizen(residence: Building): Citizen {
+function createCitizen(residenceId: string): Citizen {
   return {
     // props
     name: 'James',
     surname: 'Page',
-    residence,
+    residenceId,
 
     // functions
     update(city: City) {

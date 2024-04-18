@@ -4,7 +4,7 @@ import { City } from '../constants';
 interface Citizen {
   name: string;
   surname: string;
-  residence: Building | null;
+  residenceId: string | null;
   update: (city: City) => void;
 }
 

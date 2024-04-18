@@ -21,7 +21,7 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
 
       update(city: City) {
         if (this.citizens.length < this.maxCitizens) {
-          const citizen = createCitizen(this);
+          const citizen = createCitizen(this.id);
           this.citizens.push(citizen);
           city.citizens.push(citizen);
           console.log(citizen);
