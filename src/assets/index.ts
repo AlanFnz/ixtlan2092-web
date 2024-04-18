@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { BUILDING_ID, Building } from '../city/building/constants';
+import { BUILDING_TYPE, Building } from '../city/building/constants';
 import {
   getSideMaterial,
   getTexture,
@@ -10,10 +10,10 @@ import {
 const ASSET_ID = {
   GRASS: 'GRASS',
   GROUND: 'GROUND',
-  RESIDENTIAL: BUILDING_ID.RESIDENTIAL,
-  COMMERCIAL: BUILDING_ID.COMMERCIAL,
-  INDUSTRIAL: BUILDING_ID.INDUSTRIAL,
-  ROAD: BUILDING_ID.ROAD,
+  RESIDENTIAL: BUILDING_TYPE.RESIDENTIAL,
+  COMMERCIAL: BUILDING_TYPE.COMMERCIAL,
+  INDUSTRIAL: BUILDING_TYPE.INDUSTRIAL,
+  ROAD: BUILDING_TYPE.ROAD,
 };
 
 interface AssetCreators {
@@ -42,7 +42,7 @@ const assets: AssetCreators = {
   [ASSET_ID.ROAD]: (x: number, y: number) => {
     const material = new THREE.MeshLambertMaterial({ color: 0x222222 });
     const mesh = new THREE.Mesh(cube, material);
-    mesh.userData = { id: BUILDING_ID.ROAD, x, y };
+    mesh.userData = { id: BUILDING_TYPE.ROAD, x, y };
     mesh.scale.set(1, 0.02, 1);
     mesh.position.set(x, 0.01, y);
     mesh.receiveShadow = true;

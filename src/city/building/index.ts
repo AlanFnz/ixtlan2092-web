@@ -1,16 +1,16 @@
 import { createCitizen } from '../citizen';
 import { Citizen } from '../citizen/constants';
 import { City } from '../constants';
-import { BUILDING_ID, Building } from './constants';
+import { BUILDING_TYPE, Building } from './constants';
 
-function isValidBuildingId(key: any): key is keyof typeof BUILDING_ID {
-  return key in BUILDING_ID;
+function isValidBuildingId(key: any): key is keyof typeof BUILDING_TYPE {
+  return key in BUILDING_TYPE;
 }
 
-function createBuilding(buildingType: keyof typeof BUILDING_ID): Building {
+function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
   const buildings = {
-    [BUILDING_ID.RESIDENTIAL]: {
-      type: BUILDING_ID.RESIDENTIAL,
+    [BUILDING_TYPE.RESIDENTIAL]: {
+      type: BUILDING_TYPE.RESIDENTIAL,
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,
       updated: true,
@@ -23,7 +23,7 @@ function createBuilding(buildingType: keyof typeof BUILDING_ID): Building {
           const citizen = createCitizen(this);
           this.citizens.push(citizen);
           city.citizens.push(citizen);
-          console.log(citizen)
+          console.log(citizen);
         }
 
         if (Math.random() < 0.01 && this.height && this.height < 5) {
@@ -32,8 +32,8 @@ function createBuilding(buildingType: keyof typeof BUILDING_ID): Building {
         }
       },
     },
-    [BUILDING_ID.COMMERCIAL]: {
-      type: BUILDING_ID.COMMERCIAL,
+    [BUILDING_TYPE.COMMERCIAL]: {
+      type: BUILDING_TYPE.COMMERCIAL,
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,
       updated: true,
@@ -44,8 +44,8 @@ function createBuilding(buildingType: keyof typeof BUILDING_ID): Building {
         }
       },
     },
-    [BUILDING_ID.INDUSTRIAL]: {
-      type: BUILDING_ID.INDUSTRIAL,
+    [BUILDING_TYPE.INDUSTRIAL]: {
+      type: BUILDING_TYPE.INDUSTRIAL,
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,
       updated: true,
@@ -56,8 +56,8 @@ function createBuilding(buildingType: keyof typeof BUILDING_ID): Building {
         }
       },
     },
-    [BUILDING_ID.ROAD]: {
-      type: BUILDING_ID.ROAD,
+    [BUILDING_TYPE.ROAD]: {
+      type: BUILDING_TYPE.ROAD,
       style: Math.floor(3 * Math.random()) + 1,
       updated: true,
       update: function () {
@@ -66,7 +66,7 @@ function createBuilding(buildingType: keyof typeof BUILDING_ID): Building {
     },
   };
 
-  return buildings[buildingType] || buildings[BUILDING_ID.ROAD];
+  return buildings[buildingType] || buildings[BUILDING_TYPE.ROAD];
 }
 
 export { createBuilding, isValidBuildingId };

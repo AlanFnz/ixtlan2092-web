@@ -11,12 +11,12 @@ interface Building {
   update: (city: City) => void;
 }
 
-const BUILDING_ID = {
+const BUILDING_TYPE = {
   RESIDENTIAL: 'RESIDENTIAL',
   COMMERCIAL: 'COMMERCIAL',
   INDUSTRIAL: 'INDUSTRIAL',
   ROAD: 'ROAD',
 };
 
-export { Building, BUILDING_ID };
+export { Building, BUILDING_TYPE };
 

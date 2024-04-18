@@ -1,9 +1,9 @@
-import { BUILDING_ID } from "../city/building/constants";
+import { BUILDING_TYPE } from "../city/building/constants";
 
 function isActiveToolIdValid(
   toolId: string
-): toolId is keyof typeof BUILDING_ID {
-  return Object.values(BUILDING_ID).includes(toolId as any);
+): toolId is keyof typeof BUILDING_TYPE {
+  return Object.values(BUILDING_TYPE).includes(toolId as any);
 }
 
 export { isActiveToolIdValid };

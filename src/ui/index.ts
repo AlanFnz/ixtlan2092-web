@@ -1,4 +1,4 @@
-import { BUILDING_ID } from '../city/building/constants';
+import { BUILDING_TYPE } from '../city/building/constants';
 import { CustomWindow } from '../types.js';
 import {
   BULLDOZE_ID,
@@ -38,8 +38,8 @@ export function createToolbarButtons() {
   bulldozeButton.onclick = (event) => window.game.onToolSelected(event);
   toolbar.appendChild(bulldozeButton);
 
-  // Create buttons for each building type using BUILDING_ID
-  Object.entries(BUILDING_ID).forEach(([key, value]) => {
+  // Create buttons for each building type using BUILDING_TYPE
+  Object.entries(BUILDING_TYPE).forEach(([key, value]) => {
     const button = document.createElement('button');
     button.id = `button-${value}`; // Set id based on the building type
     button.className = 'ui-button';
