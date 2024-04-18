@@ -6,7 +6,7 @@ function createCitizen(residenceId: string): Citizen {
   return {
     // props
     id: crypto.randomUUID(),
-    name: 'James',
+    firstName: 'James',
     surname: 'Page',
     residenceId,
 
