@@ -5,6 +5,7 @@ import { Tile } from '../constants';
 function createTile(x: number, y: number): Tile {
   return {
     // props
+    id: crypto.randomUUID(),
     x,
     y,
     terrainId: ASSET_ID.GROUND,

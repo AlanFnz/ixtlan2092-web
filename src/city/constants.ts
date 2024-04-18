@@ -3,6 +3,7 @@ import { Building } from './building/constants';
 import { Citizen } from './citizen/constants';
 
 interface Tile {
+  id: string;
   x: number;
   y: number;
   terrainId: string | undefined;

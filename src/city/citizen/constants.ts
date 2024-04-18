@@ -1,7 +1,7 @@
-import { Building } from '../building/constants';
 import { City } from '../constants';
 
 interface Citizen {
+  id: string;
   name: string;
   surname: string;
   residenceId: string | null;
