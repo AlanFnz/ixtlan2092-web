@@ -10,6 +10,7 @@ function isValidBuildingId(key: any): key is keyof typeof BUILDING_TYPE {
 function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
   const buildings = {
     [BUILDING_TYPE.RESIDENTIAL]: {
+      id: crypto.randomUUID(),
       type: BUILDING_TYPE.RESIDENTIAL,
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,
@@ -33,6 +34,7 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
       },
     },
     [BUILDING_TYPE.COMMERCIAL]: {
+      id: crypto.randomUUID(),
       type: BUILDING_TYPE.COMMERCIAL,
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,
@@ -45,6 +47,7 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
       },
     },
     [BUILDING_TYPE.INDUSTRIAL]: {
+      id: crypto.randomUUID(),
       type: BUILDING_TYPE.INDUSTRIAL,
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,
@@ -57,6 +60,7 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
       },
     },
     [BUILDING_TYPE.ROAD]: {
+      id: crypto.randomUUID(),
       type: BUILDING_TYPE.ROAD,
       style: Math.floor(3 * Math.random()) + 1,
       updated: true,

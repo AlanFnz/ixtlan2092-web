@@ -2,6 +2,7 @@ import { Citizen } from '../citizen/constants';
 import { City } from '../constants';
 
 interface Building {
+  id: string;
   type: string;
   style: number;
   height?: number;
