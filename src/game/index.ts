@@ -106,30 +106,19 @@ export function createGame(): Game {
       scene.setActiveObject(object);
       updateInfoPanel(tile);
     } else if (activeToolId === 'bulldoze') {
-      bulldoze(tile);
+      tile.removeBuilding();
       // Otherwise, place the building if this tile doesn't have one
-    } else if (!tile.building) {
-      placeBuilding(tile);
+    } else if (!tile.building && activeToolId) {
+      tile.placeBuilding(activeToolId);
     }
+
+    scene.update(city);
   }
 
   function updateInfoPanel(tile: Tile | null) {
     const selectedObjectInfo = document.getElementById('selected-object-info');
     if (selectedObjectInfo)
       selectedObjectInfo.innerHTML = tile ? JSON.stringify(tile, null, 2) : '';
-  }
-
-  function bulldoze(tile: Tile) {
-    if (!tile) return;
-    tile.building = undefined;
-    scene.update(city);
-  }
-
-  function placeBuilding(tile: Tile) {
-    if (tile && activeToolId && isValidBuildingId(activeToolId)) {
-      tile.building = createBuilding(activeToolId);
-      scene.update(city);
-    }
   }
 
   setInterval(() => {

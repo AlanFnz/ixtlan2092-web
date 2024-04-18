@@ -54,7 +54,7 @@ function createAssetInstance(
   type: string,
   x: number,
   y: number,
-  data: Building | undefined
+  data: Building | undefined | null
 ) {
   if (type in assets) {
     return assets[type](x, y, data);
