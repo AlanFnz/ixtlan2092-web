@@ -1,7 +1,7 @@
 import { Building } from '../building/constants';
 import { City } from '../constants';
 import { Citizen } from './constants';
-import { getRandomSurname } from './utils';
+import { getRandomAge, getRandomSurname } from './utils';
 import { getRandomFirstName } from './utils';
 
 function createCitizen(residenceId: string): Citizen {
@@ -10,6 +10,7 @@ function createCitizen(residenceId: string): Citizen {
     id: crypto.randomUUID(),
     firstName: getRandomFirstName(),
     surname: getRandomSurname(),
+    age: getRandomAge(),
     residenceId,
 
     // functions
