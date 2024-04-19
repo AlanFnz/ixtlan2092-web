@@ -1,14 +1,14 @@
 import * as THREE from 'three';
-import grassTexture from './grass.png';
-import RESIDENTIAL1 from './RESIDENTIAL1.png';
-import RESIDENTIAL2 from './RESIDENTIAL2.png';
-import RESIDENTIAL3 from './RESIDENTIAL3.png';
-import COMMERCIAL1 from './COMMERCIAL1.png';
-import COMMERCIAL2 from './COMMERCIAL2.png';
-import COMMERCIAL3 from './COMMERCIAL3.png';
-import INDUSTRIAL1 from './INDUSTRIAL1.png';
-import INDUSTRIAL2 from './INDUSTRIAL2.png';
-import INDUSTRIAL3 from './INDUSTRIAL3.png';
+import GRASS from './grass.png';
+import RESIDENTIAL1 from './residential1.png';
+import RESIDENTIAL2 from './residential2.png';
+import RESIDENTIAL3 from './residential3.png';
+import COMMERCIAL1 from './commercial1.png';
+import COMMERCIAL2 from './commercial2.png';
+import COMMERCIAL3 from './commercial3.png';
+import INDUSTRIAL1 from './industrial1.png';
+import INDUSTRIAL2 from './industrial2.png';
+import INDUSTRIAL3 from './industrial3.png';
 
 const loader = new THREE.TextureLoader();
 type TextureKey =
@@ -23,8 +23,8 @@ type TextureKey =
   | 'INDUSTRIAL2'
   | 'INDUSTRIAL3';
 
-const textures: Record<TextureKey | string, THREE.Texture> = {
-  GRASS: loadTexture(grassTexture),
+const textures: Record<TextureKey, THREE.Texture> = {
+  GRASS: loadTexture(GRASS),
   RESIDENTIAL1: loadTexture(RESIDENTIAL1),
   RESIDENTIAL2: loadTexture(RESIDENTIAL2),
   RESIDENTIAL3: loadTexture(RESIDENTIAL3),
@@ -44,7 +44,7 @@ function getSideMaterial(textureName: TextureKey) {
   return new THREE.MeshLambertMaterial({ map: textures[textureName].clone() });
 }
 
-function isValidTextureKey(key: any): key is TextureKey {
+function isValidTextureKey(key: string): key is TextureKey {
   return key in textures;
 }
 
@@ -56,7 +56,7 @@ function loadTexture(url: string) {
   return tex;
 }
 
-const getTexture = (type: TextureKey | string) => textures[type];
+const getTexture = (type: TextureKey) => textures[type];
 
 export {
   TextureKey,
