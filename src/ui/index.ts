@@ -10,18 +10,18 @@ export function createToolbarButtons() {
     return;
   }
 
-  // Create buttons dynamically for each icon key
   Object.entries(ICON_KEYS).forEach(([key, value]) => {
     const button = document.createElement('button');
     button.id = `button-${value}`;
     button.className = 'ui-button';
-    button.style.backgroundImage = `url(${getIcon(value)})`;
-    button.style.backgroundSize = 'cover';
-    button.style.backgroundPosition = 'center';
-    button.style.backgroundRepeat = 'no-repeat';
-    button.style.height = '50px';
-    button.style.border = 'none';
-    button.style.color = 'transparent';
+
+    const iconImg = document.createElement('img');
+    iconImg.src = getIcon(value);
+    iconImg.alt = key;
+    iconImg.style.width = '100%';
+    iconImg.style.height = '100%';
+
+    button.appendChild(iconImg);
     button.dataset.type = value;
     button.onclick = (event) => window.game.onToolSelected(event);
     toolbar.appendChild(button);
