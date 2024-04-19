@@ -6,19 +6,7 @@ import {
   getTopMaterial,
   isValidTextureKey,
 } from './textures';
-
-const ASSET_ID = {
-  GRASS: 'GRASS',
-  GROUND: 'GROUND',
-  RESIDENTIAL: BUILDING_TYPE.RESIDENTIAL,
-  COMMERCIAL: BUILDING_TYPE.COMMERCIAL,
-  INDUSTRIAL: BUILDING_TYPE.INDUSTRIAL,
-  ROAD: BUILDING_TYPE.ROAD,
-};
-
-interface AssetCreators {
-  [key: string]: (...args: any[]) => THREE.Mesh;
-}
+import { ASSET_ID, AssetCreators } from './constants';
 
 const cube = new THREE.BoxGeometry(1, 1, 1);
 
