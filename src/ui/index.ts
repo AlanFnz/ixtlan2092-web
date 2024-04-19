@@ -14,6 +14,10 @@ export function createToolbarButtons() {
     const button = document.createElement('button');
     button.id = `button-${value}`;
     button.className = 'ui-button';
+    button.style.padding = '8px';
+    
+    if (value === ICON_KEYS.PLAY || value === ICON_KEYS.PAUSE)
+      button.onclick = () => window.game.togglePause();
 
     const iconImg = document.createElement('img');
     iconImg.src = getIcon(value);
@@ -43,13 +47,5 @@ function createInfoPanel(toolbar: HTMLElement) {
   const selectedObjectInfo = document.createElement('div');
   selectedObjectInfo.id = 'selected-object-info';
   infoPanel.appendChild(selectedObjectInfo);
-
-  // Create pause button
-  const pauseButton = document.createElement('button');
-  pauseButton.id = 'button-pause';
-  pauseButton.className = 'ui-button';
-  pauseButton.textContent = 'PAUSE'; // Text or use an icon similarly
-  pauseButton.onclick = () => window.game.togglePause();
-  toolbar.appendChild(pauseButton);
 }
 

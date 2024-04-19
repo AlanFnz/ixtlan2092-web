@@ -82,6 +82,7 @@ export function createGame(): Game {
   }
 
   function onToolSelected(event: MouseEvent) {
+    console.log('event.target', event.target)
     if (event.target instanceof HTMLElement) {
       if (selectedControl) selectedControl.classList.remove('selected');
       selectedControl = event.target;
