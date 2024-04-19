@@ -3,8 +3,9 @@ import { createCity } from '../city';
 import { CITY_SIZE, Game } from './constants';
 import { createToolbarButtons } from '../ui';
 import { Tile } from '../city/constants';
-import { BULLDOZE_BUTTON_ID } from '../ui/constants';
 import { createBuilding, isValidBuildingId } from '../city/building';
+import { TOOLBAR_BUTTONS, ToggleButton } from '../ui/constants';
+import { getIcon } from '../assets/icons';
 
 export function createGame(): Game {
   createToolbarButtons();
@@ -77,12 +78,31 @@ export function createGame(): Game {
 
   function togglePause() {
     isPaused = !isPaused;
-    const pauseButton = document.getElementById('button-pause');
-    if (pauseButton) pauseButton.innerHTML = isPaused ? 'RESUME' : 'PAUSE';
+
+    const toggleButton = document.getElementById(
+      TOOLBAR_BUTTONS.TOGGLE_PAUSE.id
+    ) as HTMLButtonElement;
+
+    if (toggleButton) {
+      const toggleButtonInfo = TOOLBAR_BUTTONS.TOGGLE_PAUSE as ToggleButton;
+      const newState = isPaused
+        ? toggleButtonInfo.uiTextPlay
+        : toggleButtonInfo.uiTextPause;
+      const newIcon = getIcon(
+        isPaused ? toggleButtonInfo.iconPlay : toggleButtonInfo.iconPause
+      );
+
+      toggleButton.innerHTML = `<img src="${newIcon}" alt="${newState}" style="width: 100%; height: 100%; pointer-events: none;">`;
+      toggleButton.dataset.state = newState;
+      if (isPaused) {
+        toggleButton.classList.add('selected');
+      } else {
+        toggleButton.classList.remove('selected');
+      }
+    }
   }
 
   function onToolSelected(event: MouseEvent) {
-    console.log('event.target', event.target)
     if (event.target instanceof HTMLElement) {
       if (selectedControl) selectedControl.classList.remove('selected');
       selectedControl = event.target;
@@ -102,13 +122,14 @@ export function createGame(): Game {
 
     if (!tile) return;
 
-    // If bulldoze is active, delete the building
-    if (activeToolId === 'select') {
+    // Select
+    if (activeToolId === TOOLBAR_BUTTONS.SELECT.id) {
       scene.setActiveObject(object);
       updateInfoPanel(tile);
-    } else if (activeToolId === 'bulldoze') {
+      // If bulldoze, remove building
+    } else if (activeToolId === TOOLBAR_BUTTONS.BULLDOZE.id) {
       tile.removeBuilding();
-      // Otherwise, place the building if this tile doesn't have one
+      // Otherwise, try to place building
     } else if (!tile.building && activeToolId) {
       tile.placeBuilding(activeToolId);
     }
@@ -134,7 +155,11 @@ export function createGame(): Game {
       const tile = x && y && city?.tiles[x][y];
 
       if (tile) {
-        if (activeToolId === BULLDOZE_BUTTON_ID && tile.building && tile.building.id) {
+        if (
+          activeToolId === TOOLBAR_BUTTONS.BULLDOZE.id &&
+          tile.building &&
+          tile.building.id
+        ) {
           tile.building = undefined;
         } else if (
           !tile.building &&
@@ -150,6 +175,7 @@ export function createGame(): Game {
   }
 
   return {
+    isPaused,
     update,
     onToolSelected,
     togglePause,

@@ -1,35 +1,73 @@
-import { ICON_KEYS } from '../assets/icons';
+import { ICON_KEYS, IconKey } from '../assets/icons';
 
-export const SELECT_ID = 'SELECT';
-export const SELECT_ICON = ICON_KEYS.SELECT;
-export const SELECT_UI_TEXT = 'SELECT';
+type BaseButton = {
+  id: string;
+  icon: IconKey;
+  uiText: string;
+};
 
-export const PAUSE_BUTTON_ID = 'PAUSE';
-export const PAUSE_BUTTON_ICON = ICON_KEYS.PAUSE;
-export const PAUSE_UI_TEXT = 'PAUSE';
-export const PLAY_BUTTON_ID = 'PLAY';
-export const PLAY_BUTTON_IICON = ICON_KEYS.PLAY;
-export const PLAY_UI_TEXT = 'PLAY';
+type ToggleButton = BaseButton & {
+  iconPlay: IconKey;
+  iconPause: IconKey;
+  uiTextPlay: string;
+  uiTextPause: string;
+};
 
-export const BULLDOZE_BUTTON_ID = 'BULLDOZE';
-export const BULLDOZE_BUTTON_ICON = ICON_KEYS.PAUSE;
-export const BULLDOZE_UI_TEXT = 'BULLDOZE';
+type ToolbarButtons = {
+  [key: string]: BaseButton | ToggleButton;
+};
 
-export const ROAD_BUTTON_ID = 'ROAD';
-export const ROAD_BUTTON_ICON = ICON_KEYS.ROAD;
-export const ROAD_UI_TEXT = 'ROAD';
+const TOOLBAR_BUTTONS: ToolbarButtons = {
+  SELECT: {
+    id: 'SELECT',
+    icon: ICON_KEYS.SELECT,
+    uiText: 'SELECT',
+  },
 
-export const RESIDENTIAL_BUTTON_ID = 'RESIDENTIAL';
-export const RESIDENTIAL_BUTTON_ICON = ICON_KEYS.HOUSE;
-export const RESIDENTIAL_UI_TEXT = 'RESIDENTIAL';
+  RESIDENTIAL: {
+    id: 'RESIDENTIAL',
+    icon: ICON_KEYS.HOUSE,
+    uiText: 'RESIDENTIAL',
+  },
+  COMMERCIAL: {
+    id: 'COMMERCIAL',
+    icon: ICON_KEYS.OFFICE,
+    uiText: 'COMMERCIAL',
+  },
+  INDUSTRIAL: {
+    id: 'INDUSTRIAL',
+    icon: ICON_KEYS.FACTORY,
+    uiText: 'INDUSTRIAL',
+  },
+  ROAD: {
+    id: 'ROAD',
+    icon: ICON_KEYS.ROAD,
+    uiText: 'ROAD',
+  },
+  BULLDOZE: {
+    id: 'BULLDOZE',
+    icon: ICON_KEYS.BULLDOZER,
+    uiText: 'BULLDOZE',
+  },
 
-export const COMMERCIAL_BUTTON_ID = 'COMMERCIAL';
-export const COMMERCIAL_BUTTON_ICON = ICON_KEYS.OFFICE;
-export const COMMERCIAL_UI_TEXT = 'COMMERCIAL';
+  TOGGLE_PAUSE: {
+    id: 'TOGGLE_PAUSE',
+    icon: ICON_KEYS.PAUSE, // Fallback icon if needed
+    iconPlay: ICON_KEYS.PLAY,
+    iconPause: ICON_KEYS.PAUSE,
+    uiText: 'PAUSE', // Fallback text if needed
+    uiTextPlay: 'PLAY',
+    uiTextPause: 'PAUSE',
+  } as ToggleButton,
+};
 
-export const INDUSTRIAL_BUTTON_ID = 'INDUSTRIAL';
-export const INDUSTRIAL_BUTTON_ICON = ICON_KEYS.FACTORY;
-export const INDUSTRIAL_UI_TEXT = 'INDUSTRIAL';
+const INFO_UI_TEXT = 'INFO';
 
-export const INFO_UI_TEXT = 'INFO';
+export {
+  BaseButton,
+  ToggleButton,
+  ToolbarButtons,
+  TOOLBAR_BUTTONS,
+  INFO_UI_TEXT,
+};
 

@@ -24,7 +24,6 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
           const citizen = createCitizen(this.id);
           this.citizens.push(citizen);
           city.citizens.push(citizen);
-          console.log(citizen);
         }
 
         if (Math.random() < 0.01 && this.height && this.height < 5) {
