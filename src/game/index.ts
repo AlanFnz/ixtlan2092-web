@@ -3,7 +3,7 @@ import { createCity } from '../city';
 import { CITY_SIZE, Game } from './constants';
 import { createToolbarButtons } from '../ui';
 import { Tile } from '../city/constants';
-import { BULLDOZE_ID } from '../ui/constants';
+import { BULLDOZE_BUTTON_ID } from '../ui/constants';
 import { createBuilding, isValidBuildingId } from '../city/building';
 
 export function createGame(): Game {
@@ -133,7 +133,7 @@ export function createGame(): Game {
       const tile = x && y && city?.tiles[x][y];
 
       if (tile) {
-        if (activeToolId === BULLDOZE_ID && tile.building && tile.building.id) {
+        if (activeToolId === BULLDOZE_BUTTON_ID && tile.building && tile.building.id) {
           tile.building = undefined;
         } else if (
           !tile.building &&

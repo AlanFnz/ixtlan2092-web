@@ -1,7 +1,35 @@
-export const SELECT_ID = 'select';
+import { ICON_KEYS } from '../assets/icons';
+
+export const SELECT_ID = 'SELECT';
+export const SELECT_ICON = ICON_KEYS.SELECT;
 export const SELECT_UI_TEXT = 'SELECT';
-export const BULLDOZE_ID = 'bulldoze';
-export const BULLDOZE_UI_TEXT = 'BULLDOZE';
-export const PAUSE_BUTTON_ID = 'button-pause';
+
+export const PAUSE_BUTTON_ID = 'PAUSE';
+export const PAUSE_BUTTON_ICON = ICON_KEYS.PAUSE;
 export const PAUSE_UI_TEXT = 'PAUSE';
+export const PLAY_BUTTON_ID = 'PLAY';
+export const PLAY_BUTTON_IICON = ICON_KEYS.PLAY;
+export const PLAY_UI_TEXT = 'PLAY';
+
+export const BULLDOZE_BUTTON_ID = 'BULLDOZE';
+export const BULLDOZE_BUTTON_ICON = ICON_KEYS.PAUSE;
+export const BULLDOZE_UI_TEXT = 'BULLDOZE';
+
+export const ROAD_BUTTON_ID = 'ROAD';
+export const ROAD_BUTTON_ICON = ICON_KEYS.ROAD;
+export const ROAD_UI_TEXT = 'ROAD';
+
+export const RESIDENTIAL_BUTTON_ID = 'RESIDENTIAL';
+export const RESIDENTIAL_BUTTON_ICON = ICON_KEYS.HOUSE;
+export const RESIDENTIAL_UI_TEXT = 'RESIDENTIAL';
+
+export const COMMERCIAL_BUTTON_ID = 'COMMERCIAL';
+export const COMMERCIAL_BUTTON_ICON = ICON_KEYS.OFFICE;
+export const COMMERCIAL_UI_TEXT = 'COMMERCIAL';
+
+export const INDUSTRIAL_BUTTON_ID = 'INDUSTRIAL';
+export const INDUSTRIAL_BUTTON_ICON = ICON_KEYS.FACTORY;
+export const INDUSTRIAL_UI_TEXT = 'INDUSTRIAL';
+
 export const INFO_UI_TEXT = 'INFO';
+
