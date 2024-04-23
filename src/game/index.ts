@@ -1,14 +1,14 @@
 import { createScene } from '../scene';
 import { createCity } from '../city';
 import { CITY_SIZE, Game } from './constants';
-import { createToolbarButtons } from '../ui';
+import { createUi } from '../ui';
 import { Tile } from '../city/constants';
 import { createBuilding, isValidBuildingId } from '../city/building';
 import { TOOLBAR_BUTTONS, ToggleButton } from '../ui/constants';
 import { getIcon } from '../assets/icons';
 
 export function createGame(): Game {
-  createToolbarButtons();
+  createUi();
   const scene = createScene(CITY_SIZE);
   const city = createCity(CITY_SIZE);
 

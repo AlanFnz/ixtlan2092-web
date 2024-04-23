@@ -4,13 +4,45 @@ import { BaseButton, TOOLBAR_BUTTONS, ToggleButton } from './constants';
 
 declare let window: CustomWindow;
 
+export function createUi() {
+  createToolbarButtons();
+  createTitleBar();
+}
+
 function isToggleButton(
   button: BaseButton | ToggleButton
 ): button is ToggleButton {
   return 'iconPlay' in button && 'iconPause' in button;
 }
 
-export function createToolbarButtons() {
+function createTitleBar() {
+  const titleBar = document.getElementById('ui-titlebar') as HTMLElement;
+  if (!titleBar) {
+    console.error('Title bar element not found!');
+    return;
+  }
+
+  const titleBarLeftItems = document.createElement('div');
+  titleBarLeftItems.id = 'title-bar-left-items';
+  titleBarLeftItems.className = 'title-bar-items';
+  titleBarLeftItems.textContent = '$1000';
+  titleBar.appendChild(titleBarLeftItems);
+
+  const titleBarCenterItems = document.createElement('div');
+  titleBarCenterItems.id = 'title-bar-center-items';
+  titleBarCenterItems.className = 'title-bar-items';
+  titleBarCenterItems.textContent = 'My City';
+  titleBar.appendChild(titleBarCenterItems);
+
+  const titleBarRightItems = document.createElement('div');
+  titleBarRightItems.id = 'title-bar-right-items';
+  titleBarRightItems.className = 'title-bar-items';
+  titleBarRightItems.innerHTML =
+    'Population: <span id="population-counter">0</span>';
+  titleBar.appendChild(titleBarRightItems);
+}
+
+function createToolbarButtons() {
   const toolbar = document.getElementById('ui-toolbar') as HTMLElement;
   if (!toolbar) {
     console.error('Toolbar element not found!');
