@@ -25,13 +25,19 @@ export function createCity(size: number): City {
     }
   }
 
+  function getPopulation() {
+    return citizens.length;
+  }
+
   initData();
 
   return {
     size,
     tiles,
     citizens,
+
     update,
+    getPopulation,
   };
 }
 
