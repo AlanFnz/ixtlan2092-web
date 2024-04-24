@@ -17,7 +17,7 @@ interface City {
   tiles: Tile[][];
   citizens: Citizen[];
   update: () => void;
-  getPopulation: () => number;
+  getPopulation: () => string;
 }
 
 export { Tile, City };

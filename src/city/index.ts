@@ -26,7 +26,7 @@ export function createCity(size: number): City {
   }
 
   function getPopulation() {
-    return citizens.length;
+    return citizens.length.toString();
   }
 
   initData();
