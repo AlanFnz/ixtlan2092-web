@@ -6,7 +6,7 @@ declare let window: CustomWindow;
 
 export function createUi() {
   createToolbarButtons();
-  createTitleBar();
+  createtopbar();
 }
 
 function isToggleButton(
@@ -15,31 +15,31 @@ function isToggleButton(
   return 'iconPlay' in button && 'iconPause' in button;
 }
 
-function createTitleBar() {
-  const titleBar = document.getElementById('ui-titlebar') as HTMLElement;
-  if (!titleBar) {
+function createtopbar() {
+  const topbar = document.getElementById('ui-topbar') as HTMLElement;
+  if (!topbar) {
     console.error('Title bar element not found!');
     return;
   }
 
-  const titleBarLeftItems = document.createElement('div');
-  titleBarLeftItems.id = 'title-bar-left-items';
-  titleBarLeftItems.className = 'title-bar-items';
-  titleBarLeftItems.textContent = '$1000';
-  titleBar.appendChild(titleBarLeftItems);
+  const topbarLeftItems = document.createElement('div');
+  topbarLeftItems.id = 'title-bar-left-items';
+  topbarLeftItems.className = 'title-bar-items';
+  topbarLeftItems.textContent = '$1000';
+  topbar.appendChild(topbarLeftItems);
 
-  const titleBarCenterItems = document.createElement('div');
-  titleBarCenterItems.id = 'title-bar-center-items';
-  titleBarCenterItems.className = 'title-bar-items';
-  titleBarCenterItems.textContent = 'My City';
-  titleBar.appendChild(titleBarCenterItems);
+  const topbarCenterItems = document.createElement('div');
+  topbarCenterItems.id = 'title-bar-center-items';
+  topbarCenterItems.className = 'title-bar-items';
+  topbarCenterItems.textContent = 'My City';
+  topbar.appendChild(topbarCenterItems);
 
-  const titleBarRightItems = document.createElement('div');
-  titleBarRightItems.id = 'title-bar-right-items';
-  titleBarRightItems.className = 'title-bar-items';
-  titleBarRightItems.innerHTML =
+  const topbarRightItems = document.createElement('div');
+  topbarRightItems.id = 'title-bar-right-items';
+  topbarRightItems.className = 'title-bar-items';
+  topbarRightItems.innerHTML =
     'Population: <span id="population-counter">0</span>';
-  titleBar.appendChild(titleBarRightItems);
+  topbar.appendChild(topbarRightItems);
 }
 
 function createToolbarButtons() {
