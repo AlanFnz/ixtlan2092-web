@@ -23,6 +23,9 @@ export function createGame(): Game {
     // Update the city data model first, then update the scene
     city.update();
     scene.update(city);
+
+    // Update ui
+    updateTitleBar()
   }
 
   // Hookup event listeners
@@ -141,6 +144,11 @@ export function createGame(): Game {
     const selectedObjectInfo = document.getElementById('selected-object-info');
     if (selectedObjectInfo)
       selectedObjectInfo.innerHTML = tile ? JSON.stringify(tile, null, 2) : '';
+  }
+
+  function updateTitleBar() {
+    const populationCounter = document.getElementById('population-counter');
+    if (populationCounter) populationCounter.innerHTML = city.getPopulation();
   }
 
   setInterval(() => {
