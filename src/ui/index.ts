@@ -5,8 +5,8 @@ import { BaseButton, TOOLBAR_BUTTONS, ToggleButton } from './constants';
 declare let window: CustomWindow;
 
 export function createUi() {
-  createToolbarButtons();
-  createtopbar();
+  createToolBarButtons();
+  createTopBar();
 }
 
 function isToggleButton(
@@ -15,7 +15,7 @@ function isToggleButton(
   return 'iconPlay' in button && 'iconPause' in button;
 }
 
-function createtopbar() {
+function createTopBar() {
   const topbar = document.getElementById('ui-topbar') as HTMLElement;
   if (!topbar) {
     console.error('Title bar element not found!');
@@ -42,7 +42,7 @@ function createtopbar() {
   topbar.appendChild(topbarRightItems);
 }
 
-function createToolbarButtons() {
+function createToolBarButtons() {
   const toolbar = document.getElementById('ui-toolbar') as HTMLElement;
   if (!toolbar) {
     console.error('Toolbar element not found!');
