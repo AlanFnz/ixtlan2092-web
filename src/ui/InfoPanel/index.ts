@@ -8,13 +8,19 @@ function createInfoPanel() {
 
   infoOverlay.className = 'ui-info-overlay-container';
 
+  const headerContainer = document.createElement('div');
+  headerContainer.id = 'info-overlay-header';
+
   const infoTitle = document.createElement('h1');
   infoTitle.textContent = 'INFO';
-  infoOverlay.appendChild(infoTitle);
+  headerContainer.appendChild(infoTitle);
 
-  const selectedObjectInfo = document.createElement('div');
-  selectedObjectInfo.id = 'selected-object-info';
-  infoOverlay.appendChild(selectedObjectInfo);
+  infoOverlay.appendChild(headerContainer);
+
+  const detailsContainer = document.createElement('div');
+  detailsContainer.id = 'info-overlay-details';
+
+  infoOverlay.appendChild(detailsContainer);
 }
 
 export { createInfoPanel };

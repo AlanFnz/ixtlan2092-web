@@ -106,14 +106,19 @@ h1 {
 }
 
 .ui-info-overlay-container {
-  background-color: #33333355;
-  position: absolute;
+  position: fixed;
+  top: 50px;
+  right: 0px;
+  margin: 16px;
+  padding: 12px;
+  width: 300px;
 
-  top: 6rem;
-  right: 1rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 20%);
 
-  padding: 16px;
-  width: 20vw;
-  height: 55vh;
+  #info-overlay-header {
+    font-weight: bold;
+  }
 }
 
