@@ -11,7 +11,7 @@ function createInfoPanel() {
   const headerContainer = document.createElement('div');
   headerContainer.id = 'info-overlay-header';
 
-  const infoTitle = document.createElement('h1');
+  const infoTitle = document.createElement('span');
   infoTitle.textContent = 'INFO';
   headerContainer.appendChild(infoTitle);
 
