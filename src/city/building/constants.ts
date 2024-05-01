@@ -10,6 +10,7 @@ interface Building {
   citizens?: Citizen[];
   maxCitizens?: number;
   update: (city: City) => void;
+  toHTML: () => string;
 }
 
 const BUILDING_TYPE = {

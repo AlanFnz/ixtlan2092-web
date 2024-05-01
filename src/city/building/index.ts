@@ -31,6 +31,9 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
           this.updated = true;
         }
       },
+      toHTML() {
+        return toHTML(this);
+      },
     },
     [BUILDING_TYPE.COMMERCIAL]: {
       id: crypto.randomUUID(),
@@ -43,6 +46,9 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
           this.height += 1;
           this.updated = true;
         }
+      },
+      toHTML() {
+        return toHTML(this);
       },
     },
     [BUILDING_TYPE.INDUSTRIAL]: {
@@ -57,6 +63,9 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
           this.updated = true;
         }
       },
+      toHTML() {
+        return toHTML(this);
+      },
     },
     [BUILDING_TYPE.ROAD]: {
       id: crypto.randomUUID(),
@@ -66,8 +75,33 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
       update: function () {
         this.updated = false;
       },
+      toHTML() {
+        return toHTML(this);
+      },
     },
   };
+
+  function toHTML(building: Building): string {
+    let html = '';
+    html += '<br><strong>Building</strong><br>';
+    html += `Type: ${building.type}<br>`;
+    html += `Style: ${building.style}<br>`;
+    html += `Height: ${building.height}<br>`;
+
+    html += `<br><strong>Residents</strong>`;
+
+    html += '<ul style="margin-top: 0; padding-left: 20px;">';
+    if (building.citizens && building.citizens.length > 0) {
+      for (const citizen of building.citizens) {
+        html += `<li>${citizen.toHTML()}</li>`;
+      }
+    } else {
+      html += '<li>None</li>';
+    }
+    html += '</ul>';
+
+    return html;
+  }
 
   return buildings[buildingType] || buildings[BUILDING_TYPE.ROAD];
 }
