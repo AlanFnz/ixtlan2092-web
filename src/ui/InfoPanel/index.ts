@@ -1,20 +1,20 @@
 function createInfoPanel() {
-  const infoPanel = document.getElementById('ui-infopanel') as HTMLElement;
+  const infoOverlay = document.getElementById('ui-info-overlay') as HTMLElement;
 
-  if (!infoPanel) {
+  if (!infoOverlay) {
     console.error('InfoPanel element not found!');
     return;
   }
 
-  infoPanel.className = 'ui-infopanel-container';
+  infoOverlay.className = 'ui-info-overlay-container';
 
   const infoTitle = document.createElement('h1');
   infoTitle.textContent = 'INFO';
-  infoPanel.appendChild(infoTitle);
+  infoOverlay.appendChild(infoTitle);
 
   const selectedObjectInfo = document.createElement('div');
   selectedObjectInfo.id = 'selected-object-info';
-  infoPanel.appendChild(selectedObjectInfo);
+  infoOverlay.appendChild(selectedObjectInfo);
 }
 
 export { createInfoPanel };
