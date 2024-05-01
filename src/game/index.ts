@@ -25,7 +25,7 @@ export function createGame(): Game {
     scene.update(city);
 
     // Update ui
-    updateTitleBar()
+    updateTitleBar();
   }
 
   // Hookup event listeners
@@ -116,7 +116,7 @@ export function createGame(): Game {
 
   function useActiveTool(object: any) {
     if (!object) {
-      updateInfoPanel(null);
+      updateInfoOverlay(null);
       return;
     }
 
@@ -128,7 +128,7 @@ export function createGame(): Game {
     // Select
     if (activeToolId === TOOLBAR_BUTTONS.SELECT.id) {
       scene.setActiveObject(object);
-      updateInfoPanel(tile);
+      updateInfoOverlay(tile);
       // If bulldoze, remove building
     } else if (activeToolId === TOOLBAR_BUTTONS.BULLDOZE.id) {
       tile.removeBuilding();
@@ -140,10 +140,10 @@ export function createGame(): Game {
     scene.update(city);
   }
 
-  function updateInfoPanel(tile: Tile | null) {
-    const selectedObjectInfo = document.getElementById('selected-object-info');
+  function updateInfoOverlay(tile: Tile | null) {
+    const selectedObjectInfo = document.getElementById('info-overlay-details');
     if (selectedObjectInfo)
-      selectedObjectInfo.innerHTML = tile ? JSON.stringify(tile, null, 2) : '';
+      selectedObjectInfo.innerHTML = tile ? tile.toHTML() : '';
   }
 
   function updateTitleBar() {

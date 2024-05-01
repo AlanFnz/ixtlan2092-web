@@ -20,6 +20,17 @@ function createTile(x: number, y: number): Tile {
         this.building = createBuilding(activeToolId);
       }
     },
+    toHTML() {
+      let html = '';
+      html += `Coordinates: (X: ${this.x}, Y: ${this.y})<br>`;
+      html += `Terrain: ${this.terrainId}<br>`;
+
+      if (this.building) {
+        // TODO:
+      }
+
+      return html;
+    },
   };
 }
 

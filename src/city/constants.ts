@@ -10,6 +10,7 @@ interface Tile {
   building: Building | undefined | null;
   removeBuilding: () => void;
   placeBuilding: (activeToolId: ActiveToolId) => void;
+  toHTML: () => string;
 }
 
 interface City {
