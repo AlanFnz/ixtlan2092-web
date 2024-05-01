@@ -7,6 +7,7 @@ interface Citizen {
   age: number;
   residenceId: string | null;
   update: (city: City) => void;
+  toHTML: () => string;
 }
 
 export { Citizen };

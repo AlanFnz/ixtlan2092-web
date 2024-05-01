@@ -17,6 +17,9 @@ function createCitizen(residenceId: string): Citizen {
     update(city: City) {
       // not implemented
     },
+    toHTML() {
+      return `<span>${this.firstName} ${this.surname} | Age: ${this.age}</span>`;
+    },
   };
 }
 
