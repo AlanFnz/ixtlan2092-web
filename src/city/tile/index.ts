@@ -26,7 +26,7 @@ function createTile(x: number, y: number): Tile {
       html += `Terrain: ${this.terrainId}<br>`;
 
       if (this.building) {
-        // TODO:
+        html += this.building.toHTML();
       }
 
       return html;

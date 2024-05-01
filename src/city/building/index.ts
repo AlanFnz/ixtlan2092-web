@@ -86,19 +86,21 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
     html += '<br><strong>Building</strong><br>';
     html += `Type: ${building.type}<br>`;
     html += `Style: ${building.style}<br>`;
-    html += `Height: ${building.height}<br>`;
+    if (building.height) html += `Height: ${building.height}<br>`;
 
-    html += `<br><strong>Residents</strong>`;
+    if (building.citizens) {
+      if (building.citizens.length > 0) {
+        html += `<br><strong>Residents</strong>`;
 
-    html += '<ul style="margin-top: 0; padding-left: 20px;">';
-    if (building.citizens && building.citizens.length > 0) {
-      for (const citizen of building.citizens) {
-        html += `<li>${citizen.toHTML()}</li>`;
+        html += '<ul style="margin-top: 0; padding-left: 20px;">';
+        for (const citizen of building.citizens) {
+          html += `<li>${citizen.toHTML()}</li>`;
+        }
+      } else {
+        html += '<li>None</li>';
       }
-    } else {
-      html += '<li>None</li>';
+      html += '</ul>';
     }
-    html += '</ul>';
 
     return html;
   }
