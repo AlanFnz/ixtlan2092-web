@@ -105,3 +105,15 @@ h1 {
   margin-left: 8px;
 }
 
+.ui-infopanel-container {
+  background-color: #33333355;
+  position: absolute;
+
+  top: 6rem;
+  right: 1rem;
+
+  padding: 16px;
+  width: 20vw;
+  height: 55vh;
+}
+

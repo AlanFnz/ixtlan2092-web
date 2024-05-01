@@ -1,8 +1,12 @@
-function createInfoPanel(toolbar: HTMLElement) {
-  const infoPanel = document.createElement('div');
-  infoPanel.id = 'info-panel';
-  infoPanel.className = 'ui-container';
-  toolbar.appendChild(infoPanel);
+function createInfoPanel() {
+  const infoPanel = document.getElementById('ui-infopanel') as HTMLElement;
+
+  if (!infoPanel) {
+    console.error('InfoPanel element not found!');
+    return;
+  }
+
+  infoPanel.className = 'ui-infopanel-container';
 
   const infoTitle = document.createElement('h1');
   infoTitle.textContent = 'INFO';

@@ -47,8 +47,6 @@ function createToolBar() {
     button.dataset.type = toolbarButton.id;
     toolbar.appendChild(button);
   });
-
-  return toolbar;
 }
 
 export { createToolBar };

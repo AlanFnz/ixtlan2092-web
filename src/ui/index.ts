@@ -4,7 +4,7 @@ import { createTopBar } from './TopBar';
 
 export function createUi() {
   createTopBar();
-  const toolbar = createToolBar();
-  if (toolbar) createInfoPanel(toolbar);
+  createToolBar();
+  createInfoPanel();
 }
 
