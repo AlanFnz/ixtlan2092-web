@@ -41,6 +41,12 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
       workers: [] as Citizen[],
       maxWorkers: 4,
 
+      getNumberOfJobsAvailable() {
+        return this.maxWorkers - this.workers.length;
+      },
+      getNumberOfJobsFilled() {
+        return this.workers.length;
+      },
       update() {
         if (Math.random() < 0.01 && this.height && this.height < 5) {
           this.height += 1;
@@ -61,6 +67,12 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
       workers: [] as Citizen[],
       maxWorkers: 4,
 
+      getNumberOfJobsAvailable() {
+        return this.maxWorkers - this.workers.length;
+      },
+      getNumberOfJobsFilled() {
+        return this.workers.length;
+      },
       update() {
         if (Math.random() < 0.01 && this.height && this.height < 5) {
           this.height += 1;

@@ -9,6 +9,10 @@ interface Building {
   updated: boolean;
   citizens?: Citizen[];
   maxCitizens?: number;
+  workers?: Citizen[];
+  maxWorkers?: number;
+  getNumberOfJobsAvailable?: () => number;
+  getNumberOfJobsFilled?: () => number;
   update: (city: City) => void;
   toHTML: () => string;
 }
