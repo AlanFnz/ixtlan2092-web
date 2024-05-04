@@ -3,7 +3,6 @@ import { Citizen } from '../citizen/constants';
 import { City } from '../constants';
 import { BUILDING_TYPE, Building } from './constants';
 
-
 function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
   const buildings = {
     [BUILDING_TYPE.RESIDENTIAL]: {
@@ -38,6 +37,10 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,
       updated: true,
+
+      workers: [] as Citizen[],
+      maxWorkers: 4,
+
       update() {
         if (Math.random() < 0.01 && this.height && this.height < 5) {
           this.height += 1;
@@ -54,6 +57,10 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,
       updated: true,
+
+      workers: [] as Citizen[],
+      maxWorkers: 4,
+
       update() {
         if (Math.random() < 0.01 && this.height && this.height < 5) {
           this.height += 1;
