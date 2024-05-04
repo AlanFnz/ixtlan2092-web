@@ -10,9 +10,15 @@ interface Citizen {
   stateCounter: number;
   job: any;
   update: (city: City) => void;
+  findJob: (city: City) => void | any;
   getFullName: () => string;
   toHTML: () => string;
 }
 
-export { Citizen };
+const EMPLOYENT_STATES = {
+  EMPLOYED: 'employed',
+  UNEMPLOYED: 'unemployed',
+};
+
+export { Citizen, EMPLOYENT_STATES };
 
