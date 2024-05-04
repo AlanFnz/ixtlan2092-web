@@ -13,6 +13,11 @@ interface Tile {
   toHTML: () => string;
 }
 
+interface Coordinate {
+  x: number;
+  y: number;
+}
+
 interface City {
   size: number;
   tiles: Tile[][];
@@ -21,5 +26,5 @@ interface City {
   getPopulation: () => string;
 }
 
-export { Tile, City };
+export { Tile, City, Coordinate };
 
