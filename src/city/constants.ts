@@ -14,7 +14,7 @@ interface City {
   citizens: Citizen[];
   update: () => void;
   getPopulation: () => string;
-  getTileById: (id: string) => Tile | undefined;
+  getTileByBuildingId: (id: string) => Tile | undefined;
   findTile: (
     start: Coordinate,
     searchCriteria: (tile: Tile) => boolean,

@@ -51,7 +51,7 @@ function createCitizen(residenceId: string): Citizen {
     },
     findJob(city) {
       if (!this.residenceId) return null;
-      const residenceTile = city.getTileById(this.residenceId);
+      const residenceTile = city.getTileByBuildingId(this.residenceId);
 
       if (!residenceTile) return null;
 

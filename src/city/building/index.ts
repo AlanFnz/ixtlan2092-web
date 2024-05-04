@@ -33,6 +33,7 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
     },
     [BUILDING_TYPE.COMMERCIAL]: {
       id: crypto.randomUUID(),
+      name: 'Commercial',
       type: BUILDING_TYPE.COMMERCIAL,
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,
@@ -59,6 +60,7 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
     },
     [BUILDING_TYPE.INDUSTRIAL]: {
       id: crypto.randomUUID(),
+      name: 'Industrial',
       type: BUILDING_TYPE.INDUSTRIAL,
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,

@@ -24,16 +24,20 @@ export function createCity(size: number): City {
         tiles[x][y].building?.update(this);
       }
     }
+
+    for (const citizen of citizens) {
+      citizen.update(this);
+    }
   }
 
   function getPopulation() {
     return citizens.length.toString();
   }
 
-  function getTileById(tileId: string): Tile | undefined {
+  function getTileByBuildingId(tileId: string): Tile | undefined {
     for (let row of tiles) {
       for (let tile of row) {
-        if (tile.id === tileId) {
+        if (tile.building?.id === tileId) {
           return tile;
         }
       }
@@ -106,7 +110,7 @@ export function createCity(size: number): City {
     // functions
     update,
     getPopulation,
-    getTileById,
+    getTileByBuildingId,
     findTile,
   };
 }
