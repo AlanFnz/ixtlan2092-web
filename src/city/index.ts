@@ -130,7 +130,6 @@ export function createCity(size: number): City {
   return {
     // props
     size,
-    tiles,
 
     // functions
     update,

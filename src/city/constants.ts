@@ -10,7 +10,6 @@ interface Coordinate {
 
 interface City {
   size: number;
-  tiles: Tile[][];
   update: () => void;
   getPopulation: () => string;
   getTileByCoordinate: (coordinate: Coordinate) => Tile | null;

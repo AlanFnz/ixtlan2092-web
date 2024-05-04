@@ -121,8 +121,7 @@ export function createGame(): Game {
     }
 
     const { x, y } = object.userData;
-    const tile = city.tiles && city.tiles[x] && city.tiles[x][y];
-
+    const tile = city.getTileByCoordinate({ x, y });
     if (!tile) return;
 
     // Select
