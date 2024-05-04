@@ -1,5 +1,5 @@
 import { Citizen } from './citizen/constants';
-import { City, Tile } from './constants';
+import { City, Coordinate, Tile } from './constants';
 import { createTile } from './tile';
 
 export function createCity(size: number): City {
@@ -29,13 +29,35 @@ export function createCity(size: number): City {
     return citizens.length.toString();
   }
 
+  function getTileNeighbors(coordinate: Coordinate): Tile[] {
+    const { x, y } = coordinate;
+    const neighbors: Tile[] = [];
+
+    if (x > 0) {
+      neighbors.push(tiles[x - 1][y]);
+    }
+    if (x < size - 1) {
+      neighbors.push(tiles[x + 1][y]);
+    }
+    if (y > 0) {
+      neighbors.push(tiles[x][y - 1]);
+    }
+    if (y < size - 1) {
+      neighbors.push(tiles[x][y + 1]);
+    }
+
+    return neighbors;
+  }
+
   initData();
 
   return {
+    // props
     size,
     tiles,
     citizens,
 
+    // functions
     update,
     getPopulation,
   };
