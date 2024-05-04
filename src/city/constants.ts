@@ -13,6 +13,7 @@ interface City {
   tiles: Tile[][];
   update: () => void;
   getPopulation: () => string;
+  getTileByCoordinate: (coordinate: Coordinate) => Tile | null;
   getTileByBuildingId: (id: string) => Tile | undefined;
   findTile: (
     start: Coordinate,
