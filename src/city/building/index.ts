@@ -118,6 +118,7 @@ function createBuilding(
   function toHTML(building: Building): string {
     let html = '';
     html += '<br><strong>Building</strong><br>';
+    if (building.name) `Name: ${building.name}<br>`;
     html += `Type: ${building.type}<br>`;
     html += `Style: ${building.style}<br>`;
     if (building.height) html += `Height: ${building.height}<br>`;
