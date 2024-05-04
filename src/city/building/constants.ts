@@ -20,5 +20,7 @@ const BUILDING_TYPE = {
   ROAD: 'ROAD',
 };
 
-export { Building, BUILDING_TYPE };
+type BuildingType = (typeof BUILDING_TYPE)[keyof typeof BUILDING_TYPE];
+
+export { Building, BUILDING_TYPE, BuildingType };
 

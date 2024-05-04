@@ -1,5 +1,6 @@
 import { ASSET_ID } from '../../assets';
-import { createBuilding, isValidBuildingId } from '../building';
+import { createBuilding } from '../building';
+import { isValidBuildingId } from '../building/utils';
 import { Tile } from '../constants';
 
 function createTile(x: number, y: number): Tile {

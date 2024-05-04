@@ -3,9 +3,6 @@ import { Citizen } from '../citizen/constants';
 import { City } from '../constants';
 import { BUILDING_TYPE, Building } from './constants';
 
-function isValidBuildingId(key: any): key is keyof typeof BUILDING_TYPE {
-  return key in BUILDING_TYPE;
-}
 
 function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
   const buildings = {
@@ -108,5 +105,5 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
   return buildings[buildingType] || buildings[BUILDING_TYPE.ROAD];
 }
 
-export { createBuilding, isValidBuildingId };
+export { createBuilding };
 
