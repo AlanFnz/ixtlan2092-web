@@ -15,28 +15,17 @@ function createCitizen(residenceId: string): Citizen {
     residenceId,
     state: EMPLOYENT_STATES.UNEMPLOYED,
     stateCounter: 0, // number of steps in the current state
-    job: null, // will probably be a ref to the building this citizen works
+    job: null,
 
     // functions
     update(city: City) {
       switch (this.state) {
         case EMPLOYENT_STATES.UNEMPLOYED:
-          // looking for a job
-          console.log(`${this.getFullName()} is looking for a job`);
           this.job = this.findJob(city);
-
-          // transition
-          if (this.job) {
-            console.log(
-              `${this.getFullName()} found a job at ${this.job?.name}`
-            );
-            this.state = EMPLOYENT_STATES.EMPLOYED;
-          }
+          if (this.job) this.state = EMPLOYENT_STATES.EMPLOYED;
           break;
         case EMPLOYENT_STATES.EMPLOYED:
-          if (!this.job) {
-            this.state = EMPLOYENT_STATES.EMPLOYED;
-          }
+          if (!this.job) this.state = EMPLOYENT_STATES.EMPLOYED;
           break;
         default:
           console.error(
