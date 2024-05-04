@@ -18,7 +18,7 @@ function createTile(x: number, y: number): Tile {
     },
     placeBuilding(activeToolId) {
       if (activeToolId && isValidBuildingId(activeToolId)) {
-        this.building = createBuilding(activeToolId);
+        this.building = createBuilding(x, y, activeToolId);
       }
     },
     distanceTo(tile: Tile) {

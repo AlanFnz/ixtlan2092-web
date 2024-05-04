@@ -3,10 +3,16 @@ import { Citizen } from '../citizen/constants';
 import { City } from '../constants';
 import { BUILDING_TYPE, Building } from './constants';
 
-function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
+function createBuilding(
+  x: number,
+  y: number,
+  buildingType: keyof typeof BUILDING_TYPE
+): Building {
   const buildings = {
     [BUILDING_TYPE.RESIDENTIAL]: {
       id: crypto.randomUUID(),
+      x,
+      y,
       type: BUILDING_TYPE.RESIDENTIAL,
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,
@@ -33,6 +39,8 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
     },
     [BUILDING_TYPE.COMMERCIAL]: {
       id: crypto.randomUUID(),
+      x,
+      y,
       name: 'Commercial',
       type: BUILDING_TYPE.COMMERCIAL,
       style: Math.floor(3 * Math.random()) + 1,
@@ -60,6 +68,8 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
     },
     [BUILDING_TYPE.INDUSTRIAL]: {
       id: crypto.randomUUID(),
+      x,
+      y,
       name: 'Industrial',
       type: BUILDING_TYPE.INDUSTRIAL,
       style: Math.floor(3 * Math.random()) + 1,
@@ -87,6 +97,8 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
     },
     [BUILDING_TYPE.ROAD]: {
       id: crypto.randomUUID(),
+      x,
+      y,
       type: BUILDING_TYPE.ROAD,
       style: Math.floor(3 * Math.random()) + 1,
       updated: true,

@@ -3,6 +3,8 @@ import { City } from '../constants';
 
 interface Building {
   id: string;
+  x: number;
+  y: number;
   name?: string;
   type: string;
   style: number;
