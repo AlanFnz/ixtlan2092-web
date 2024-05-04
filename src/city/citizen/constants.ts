@@ -10,6 +10,7 @@ interface Citizen {
   stateCounter: number;
   job: any;
   update: (city: City) => void;
+  getFullName: () => string;
   toHTML: () => string;
 }
 

@@ -18,7 +18,9 @@ function createCitizen(residenceId: string): Citizen {
 
     // functions
     update(city: City) {
-      // not implemented
+    },
+    getFullName() {
+      return `${this.firstName} ${this.surname}`;
     },
     toHTML() {
       return `<span>${this.firstName} ${this.surname} | Age: ${this.age}</span>`;
