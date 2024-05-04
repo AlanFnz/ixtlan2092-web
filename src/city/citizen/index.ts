@@ -12,6 +12,9 @@ function createCitizen(residenceId: string): Citizen {
     surname: getRandomSurname(),
     age: getRandomAge(),
     residenceId,
+    state: 'unemployed',
+    stateCounter: 0, // number of steps in the current state
+    job: null, // will probably be a ref to the building this citizen works
 
     // functions
     update(city: City) {

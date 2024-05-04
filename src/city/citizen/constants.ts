@@ -6,6 +6,9 @@ interface Citizen {
   surname: string;
   age: number;
   residenceId: string | null;
+  state: string;
+  stateCounter: number;
+  job: any;
   update: (city: City) => void;
   toHTML: () => string;
 }
