@@ -14,6 +14,7 @@ function createTile(x: number, y: number): Tile {
 
     // functions
     removeBuilding() {
+      this.building?.dispose && this.building.dispose();
       this.building = null;
     },
     placeBuilding(activeToolId) {

@@ -1,3 +1,4 @@
+import { Building } from '../building/constants';
 import { City } from '../constants';
 
 interface Citizen {
@@ -10,8 +11,9 @@ interface Citizen {
   stateCounter: number;
   job: any;
   update: (city: City) => void;
-  findJob: (city: City) => void | any;
+  setJob: (job: Building | null) => void;
   getFullName: () => string;
+  findJob: (city: City) => void | any;
   toHTML: () => string;
 }
 

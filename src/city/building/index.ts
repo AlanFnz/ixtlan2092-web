@@ -66,6 +66,11 @@ function createBuilding(
           this.updated = true;
         }
       },
+      dispose() {
+        for (const worker of this.workers) {
+          worker.setJob(null);
+        }
+      },
       toHTML() {
         return toHTML(this);
       },
@@ -93,6 +98,11 @@ function createBuilding(
         if (Math.random() < 0.01 && this.height && this.height < 5) {
           this.height += 1;
           this.updated = true;
+        }
+      },
+      dispose() {
+        for (const worker of this.workers) {
+          worker.setJob(null);
         }
       },
       toHTML() {

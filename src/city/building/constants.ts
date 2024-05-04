@@ -17,6 +17,7 @@ interface Building {
   getNumberOfJobsAvailable?: () => number;
   getNumberOfJobsFilled?: () => number;
   update: (city: City) => void;
+  dispose?: () => void;
   toHTML: () => string;
 }
 

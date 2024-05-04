@@ -1,3 +1,4 @@
+import { Building } from '../building/constants';
 import { checkIsWorkplace } from '../building/utils';
 import { City } from '../constants';
 import { Citizen, EMPLOYENT_STATES } from './constants';
@@ -46,17 +47,10 @@ function createCitizen(residenceId: string): Citizen {
     getFullName() {
       return `${this.firstName} ${this.surname}`;
     },
-    toHTML() {
-      return `
-      <li>${this.getFullName()}
-        <ul style="padding-left: 8px; font-size: small;">
-          <li>Age: ${this.age}</li>
-          <li>Job: ${this.job?.name ?? 'Unemployed'}</li>
-        </ul>
-      </li>
-      `;
+    setJob(job: Building | null) {
+      this.job = job;
     },
-    findJob(city) {
+    findJob(city): Building | null {
       if (!this.residenceId) return null;
       const residenceTile = city.getTileByBuildingId(this.residenceId);
 
@@ -82,12 +76,22 @@ function createCitizen(residenceId: string): Citizen {
         4
       );
 
-      if (tile) {
+      if (tile?.building) {
         tile.building?.workers?.push(this);
         return tile.building;
       } else {
         return null;
       }
+    },
+    toHTML() {
+      return `
+      <li>${this.getFullName()}
+        <ul style="padding-left: 8px; font-size: small;">
+          <li>Age: ${this.age}</li>
+          <li>Job: ${this.job?.name ?? 'Unemployed'}</li>
+        </ul>
+      </li>
+      `;
     },
   };
 }
