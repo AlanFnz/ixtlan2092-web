@@ -1,6 +1,7 @@
 import { Citizen } from './citizen/constants';
 import { City, Coordinate, Tile } from './constants';
 import { createTile } from './tile';
+import { findTileByCoordinates } from './tile/utils';
 
 export function createCity(size: number): City {
   const tiles: Tile[][] = [];
@@ -27,6 +28,40 @@ export function createCity(size: number): City {
 
   function getPopulation() {
     return citizens.length.toString();
+  }
+
+  function findTile(
+    start: Coordinate,
+    searchCriteria: (tile: Tile) => boolean,
+    maxDistance: number
+  ) {
+    const startTile: Tile | undefined = findTileByCoordinates(tiles, start);
+    const visited = new Set();
+    const tilesToSearch: Tile[] = [];
+
+    if (startTile) tilesToSearch.push(startTile);
+
+    while (tilesToSearch.length > 0) {
+      const tile = tilesToSearch.shift();
+      if (!tile) break;
+
+      if (visited.has(tile?.id)) {
+        continue;
+      } else {
+        visited.add(tile.id);
+      }
+
+      const distance = startTile?.distanceTo(tile);
+      if (distance && distance > maxDistance) continue;
+
+      if (searchCriteria(tile)) {
+        return tile;
+      } else {
+        tilesToSearch.push(...getTileNeighbors({ x: tile.x, y: tile.y }));
+      }
+    }
+
+    return null;
   }
 
   function getTileNeighbors(coordinate: Coordinate): Tile[] {
@@ -60,6 +95,7 @@ export function createCity(size: number): City {
     // functions
     update,
     getPopulation,
+    findTile,
   };
 }
 

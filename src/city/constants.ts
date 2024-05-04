@@ -25,6 +25,11 @@ interface City {
   citizens: Citizen[];
   update: () => void;
   getPopulation: () => string;
+  findTile: (
+    start: Coordinate,
+    searchCriteria: (tile: Tile) => boolean,
+    maxDistance: number
+  ) => Tile | null;
 }
 
 export { Tile, City, Coordinate };
