@@ -1,4 +1,4 @@
-import { Building } from '../building/constants';
+import { checkIsWorkplace } from '../building/utils';
 import { City } from '../constants';
 import { Citizen, EMPLOYENT_STATES } from './constants';
 import { getRandomAge, getRandomSurname } from './utils';
@@ -22,7 +22,7 @@ function createCitizen(residenceId: string): Citizen {
         case EMPLOYENT_STATES.UNEMPLOYED:
           // looking for a job
           console.log(`${this.getFullName()} is looking for a job`);
-          // this.job = this.findJob(city);
+          this.job = this.findJob(city);
 
           // transition
           if (this.job) {
@@ -46,7 +46,39 @@ function createCitizen(residenceId: string): Citizen {
     toHTML() {
       return `<span>${this.firstName} ${this.surname} | Age: ${this.age}</span>`;
     },
-    findJob(city) {},
+    findJob(city) {
+      if (!this.residenceId) return null;
+      const residenceTile = city.getTileById(this.residenceId);
+
+      if (!residenceTile) return null;
+
+      const tile = city.findTile(
+        { x: residenceTile.x, y: residenceTile.y },
+        (tile) => {
+          if (!tile.building) return false;
+          const buildingType = tile.building.type;
+
+          if (checkIsWorkplace(buildingType)) {
+            if (
+              tile.building.getNumberOfJobsAvailable &&
+              tile.building.getNumberOfJobsAvailable() > 0
+            ) {
+              return true;
+            }
+          }
+
+          return false;
+        },
+        4
+      );
+
+      if (tile) {
+        tile.building?.workers?.push(this);
+        return tile.building;
+      } else {
+        return null;
+      }
+    },
   };
 }
 
