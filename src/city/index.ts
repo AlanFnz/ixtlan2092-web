@@ -30,6 +30,17 @@ export function createCity(size: number): City {
     return citizens.length.toString();
   }
 
+  function getTileById(tileId: string): Tile | undefined {
+    for (let row of tiles) {
+      for (let tile of row) {
+        if (tile.id === tileId) {
+          return tile;
+        }
+      }
+    }
+    return undefined;
+  }
+
   function findTile(
     start: Coordinate,
     searchCriteria: (tile: Tile) => boolean,
@@ -95,6 +106,7 @@ export function createCity(size: number): City {
     // functions
     update,
     getPopulation,
+    getTileById,
     findTile,
   };
 }
