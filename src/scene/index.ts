@@ -45,8 +45,6 @@ export function createScene(citySize: number) {
   let terrain: any[] = [];
   let buildings: any[] = [];
 
-  let onObjectSelected: any = undefined;
-
   function initScene(city: City) {
     scene.clear();
     buildings = Array.from({ length: city.size }, () =>
@@ -210,9 +208,6 @@ export function createScene(citySize: number) {
     setActiveObject,
     getSelectedObject,
     setHighlightedObject,
-    setOnObjectSelected(callback: any) {
-      onObjectSelected = callback;
-    },
   };
 }
 

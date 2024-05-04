@@ -3,7 +3,6 @@ import { createCity } from '../city';
 import { CITY_SIZE, Game } from './constants';
 import { createUi } from '../ui';
 import { Tile } from '../city/constants';
-import { createBuilding } from '../city/building';
 import { TOOLBAR_BUTTONS, ToggleButton } from '../ui/constants';
 import { getIcon } from '../assets/icons';
 import { isValidBuildingId } from '../city/building/utils';
@@ -159,28 +158,6 @@ export function createGame(): Game {
   if (scene) {
     scene.start();
     scene.initScene(city);
-    scene.setOnObjectSelected((selectedObject: any) => {
-      const { x, y } = selectedObject?.userData;
-      const tile = x && y && city?.tiles[x][y];
-
-      if (tile) {
-        if (
-          activeToolId === TOOLBAR_BUTTONS.BULLDOZE.id &&
-          tile.building &&
-          tile.building.id
-        ) {
-          tile.building = undefined;
-        } else if (
-          !tile.building &&
-          activeToolId &&
-          isValidBuildingId(activeToolId)
-        ) {
-          tile.building = createBuilding(activeToolId);
-        }
-      }
-
-      scene.update(city);
-    });
   }
 
   return {
