@@ -26,10 +26,11 @@ function createBuilding(
       maxCitizens: 4,
 
       update(city: City) {
+        this.citizens.forEach((citizen) => citizen.update(city));
+
         if (this.citizens.length < this.maxCitizens) {
           const citizen = createCitizen(this.id);
           this.citizens.push(citizen);
-          city.citizens.push(citizen);
         }
 
         if (Math.random() < 0.01 && this.height && this.height < 5) {

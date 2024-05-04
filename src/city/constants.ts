@@ -11,7 +11,6 @@ interface Coordinate {
 interface City {
   size: number;
   tiles: Tile[][];
-  citizens: Citizen[];
   update: () => void;
   getPopulation: () => string;
   getTileByBuildingId: (id: string) => Tile | undefined;

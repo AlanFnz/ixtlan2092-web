@@ -24,14 +24,22 @@ export function createCity(size: number): City {
         tiles[x][y].building?.update(this);
       }
     }
-
-    for (const citizen of citizens) {
-      citizen.update(this);
-    }
   }
 
   function getPopulation() {
-    return citizens.length.toString();
+    let population = 0;
+    for (let x = 0; x < size; x++) {
+      for (let y = 0; y < size; y++) {
+        const tile = getTileByCoordinate({ x, y });
+        population += tile.building?.citizens?.length ?? 0;
+      }
+    }
+    return population.toString();
+  }
+
+  function getTileByCoordinate(coordinate: Coordinate) {
+    const { x, y } = coordinate;
+    return tiles[x][y];
   }
 
   function getTileByBuildingId(tileId: string): Tile | undefined {
@@ -105,7 +113,6 @@ export function createCity(size: number): City {
     // props
     size,
     tiles,
-    citizens,
 
     // functions
     update,
