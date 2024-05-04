@@ -47,7 +47,14 @@ function createCitizen(residenceId: string): Citizen {
       return `${this.firstName} ${this.surname}`;
     },
     toHTML() {
-      return `<span>${this.firstName} ${this.surname} | Age: ${this.age}</span>`;
+      return `
+      <li>${this.getFullName()}
+        <ul style="padding-left: 8px; font-size: small;">
+          <li>Age: ${this.age}</li>
+          <li>Job: ${this.job?.name ?? 'Unemployed'}</li>
+        </ul>
+      </li>
+      `;
     },
     findJob(city) {
       if (!this.residenceId) return null;

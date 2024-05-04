@@ -112,7 +112,25 @@ function createBuilding(buildingType: keyof typeof BUILDING_TYPE): Building {
 
         html += '<ul style="margin-top: 0; padding-left: 20px;">';
         for (const citizen of building.citizens) {
-          html += `<li>${citizen.toHTML()}</li>`;
+          html += citizen.toHTML();
+        }
+      } else {
+        html += '<li>None</li>';
+      }
+      html += '</ul>';
+    }
+
+    if (building.workers) {
+      if (building.getNumberOfJobsFilled) {
+        html += `<br><strong>Workers (${building.getNumberOfJobsFilled()}/${
+          building.maxWorkers
+        })</strong>`;
+      }
+
+      html += '<ul style="margin-top: 0; padding-left: 20px;">';
+      if (building.workers.length > 0) {
+        for (const worker of building.workers) {
+          html += worker.toHTML();
         }
       } else {
         html += '<li>None</li>';
