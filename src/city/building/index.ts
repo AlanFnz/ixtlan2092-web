@@ -2,6 +2,10 @@ import { createCitizen } from '../citizen';
 import { Citizen } from '../citizen/constants';
 import { City } from '../constants';
 import { BUILDING_TYPE, Building } from './constants';
+import {
+  generateCommericalBuildingName,
+  generateIndustrialBuildingName,
+} from './utils';
 
 function createBuilding(
   x: number,
@@ -41,7 +45,7 @@ function createBuilding(
       id: crypto.randomUUID(),
       x,
       y,
-      name: 'Commercial',
+      name: generateCommericalBuildingName(),
       type: BUILDING_TYPE.COMMERCIAL,
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,
@@ -70,7 +74,7 @@ function createBuilding(
       id: crypto.randomUUID(),
       x,
       y,
-      name: 'Industrial',
+      name: generateIndustrialBuildingName(),
       type: BUILDING_TYPE.INDUSTRIAL,
       style: Math.floor(3 * Math.random()) + 1,
       height: 1,
