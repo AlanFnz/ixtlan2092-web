@@ -20,6 +20,9 @@ function createTile(x: number, y: number): Tile {
         this.building = createBuilding(activeToolId);
       }
     },
+    distanceTo(tile: Tile) {
+      return Math.abs(this.x - tile.x) + Math.abs(this.y - tile.y);
+    },
     toHTML() {
       let html = '';
       html += `Coordinates: (X: ${this.x}, Y: ${this.y})<br>`;

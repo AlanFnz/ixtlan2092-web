@@ -10,6 +10,7 @@ interface Tile {
   building: Building | undefined | null;
   removeBuilding: () => void;
   placeBuilding: (activeToolId: ActiveToolId) => void;
+  distanceTo: (tile: Tile) => number;
   toHTML: () => string;
 }
 
