@@ -33,6 +33,9 @@ function createCitizen(residenceId: string): Citizen {
           }
           break;
         case EMPLOYENT_STATES.EMPLOYED:
+          if (!this.job) {
+            this.state = EMPLOYENT_STATES.EMPLOYED;
+          }
           break;
         default:
           console.error(
