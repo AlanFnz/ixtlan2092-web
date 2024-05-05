@@ -1,5 +1,5 @@
 {
-  "name": "city-simulation",
+  "name": "threejs-city-simulation",
   "version": "1.0.0",
   "description": "Here we go",
   "main": "scene.js",
