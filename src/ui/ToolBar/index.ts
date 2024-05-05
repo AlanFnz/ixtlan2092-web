@@ -1,4 +1,4 @@
-import { IconKey, getIcon } from '../../assets/icons';
+import { IconKey, getIcon } from '../../assetManager/icons';
 import { CustomWindow } from '../../types';
 import { BaseButton, TOOLBAR_BUTTONS, ToggleButton } from '../constants';
 

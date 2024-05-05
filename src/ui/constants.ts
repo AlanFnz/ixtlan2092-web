@@ -1,4 +1,4 @@
-import { ICON_KEYS, IconKey } from '../assets/icons';
+import { ICON_KEYS, IconKey } from '../assetManager/icons';
 
 type BaseButton = {
   id: string;

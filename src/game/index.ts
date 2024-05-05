@@ -1,11 +1,10 @@
-import { createScene } from '../scene';
+import { createScene } from '../sceneManager';
 import { createCity } from '../city';
 import { CITY_SIZE, Game } from './constants';
 import { createUi } from '../ui';
 import { Tile } from '../city/constants';
 import { TOOLBAR_BUTTONS, ToggleButton } from '../ui/constants';
-import { getIcon } from '../assets/icons';
-import { isValidBuildingId } from '../city/building/utils';
+import { getIcon } from '../assetManager/icons';
 
 export function createGame(): Game {
   createUi();
