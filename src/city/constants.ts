@@ -1,6 +1,3 @@
-import { ActiveToolId } from '../game/constants';
-import { Building } from './building/constants';
-import { Citizen } from './citizen/constants';
 import { Tile } from './tile/constants';
 
 interface Coordinate {

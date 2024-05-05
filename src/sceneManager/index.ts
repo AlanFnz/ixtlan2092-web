@@ -85,7 +85,7 @@ export function createScene(citySize: number) {
         }
 
         // if the data model has changed, update the mesh
-        if (tile?.building && tile.building.updated) {
+        if (tile?.building && tile.building.isMeshOutOfDate) {
           scene.remove(existingBuildingMesh);
           buildings[x][y] = createAssetInstance(
             tile.building.type,
@@ -94,7 +94,7 @@ export function createScene(citySize: number) {
             tile.building
           );
           scene.add(buildings[x][y]);
-          tile.building.updated = false;
+          tile.building.isMeshOutOfDate = false;
         }
       }
     }

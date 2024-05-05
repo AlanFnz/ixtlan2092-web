@@ -2,12 +2,11 @@ import CONFIG from '../../config';
 import { Zone } from './zone';
 import { IResidentialZone } from './interfaces';
 import { BUILDING_TYPE } from './constants';
-import { Citizen } from '../citizen/constants';
 import { City } from '../constants';
-import { createCitizen } from '../citizen';
+import { Citizen, ICitizen } from '../citizen';
 
 export class ResidentialZone extends Zone implements IResidentialZone {
-  residents: Citizen[];
+  residents: ICitizen[];
 
   constructor(x: number, y: number) {
     super(x, y);
@@ -25,7 +24,7 @@ export class ResidentialZone extends Zone implements IResidentialZone {
       this.residents.length < CONFIG.ZONE.MAX_RESIDENTS &&
       Math.random() < CONFIG.ZONE.RESIDENT_MOVE_IN_CHANCE
     ) {
-      const resident = createCitizen(this.id); // TODO: this should be -> new Citizen(this) after refactor
+      const resident = new Citizen(this);
       this.residents.push(resident);
     }
   }

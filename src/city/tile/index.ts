@@ -1,5 +1,5 @@
 import { ASSET_ID } from '../../assetManager/constants';
-import { createBuilding } from '../building';
+import { createBuilding } from '../building/buildingCreator';
 import { isValidBuildingId } from '../building/utils';
 import { Tile } from '../constants';
 
@@ -15,7 +15,7 @@ function createTile(x: number, y: number): Tile {
     // functions
     removeBuilding() {
       this.building?.dispose && this.building.dispose();
-      this.building = null;
+      this.building = undefined;
     },
     placeBuilding(activeToolId) {
       if (activeToolId && isValidBuildingId(activeToolId)) {

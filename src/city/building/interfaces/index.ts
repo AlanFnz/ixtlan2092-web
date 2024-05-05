@@ -1,4 +1,4 @@
-import { Citizen } from '../../citizen/constants';
+import { ICitizen } from '../../citizen';
 import { City } from '../../constants';
 import { BuildingType } from '../constants';
 
@@ -25,18 +25,18 @@ interface IZone extends IBuilding {
 }
 
 interface IResidentialZone extends IZone {
-  residents: Citizen[];
+  residents: ICitizen[];
 }
 
 export interface ICommercialZone {
-  workers: Citizen[];
+  workers: ICitizen[];
   maxWorkers: number;
   numberOfJobsAvailable(): number;
   numberOfJobsFilled(): number;
 }
 
 export interface IIndustrialZone {
-  workers: Citizen[];
+  workers: ICitizen[];
   maxWorkers: number;
   numberOfJobsAvailable(): number;
   numberOfJobsFilled(): number;

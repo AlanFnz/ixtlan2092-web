@@ -1,12 +1,12 @@
 import { Zone } from './zone';
 import { generateIndustrialBuildingName } from './utils';
 import { City } from '../constants';
-import { Citizen } from '../citizen/constants';
 import { IIndustrialZone } from './interfaces';
 import { BUILDING_TYPE } from './constants';
+import { ICitizen } from '../citizen';
 
 export class IndustrialZone extends Zone implements IIndustrialZone {
-  workers: Citizen[];
+  workers: ICitizen[];
   maxWorkers: number;
 
   constructor(x: number, y: number) {

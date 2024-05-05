@@ -5,6 +5,8 @@ import { Road } from './road';
 import { Building } from './building';
 import { BUILDING_TYPE, BuildingType } from './constants';
 
+export type BuildingEntity = ResidentialZone | CommercialZone | IndustrialZone | Road;
+
 /**
  * creates a new building object based on the type specified
  * @param x the x-coordinate of the building
@@ -16,7 +18,7 @@ export function createBuilding(
   x: number,
   y: number,
   type: BuildingType
-): Building | undefined {
+): BuildingEntity | undefined {
   switch (type) {
     case BUILDING_TYPE.RESIDENTIAL:
       return new ResidentialZone(x, y);

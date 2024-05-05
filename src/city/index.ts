@@ -1,3 +1,4 @@
+import { ResidentialZone } from './building/residentialZone';
 import { Citizen } from './citizen/constants';
 import { City, Coordinate, Tile } from './constants';
 import { createTile } from './tile';
@@ -31,7 +32,11 @@ export function createCity(size: number): City {
     for (let x = 0; x < size; x++) {
       for (let y = 0; y < size; y++) {
         const tile = getTileByCoordinate({ x, y });
-        if (tile) population += tile.building?.citizens?.length ?? 0;
+        if (
+          tile?.building instanceof ResidentialZone &&
+          tile.building.residents
+        )
+          population += tile.building?.residents?.length ?? 0;
       }
     }
     return population.toString();

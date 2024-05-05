@@ -4,9 +4,10 @@ import { Citizen } from '../citizen/constants';
 import { City } from '../constants';
 import { BUILDING_TYPE } from './constants';
 import { ICommercialZone } from './interfaces';
+import { ICitizen } from '../citizen';
 
 export class CommercialZone extends Zone implements ICommercialZone {
-  workers: Citizen[];
+  workers: ICitizen[];
   maxWorkers: number;
 
   constructor(x: number, y: number) {
