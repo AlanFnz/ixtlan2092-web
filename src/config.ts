@@ -12,5 +12,8 @@ export default {
     MAX_RESIDENTS: 4,
     RESIDENT_MOVE_IN_CHANCE: 0.5,
   },
+  CITY: {
+    SIZE: 16,
+  },
 };
 

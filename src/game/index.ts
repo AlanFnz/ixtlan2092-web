@@ -1,84 +1,69 @@
-import { createScene } from '../sceneManager';
-import { createCity } from '../city';
-import { CITY_SIZE, Game } from './constants';
-import { createUi } from '../ui';
-import { Tile } from '../city/constants';
-import { TOOLBAR_BUTTONS, ToggleButton } from '../ui/constants';
 import { getIcon } from '../assetManager/icons';
+import { City, ICity } from '../city';
+import { BuildingEntity } from '../city/building/buildingCreator';
+import { ITile } from '../city/tile';
+import CONFIG from '../config';
+import { ISceneManager, SceneManager } from '../sceneManager';
+import { createUi } from '../ui';
+import { TOOLBAR_BUTTONS, ToggleButton } from '../ui/constants';
 
-export function createGame(): Game {
-  createUi();
-  const scene = createScene(CITY_SIZE);
-  const city = createCity(CITY_SIZE);
+export interface IGame {
+  selectedControl: HTMLElement | null;
+  activeToolId: string | null;
+  isPaused: boolean;
+  focusedObject: BuildingEntity | ITile | null;
+  step(): void;
+  onToolSelected(event: MouseEvent): void;
+  togglePause(): void;
+}
 
-  let selectedControl: HTMLElement | null =
+export class Game implements IGame {
+  selectedControl: HTMLElement | null =
     document.getElementById('button-select');
-  let activeToolId: string | null = 'select';
-  let isPaused = false;
-  let lastMove: any = new Date();
+  activeToolId: string | null = 'select';
+  isPaused: boolean = false;
+  focusedObject: BuildingEntity | ITile | null = null;
+  lastMove: number = Date.now();
+  private city: ICity = new City(CONFIG.CITY.SIZE);
+  private sceneManager: ISceneManager = new SceneManager(this.city);
 
-  function update() {
-    if (isPaused) return;
-    // update the city data model first, then update the scene
-    city.update();
-    scene.update(city);
-
-    // update ui
-    updateTitleBar();
+  constructor() {
+    this.sceneManager.start();
+    createUi();
+    document.addEventListener(
+      'wheel',
+      this.sceneManager.cameraManager.onMouseWheel.bind(this),
+      false
+    );
+    document.addEventListener('mousedown', this.onMouseDown.bind(this), false);
+    document.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+    document.addEventListener(
+      'contextmenu',
+      (event) => event.preventDefault(),
+      false
+    );
+    setInterval(() => this.step(), 1000);
   }
 
-  // event listeners
-  document.addEventListener('mousedown', onMouseDown, false);
-  document.addEventListener('mouseup', scene.cameraManager.onMouseUp, false);
-  document.addEventListener('mousemove', (event) => onMouseMove(event), false);
-  document.addEventListener('wheel', scene.cameraManager.onMouseWheel, {
-    passive: false,
-  });
-  document.addEventListener('touchstart', scene.cameraManager.onTouchStart, {
-    passive: false,
-  });
-  document.addEventListener('touchmove', scene.cameraManager.onTouchMove, {
-    passive: false,
-  });
-  document.addEventListener('touchend', scene.cameraManager.onTouchEnd);
-  window.addEventListener('resize', scene.onWindowResize, false);
+  step(): void {
+    if (this.isPaused) return;
+    this.city.step();
+    this.sceneManager.update(this.city);
+    this.updateTitleBar();
+    this.updateInfoOverlay();
+  }
 
-  // prevent context menu from popping up
-  document.addEventListener(
-    'contextmenu',
-    (event) => event.preventDefault(),
-    false
-  );
-
-  function onMouseDown(event: MouseEvent) {
-    if (event.button === 0) {
-      const selectedObject = scene.getSelectedObject(event);
-      useActiveTool(selectedObject);
+  onToolSelected(event: MouseEvent): void {
+    if (this.selectedControl) {
+      this.selectedControl.classList.remove('selected');
     }
-
-    scene.cameraManager.onMouseDown(event);
+    this.selectedControl = event.target as HTMLElement;
+    this.selectedControl.classList.add('selected');
+    this.activeToolId = this.selectedControl.getAttribute('data-type') || null;
   }
 
-  function onMouseMove(event: MouseEvent) {
-    // throttle event handler so it doesn't hurts performance
-    if (Date.now() - lastMove < 1 / 60.0) return;
-    lastMove = Date.now();
-
-    // get the object the mouse is currently hovering over
-    const hoverObject = scene.getSelectedObject(event);
-
-    scene.setHighlightedObject(hoverObject);
-
-    // if left mouse-button is down, use the tool as well
-    if (hoverObject && event.buttons & 1) {
-      useActiveTool(hoverObject);
-    }
-
-    scene.cameraManager.onMouseMove(event);
-  }
-
-  function togglePause() {
-    isPaused = !isPaused;
+  togglePause(): void {
+    this.isPaused = !this.isPaused;
 
     const toggleButton = document.getElementById(
       TOOLBAR_BUTTONS.TOGGLE_PAUSE.id
@@ -86,16 +71,16 @@ export function createGame(): Game {
 
     if (toggleButton) {
       const toggleButtonInfo = TOOLBAR_BUTTONS.TOGGLE_PAUSE as ToggleButton;
-      const newState = isPaused
+      const newState = this.isPaused
         ? toggleButtonInfo.uiTextPlay
         : toggleButtonInfo.uiTextPause;
       const newIcon = getIcon(
-        isPaused ? toggleButtonInfo.iconPlay : toggleButtonInfo.iconPause
+        this.isPaused ? toggleButtonInfo.iconPlay : toggleButtonInfo.iconPause
       );
 
       toggleButton.innerHTML = `<img src="${newIcon}" alt="${newState}" style="width: 100%; height: 100%; pointer-events: none;">`;
       toggleButton.dataset.state = newState;
-      if (isPaused) {
+      if (this.isPaused) {
         toggleButton.classList.add('selected');
       } else {
         toggleButton.classList.remove('selected');
@@ -103,63 +88,57 @@ export function createGame(): Game {
     }
   }
 
-  function onToolSelected(event: MouseEvent) {
-    if (event.target instanceof HTMLElement) {
-      if (selectedControl) selectedControl.classList.remove('selected');
-      selectedControl = event.target;
-      selectedControl?.classList.add('selected');
-      activeToolId = selectedControl?.getAttribute('data-type');
+  private onMouseDown(event: MouseEvent): void {
+    if (event.button === 0) {
+      const selectedObject = this.sceneManager.getSelectedObject(event);
+      this.useActiveTool(selectedObject as THREE.Object3D);
     }
   }
 
-  function useActiveTool(object: any) {
+  private onMouseMove(event: MouseEvent): void {
+    if (Date.now() - this.lastMove < 16) return;
+    this.lastMove = Date.now();
+    const hoverObject = this.sceneManager.getSelectedObject(event);
+    this.sceneManager.setHighlightedMesh(hoverObject as THREE.Mesh);
+    if (hoverObject && event.buttons & 1) {
+      this.useActiveTool(hoverObject as THREE.Object3D);
+    }
+  }
+
+  private useActiveTool(object: THREE.Object3D | null): void {
     if (!object) {
-      updateInfoOverlay(null);
+      this.updateInfoOverlay(true);
       return;
     }
-
-    const { x, y } = object.userData;
-    const tile = city.getTileByCoordinate({ x, y });
-    if (!tile) return;
-
-    // select
-    if (activeToolId === TOOLBAR_BUTTONS.SELECT.id) {
-      scene.setActiveObject(object);
-      updateInfoOverlay(tile);
-    } else if (activeToolId === TOOLBAR_BUTTONS.BULLDOZE.id) {
+    const tile = object.userData as ITile;
+    if (this.activeToolId === 'select') {
+      this.sceneManager.setActiveObject(object);
+      this.focusedObject = tile;
+      this.updateInfoOverlay();
+    } else if (this.activeToolId === 'bulldoze' && tile.building) {
       tile.removeBuilding();
-    } else if (!tile.building && activeToolId) {
-      tile.placeBuilding(activeToolId);
+      this.city.update();
+      this.sceneManager.update(this.city);
+    } else if (!tile.building) {
+      tile.placeBuilding(this.activeToolId);
+      this.city.update();
+      this.sceneManager.update(this.city);
     }
-
-    scene.update(city);
   }
 
-  function updateInfoOverlay(tile: Tile | null) {
-    const selectedObjectInfo = document.getElementById('info-overlay-details');
-    if (selectedObjectInfo)
-      selectedObjectInfo.innerHTML = tile ? tile.toHTML() : '';
+  private updateInfoOverlay(clear?: boolean): void {
+    const infoOverlayDetails = document.getElementById('info-overlay-details');
+    const tile = clear ? null : this.focusedObject || null;
+    if (infoOverlayDetails) {
+      infoOverlayDetails.innerHTML = tile ? tile.toHTML() : '';
+    }
   }
 
-  function updateTitleBar() {
+  private updateTitleBar(): void {
     const populationCounter = document.getElementById('population-counter');
-    if (populationCounter) populationCounter.innerHTML = city.getPopulation();
+    if (populationCounter) {
+      populationCounter.textContent = this.city.getPopulation();
+    }
   }
-
-  setInterval(() => {
-    update();
-  }, 1000);
-
-  if (scene) {
-    scene.start();
-    scene.initScene(city);
-  }
-
-  return {
-    isPaused,
-    update,
-    onToolSelected,
-    togglePause,
-  };
 }
 

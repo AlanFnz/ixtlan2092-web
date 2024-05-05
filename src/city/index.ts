@@ -1,37 +1,58 @@
 import { ResidentialZone } from './building/residentialZone';
-import { Citizen } from './citizen/constants';
-import { City, Coordinate, Tile } from './constants';
-import { createTile } from './tile';
-import { findTileByCoordinates } from './tile/utils';
+import { ITile, Tile } from './tile';
 
-export function createCity(size: number): City {
-  const tiles: Tile[][] = [];
-  const citizens: Citizen[] = [];
+export interface ICoordinate {
+  x: number;
+  y: number;
+}
 
-  function initData(this: any) {
+export interface ICity {
+  size: number;
+  tiles: ITile[][];
+  getTile(x: number, y: number): ITile | undefined;
+  getPopulation(): string;
+  update(): void;
+  step(): void;
+  getTileByCoordinate(coordinate: ICoordinate): Tile | null;
+  findTile(
+    start: ICoordinate,
+    filter: (tile: ITile) => boolean,
+    maxDistance: number
+  ): ITile | null;
+  getTileNeighbors(x: number, y: number): ITile[];
+}
+
+export class City implements ICity {
+  size: number;
+  tiles: ITile[][];
+
+  constructor(size: number) {
+    this.size = size;
+    this.tiles = this.initTiles(size);
+  }
+
+  private initTiles(size: number): ITile[][] {
+    let tiles = [];
     for (let x = 0; x < size; x++) {
-      const column: Tile[] = [];
+      const column: ITile[] = [];
       for (let y = 0; y < size; y++) {
-        const tile: Tile = createTile(x, y);
+        const tile = new Tile(x, y);
         column.push(tile);
       }
       tiles.push(column);
     }
+    return tiles;
   }
 
-  function update(this: City) {
-    for (let x = 0; x < size; x++) {
-      for (let y = 0; y < size; y++) {
-        tiles[x][y].building?.update(this);
-      }
-    }
+  getTile(x: number, y: number): ITile | undefined {
+    return this.tiles[x]?.[y];
   }
 
-  function getPopulation() {
+  getPopulation() {
     let population = 0;
-    for (let x = 0; x < size; x++) {
-      for (let y = 0; y < size; y++) {
-        const tile = getTileByCoordinate({ x, y });
+    for (let x = 0; x < this.size; x++) {
+      for (let y = 0; y < this.size; y++) {
+        const tile = this.getTileByCoordinate({ x, y });
         if (
           tile?.building instanceof ResidentialZone &&
           tile.building.residents
@@ -42,7 +63,25 @@ export function createCity(size: number): City {
     return population.toString();
   }
 
-  function getTileByCoordinate(coordinate: Coordinate) {
+  update(): void {
+    this.tiles.forEach((row) => row.forEach((tile) => tile.update(this)));
+  }
+
+  step(): void {
+    this.tiles.forEach((row) =>
+      row.forEach((tile) => {
+        tile.building?.step(this);
+        if (
+          tile?.building instanceof ResidentialZone &&
+          tile.building.residents
+        ) {
+          tile.building?.residents?.forEach((resident) => resident.step(this));
+        }
+      })
+    );
+  }
+
+  getTileByCoordinate(coordinate: ICoordinate) {
     if (
       !coordinate ||
       typeof coordinate.x !== 'number' ||
@@ -55,18 +94,18 @@ export function createCity(size: number): City {
     if (
       coordinate.x < 0 ||
       coordinate.y < 0 ||
-      coordinate.x >= tiles.length ||
-      coordinate.y >= tiles[coordinate.x].length
+      coordinate.x >= this.tiles.length ||
+      coordinate.y >= this.tiles[coordinate.x].length
     ) {
       console.error('Coordinate out of bounds');
       return null;
     }
 
-    return tiles[coordinate.x][coordinate.y];
+    return this.tiles[coordinate.x][coordinate.y];
   }
 
-  function getTileByBuildingId(tileId: string): Tile | undefined {
-    for (let row of tiles) {
+  getTileByBuildingId(tileId: string): ITile | undefined {
+    for (let row of this.tiles) {
       for (let tile of row) {
         if (tile.building?.id === tileId) {
           return tile;
@@ -76,72 +115,36 @@ export function createCity(size: number): City {
     return undefined;
   }
 
-  function findTile(
-    start: Coordinate,
-    searchCriteria: (tile: Tile) => boolean,
+  findTile(
+    start: ICoordinate,
+    filter: (tile: ITile) => boolean,
     maxDistance: number
-  ) {
-    const startTile: Tile | undefined = findTileByCoordinates(tiles, start);
-    const visited = new Set();
-    const tilesToSearch: Tile[] = [];
+  ): ITile | null {
+    const startTile = this.getTile(start.x, start.y);
+    if (!startTile) return null;
 
-    if (startTile) tilesToSearch.push(startTile);
+    const visited = new Set<string>();
+    const tilesToSearch: ITile[] = [startTile];
 
-    while (tilesToSearch.length > 0) {
+    while (tilesToSearch.length) {
       const tile = tilesToSearch.shift();
-      if (!tile) break;
+      if (!tile || visited.has(tile.id)) continue;
+      visited.add(tile.id);
 
-      if (visited.has(tile?.id)) {
-        continue;
-      } else {
-        visited.add(tile.id);
-      }
-
-      const distance = startTile?.distanceTo(tile);
-      if (distance && distance > maxDistance) continue;
-
-      if (searchCriteria(tile)) {
-        return tile;
-      } else {
-        tilesToSearch.push(...getTileNeighbors({ x: tile.x, y: tile.y }));
-      }
+      if (filter(tile)) return tile;
+      tilesToSearch.push(...this.getTileNeighbors(tile.x, tile.y));
     }
 
     return null;
   }
 
-  function getTileNeighbors(coordinate: Coordinate): Tile[] {
-    const { x, y } = coordinate;
-    const neighbors: Tile[] = [];
-
-    if (x > 0) {
-      neighbors.push(tiles[x - 1][y]);
-    }
-    if (x < size - 1) {
-      neighbors.push(tiles[x + 1][y]);
-    }
-    if (y > 0) {
-      neighbors.push(tiles[x][y - 1]);
-    }
-    if (y < size - 1) {
-      neighbors.push(tiles[x][y + 1]);
-    }
-
-    return neighbors;
+  getTileNeighbors(x: number, y: number): ITile[] {
+    const neighbors: ITile[] = [];
+    if (x > 0) neighbors.push(this.getTile(x - 1, y)!);
+    if (x < this.size - 1) neighbors.push(this.getTile(x + 1, y)!);
+    if (y > 0) neighbors.push(this.getTile(x, y - 1)!);
+    if (y < this.size - 1) neighbors.push(this.getTile(x, y + 1)!);
+    return neighbors.filter((t) => t !== undefined);
   }
-
-  initData();
-
-  return {
-    // props
-    size,
-
-    // functions
-    update,
-    getPopulation,
-    getTileByCoordinate,
-    getTileByBuildingId,
-    findTile,
-  };
 }
 

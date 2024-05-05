@@ -1,5 +1,5 @@
+import { ICity } from '..';
 import CONFIG from '../../config';
-import { City } from '../constants';
 import { Building } from './building';
 import { IZone } from './interfaces';
 
@@ -21,11 +21,11 @@ class Zone extends Building implements IZone {
     this.abandonmentCounter = 0;
   }
 
-  update(city: City): void {
+  update(city: ICity): void {
     this.checkRoadAccess(city);
   }
 
-  step(city: City): void {
+  step(city: ICity): void {
     super.step(city);
 
     if (this.checkDevelopmentCriteria()) {
@@ -50,7 +50,7 @@ class Zone extends Building implements IZone {
     return this.hasRoadAccess;
   }
 
-  private checkRoadAccess(city: City): void {
+  private checkRoadAccess(city: ICity): void {
     const road = city.findTile(
       { x: this.x, y: this.y },
       (tile) => tile.building?.type === 'road',

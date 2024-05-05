@@ -27,12 +27,14 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|jpe?g|gif|svg)$/i,
+        // Handle images and GLTF files
+        test: /\.(png|jpe?g|gif|svg|gltf|glb)$/i,
         use: [
           {
             loader: 'file-loader',
             options: {
-              outputPath: 'images',
+              outputPath: 'assets',
+              name: '[name].[ext]',
             },
           },
         ],

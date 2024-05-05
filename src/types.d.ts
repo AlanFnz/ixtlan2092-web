@@ -1,14 +1,14 @@
-import { City } from './city/constants';
-import { Game } from './game/constants';
+import { ICity } from './city';
+import { IGame } from './game';
 
 export interface CustomWindow extends Window {
   scene?: {
-    initScene: (city: City) => void;
+    initScene: (city: ICity) => void;
     start: () => void;
     stop: () => void;
   };
-  city: City;
-  game: Game;
+  city: ICity;
+  game: IGame;
   setActiveTool: (event: any, toolId: string) => void;
 }
 

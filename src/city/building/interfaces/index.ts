@@ -1,5 +1,5 @@
+import { ICity } from '../..';
 import { ICitizen } from '../../citizen';
-import { City } from '../../constants';
 import { BuildingType } from '../constants';
 
 interface IBuilding {
@@ -9,8 +9,8 @@ interface IBuilding {
   name: string;
   type: BuildingType;
   isMeshOutOfDate: boolean;
-  update(city: City): void;
-  step(city: City): void;
+  update(city: ICity): void;
+  step(city: ICity): void;
   dispose(): void;
   toHTML(): string;
 }

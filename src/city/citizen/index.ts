@@ -1,9 +1,10 @@
+import { ICity } from '..';
 import CONFIG from '../../config';
 import { CommercialZone } from '../building/commercialZone';
 import { IndustrialZone } from '../building/industrialZone';
 import { ResidentialZone } from '../building/residentialZone';
 import { checkIsWorkplace } from '../building/utils';
-import { City, Tile } from '../constants';
+import { ITile } from '../tile';
 import { CITIZEN_STATE, CitizenState } from './constants';
 import { getRandomFirstName, getRandomSurname } from './utils';
 
@@ -16,7 +17,7 @@ export interface ICitizen {
   stateCounter: number;
   residence: ResidentialZone;
   workplace: CommercialZone | IndustrialZone | null;
-  step(city: City): void;
+  step(city: ICity): void;
   dispose(): void;
   setWorkplace(workplace: CommercialZone | IndustrialZone | null): void;
   toHTML(): string;
@@ -54,7 +55,7 @@ export class Citizen implements ICitizen {
     }
   }
 
-  step(city: City): void {
+  step(city: ICity): void {
     switch (this.state) {
       case CITIZEN_STATE.IDLE:
       case CITIZEN_STATE.SCHOOL:
@@ -83,10 +84,10 @@ export class Citizen implements ICitizen {
     this.workplace?.workers.splice(this.workplace.workers.indexOf(this), 1);
   }
 
-  private findJob(city: City): CommercialZone | IndustrialZone | null {
+  private findJob(city: ICity): CommercialZone | IndustrialZone | null {
     const tile = city.findTile(
       { x: this.residence.x, y: this.residence.y },
-      (tile: Tile) => {
+      (tile: ITile) => {
         // search for an industrial or commercial building with at least one available job
         const building = tile.building as CommercialZone | IndustrialZone;
         if (

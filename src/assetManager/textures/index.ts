@@ -36,14 +36,6 @@ const textures: Record<TextureKey, THREE.Texture> = {
   INDUSTRIAL3: loadTexture(INDUSTRIAL3),
 };
 
-function getTopMaterial(color: THREE.Color | number | string) {
-  return new THREE.MeshLambertMaterial({ color });
-}
-
-function getSideMaterial(textureName: TextureKey) {
-  return new THREE.MeshLambertMaterial({ map: textures[textureName].clone() });
-}
-
 function isValidTextureKey(key: string): key is TextureKey {
   return key in textures;
 }
@@ -56,14 +48,5 @@ function loadTexture(url: string) {
   return tex;
 }
 
-const getTexture = (type: TextureKey) => textures[type];
-
-export {
-  TextureKey,
-  getTopMaterial,
-  getSideMaterial,
-  getTexture,
-  isValidTextureKey,
-  loadTexture,
-};
+export { textures, TextureKey, isValidTextureKey };
 

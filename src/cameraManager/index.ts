@@ -17,21 +17,23 @@ import {
   ELEVATION_SENSITIVITY,
 } from './constants';
 
+export interface ICameraManager {
+  camera: THREE.PerspectiveCamera;
+  onMouseDown(event: MouseEvent): void;
+  onMouseUp(event: MouseEvent): void;
+  onMouseMove(event: MouseEvent): void;
+  onMouseWheel(event: WheelEvent): void;
+  onTouchStart(event: TouchEvent): void;
+  onTouchMove(event: TouchEvent): void;
+  onTouchEnd(event: TouchEvent): void;
+  onWindowResize(): void;
+}
+
 export function createCameraManager(
   gameWindow: HTMLElement,
   renderer: THREE.WebGLRenderer,
   citySize: number
-): {
-  camera: THREE.PerspectiveCamera;
-  onMouseDown: (event: MouseEvent) => void;
-  onMouseUp: (event: MouseEvent) => void;
-  onMouseMove: (event: MouseEvent) => void;
-  onMouseWheel: (event: WheelEvent) => void;
-  onTouchStart: (event: TouchEvent) => void;
-  onTouchMove: (event: TouchEvent) => void;
-  onTouchEnd: (event: TouchEvent) => void;
-  onWindowResize: () => void;
-} {
+): ICameraManager {
   const camera = new THREE.PerspectiveCamera(
     75,
     gameWindow.offsetWidth / gameWindow.offsetHeight,
@@ -127,10 +129,10 @@ export function createCameraManager(
     prevMouseX = event.clientX;
     prevMouseY = event.clientY;
   }
-  
+
   function onMouseWheel(event: WheelEvent): void {
     event.preventDefault();
-    
+
     const zoomAmount = event.deltaY * ZOOM_SENSITIVITY;
 
     cameraRadius += zoomAmount;

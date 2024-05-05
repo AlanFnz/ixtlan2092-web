@@ -2,8 +2,8 @@ import CONFIG from '../../config';
 import { Zone } from './zone';
 import { IResidentialZone } from './interfaces';
 import { BUILDING_TYPE } from './constants';
-import { City } from '../constants';
 import { Citizen, ICitizen } from '../citizen';
+import { ICity } from '..';
 
 export class ResidentialZone extends Zone implements IResidentialZone {
   residents: ICitizen[];
@@ -14,7 +14,7 @@ export class ResidentialZone extends Zone implements IResidentialZone {
     this.residents = [];
   }
 
-  step(city: City): void {
+  step(city: ICity): void {
     super.step(city);
 
     if (this.abandoned) {

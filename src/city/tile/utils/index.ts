@@ -1,9 +1,10 @@
-import { Coordinate, Tile } from '../../constants';
+import { ITile } from '..';
+import { ICoordinate } from '../..';
 
 function findTileByCoordinates(
-  tiles: Tile[][],
-  coordinate: Coordinate
-): Tile | undefined {
+  tiles: ITile[][],
+  coordinate: ICoordinate
+): ITile | undefined {
   // tiles is a 2D array
   if (
     coordinate.x < 0 ||

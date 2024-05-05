@@ -1,108 +1,84 @@
 import * as THREE from 'three';
-import { createCameraManager } from '../cameraManager';
-import { City } from '../city/constants';
-import { createAssetInstance } from '../assetManager';
-import { Building } from '../city/building/constants';
+import CONFIG from '../config';
+import { ICity } from '../city';
+import { AssetManager, IAssetManager } from '../assetManager';
+import { ICameraManager, createCameraManager } from '../cameraManager';
 
-export function createScene(citySize: number) {
-  const gameWindow = document.getElementById('render-target');
-  if (!gameWindow) {
-    console.error('Failed to find the render target element!');
-    throw new Error('Failed to find the render target element!');
+export interface ISceneManager {
+  start(): void;
+  stop(): void;
+  update(city: ICity): void;
+  cameraManager: ICameraManager;
+  getSelectedObject(event: MouseEvent): THREE.Object3D | null;
+  setActiveObject(object: THREE.Object3D): void;
+  setHighlightedMesh(mesh: THREE.Mesh | null): void;
+}
+
+export class SceneManager implements ISceneManager {
+  private renderer: THREE.WebGLRenderer;
+  private scene: THREE.Scene;
+  private gameWindow: HTMLElement;
+  private assetManager: IAssetManager;
+  cameraManager: ICameraManager;
+  private buildings: (THREE.Mesh | null)[][];
+  private raycaster: THREE.Raycaster;
+  private mouse: THREE.Vector2;
+  private activeObject: THREE.Object3D | null;
+  private hoverObject: THREE.Object3D | null;
+
+  constructor(city: ICity) {
+    this.renderer = new THREE.WebGLRenderer();
+    this.scene = new THREE.Scene();
+    this.gameWindow = document.getElementById('render-target') as HTMLElement;
+    this.assetManager = new AssetManager();
+    this.cameraManager = createCameraManager(
+      this.gameWindow,
+      this.renderer,
+      CONFIG.CITY.SIZE
+    );
+    this.buildings = [];
+
+    this.renderer.setSize(
+      this.gameWindow.offsetWidth,
+      this.gameWindow.offsetHeight
+    );
+    this.renderer.setClearColor(0x000000, 0);
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.gameWindow.appendChild(this.renderer.domElement);
+    window.addEventListener('resize', this.onResize.bind(this), false);
+
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = new THREE.Vector2();
+    this.activeObject = null;
+    this.hoverObject = null;
+
+    this.initialize(city);
   }
 
-  const scene = new THREE.Scene();
-
-  // renderer config
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
-  renderer.setClearColor(0x000000, 0);
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  gameWindow.appendChild(renderer.domElement);
-
-  const cameraManager = createCameraManager(gameWindow, renderer, citySize);
-
-  if (!cameraManager) {
-    console.error('Failed to create camera!');
-    throw new Error('Failed to create camera or camera not found');
-  }
-
-  function onWindowResize() {
-    if (!gameWindow || !cameraManager) return;
-    cameraManager.onWindowResize();
-  }
-
-  // init scene
-  const raycaster = new THREE.Raycaster();
-  const mouse = new THREE.Vector2();
-  let activeObject: any = undefined;
-  let hoverObject: any = undefined;
-  let terrain: any[] = [];
-  let buildings: any[] = [];
-
-  function initScene(city: City) {
-    scene.clear();
-    buildings = Array.from({ length: city.size }, () =>
-      new Array(city.size).fill(undefined)
+  private initialize(city: ICity): void {
+    this.scene.clear();
+    this.buildings = Array.from({ length: city.size }, () =>
+      Array.from({ length: city.size }, () => null)
     );
 
     for (let x = 0; x < city.size; x++) {
-      const column = [];
-
       for (let y = 0; y < city.size; y++) {
-        const tile = city.getTileByCoordinate({ x, y });
-        if (tile?.terrainId) {
-          const terrainMesh = createAssetInstance(
-            tile.terrainId,
-            x,
-            y,
-            tile.building
-          );
-          if (terrainMesh) {
-            scene.add(terrainMesh);
-            column.push(terrainMesh);
-          }
-        }
-      }
-      terrain.push(column);
-      buildings.push(...Array(city.size).fill(undefined));
-    }
-
-    setupLights();
-  }
-
-  function update(city: City) {
-    for (let x = 0; x < city.size; x++) {
-      for (let y = 0; y < city.size; y++) {
-        const tile = city.getTileByCoordinate({ x, y });
-        const existingBuildingMesh = buildings[x][y];
-
-        // if the player removes a building, remove it from the scene
-        if (!tile?.building && existingBuildingMesh) {
-          scene.remove(existingBuildingMesh);
-          buildings[x][y] = undefined;
-        }
-
-        // if the data model has changed, update the mesh
-        if (tile?.building && tile.building.isMeshOutOfDate) {
-          scene.remove(existingBuildingMesh);
-          buildings[x][y] = createAssetInstance(
-            tile.building.type,
-            x,
-            y,
-            tile.building
-          );
-          scene.add(buildings[x][y]);
-          tile.building.isMeshOutOfDate = false;
+        const tile = city.getTile(x, y);
+        if (tile) {
+          const mesh = this.assetManager.createGroundMesh(tile);
+          this.scene.add(mesh);
+          this.buildings[x][y] = mesh;
         }
       }
     }
+
+    this.setupLights();
   }
 
-  function setupLights() {
-    const sun = new THREE.DirectionalLight(0xffffff, 4);
-    sun.position.set(20, 10, 20);
+  private setupLights(): void {
+    const sun = new THREE.DirectionalLight(0xffffff, 1);
+    sun.position.set(20, 20, 20);
     sun.castShadow = true;
     sun.shadow.camera.left = -10;
     sun.shadow.camera.right = 10;
@@ -112,19 +88,89 @@ export function createScene(citySize: number) {
     sun.shadow.mapSize.height = 1024;
     sun.shadow.camera.near = 0.5;
     sun.shadow.camera.far = 50;
-    scene.add(sun);
-    scene.add(new THREE.AmbientLight(0xffffff, 1));
+    this.scene.add(sun);
+    this.scene.add(new THREE.AmbientLight(0xffffff, 0.3));
   }
 
-  function getSelectedObject(event: MouseEvent) {
-    // compute normalized mouse coordinates
-    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+  update(city: ICity) {
+    for (let x = 0; x < city.size; x++) {
+      for (let y = 0; y < city.size; y++) {
+        const tile = city.getTile(x, y);
+        const existingBuildingMesh = this.buildings[x][y];
 
-    raycaster.setFromCamera(mouse, cameraManager.camera);
+        if (tile) {
+          if (!tile.building && existingBuildingMesh) {
+            this.scene.remove(existingBuildingMesh);
+            this.buildings[x][y] = null;
+          }
 
-    let intersections = raycaster.intersectObjects(scene.children, false);
+          if (
+            tile.building &&
+            tile.building.isMeshOutOfDate &&
+            existingBuildingMesh
+          ) {
+            this.scene.remove(existingBuildingMesh);
+            const newBuildingMesh = this.assetManager.createBuildingMesh(tile);
+            if (newBuildingMesh) {
+              this.scene.add(newBuildingMesh);
+              this.buildings[x][y] = newBuildingMesh;
+            }
+            tile.building.isMeshOutOfDate = false;
+          }
+        }
+      }
+    }
+  }
 
+  public start(): void {
+    this.renderer.setAnimationLoop(this.draw.bind(this));
+  }
+
+  public stop(): void {
+    this.renderer.setAnimationLoop(null);
+  }
+
+  private draw(): void {
+    this.renderer.render(this.scene, this.cameraManager.camera);
+  }
+
+  public setHighlightedMesh(mesh: THREE.Mesh | null): void {
+    if (this.hoverObject && this.hoverObject !== this.activeObject) {
+      this.setMeshEmission(this.hoverObject, 0x000000);
+    }
+    this.hoverObject = mesh;
+    if (this.hoverObject) {
+      this.setMeshEmission(this.hoverObject, 0x555555);
+    }
+  }
+
+  private setMeshEmission(mesh: THREE.Object3D | null, color: number): void {
+    if (!mesh || !(mesh instanceof THREE.Mesh)) return;
+
+    const materials = Array.isArray(mesh.material)
+      ? mesh.material
+      : [mesh.material];
+
+    materials.forEach((material) => {
+      if (
+        material instanceof THREE.MeshStandardMaterial ||
+        material instanceof THREE.MeshPhongMaterial
+      ) {
+        material.emissive.setHex(color);
+      }
+    });
+  }
+
+  public getSelectedObject(event: MouseEvent): THREE.Object3D | null {
+    this.mouse.x =
+      (event.clientX / this.renderer.domElement.clientWidth) * 2 - 1;
+    this.mouse.y =
+      -(event.clientY / this.renderer.domElement.clientHeight) * 2 + 1;
+    this.raycaster.setFromCamera(this.mouse, this.cameraManager.camera);
+    let intersections = this.raycaster.intersectObjects(
+      this.scene.children,
+      false
+    );
     if (intersections.length > 0) {
       return intersections[0].object;
     } else {
@@ -132,66 +178,24 @@ export function createScene(citySize: number) {
     }
   }
 
-  function setHighlightedObject(object: THREE.Object3D | null) {
-    if (hoverObject && hoverObject !== activeObject) {
-      setObjectEmission(hoverObject, 0x000000);
+  public setActiveObject(object: THREE.Object3D): void {
+    if (this.activeObject) {
+      this.setMeshEmission(this.activeObject, 0x000000);
     }
-
-    hoverObject = object;
-
-    if (hoverObject) {
-      setObjectEmission(hoverObject, 0x555555);
+    this.activeObject = object;
+    if (this.activeObject) {
+      this.setMeshEmission(this.activeObject, 0xaaaa55);
     }
   }
 
-  function setActiveObject(object: Building) {
-    setObjectEmission(activeObject, 0x000000);
-    activeObject = object;
-    setObjectEmission(activeObject, 0xaaaa55);
+  private onResize(): void {
+    this.cameraManager.camera.aspect =
+      this.gameWindow.offsetWidth / this.gameWindow.offsetHeight;
+    this.cameraManager.camera.updateProjectionMatrix();
+    this.renderer.setSize(
+      this.gameWindow.offsetWidth,
+      this.gameWindow.offsetHeight
+    );
   }
-
-  function setObjectEmission(object: THREE.Object3D, color: number) {
-    if (!object) return;
-
-    if (object instanceof THREE.Mesh) {
-      const materials = Array.isArray(object.material)
-        ? object.material
-        : [object.material];
-
-      materials.forEach((material) => {
-        if (material instanceof THREE.MeshLambertMaterial) {
-          material.emissive.setHex(color);
-        }
-      });
-    }
-  }
-
-  function draw() {
-    renderer.render(scene, cameraManager.camera);
-  }
-
-  function start() {
-    renderer.setAnimationLoop(draw);
-  }
-
-  function stop() {
-    window.removeEventListener('resize', onWindowResize, false);
-    renderer.setAnimationLoop(null);
-  }
-
-  return {
-    // props
-    cameraManager,
-
-    // functions
-    initScene,
-    start,
-    stop,
-    update,
-    onWindowResize,
-    setActiveObject,
-    getSelectedObject,
-    setHighlightedObject,
-  };
 }
 

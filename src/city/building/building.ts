@@ -1,4 +1,4 @@
-import { City } from '../constants';
+import { ICity } from '..';
 import { BUILDING_TYPE, BuildingType } from './constants';
 import { IBuilding } from './interfaces';
 
@@ -10,12 +10,12 @@ class Building implements IBuilding {
 
   constructor(public x: number, public y: number) {}
 
-  update(city: City): void {}
+  update(city: ICity): void {}
 
   /**
    * update the state of this building by one simulation step
    */
-  step(city: City): void {}
+  step(city: ICity): void {}
 
   /**
    * cleanup before building removal

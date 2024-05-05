@@ -1,10 +1,9 @@
 import { Zone } from './zone';
 import { generateCommericalBuildingName } from './utils';
-import { Citizen } from '../citizen/constants';
-import { City } from '../constants';
 import { BUILDING_TYPE } from './constants';
 import { ICommercialZone } from './interfaces';
 import { ICitizen } from '../citizen';
+import { ICity } from '..';
 
 export class CommercialZone extends Zone implements ICommercialZone {
   workers: ICitizen[];
@@ -28,7 +27,7 @@ export class CommercialZone extends Zone implements ICommercialZone {
     return this.workers.length;
   }
 
-  step(city: City): void {
+  step(city: ICity): void {
     super.step(city);
     if (this.abandoned) {
       this.layOffWorkers();
