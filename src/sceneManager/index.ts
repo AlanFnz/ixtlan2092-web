@@ -19,12 +19,12 @@ export class SceneManager implements ISceneManager {
   private scene: THREE.Scene;
   private gameWindow: HTMLElement;
   private assetManager: IAssetManager;
-  cameraManager: ICameraManager;
   private buildings: (THREE.Mesh | null)[][];
   private raycaster: THREE.Raycaster;
   private mouse: THREE.Vector2;
   private activeObject: THREE.Object3D | null;
   private hoverObject: THREE.Object3D | null;
+  cameraManager: ICameraManager;
 
   constructor(city: ICity) {
     this.renderer = new THREE.WebGLRenderer();
@@ -58,19 +58,18 @@ export class SceneManager implements ISceneManager {
 
   private initialize(city: ICity): void {
     this.scene.clear();
-    this.buildings = Array.from({ length: city.size }, () =>
-      Array.from({ length: city.size }, () => null)
-    );
 
     for (let x = 0; x < city.size; x++) {
+      const column = [];
       for (let y = 0; y < city.size; y++) {
         const tile = city.getTile(x, y);
         if (tile) {
           const mesh = this.assetManager.createGroundMesh(tile);
           this.scene.add(mesh);
-          this.buildings[x][y] = mesh;
+          column.push(mesh);
         }
       }
+      this.buildings.push([...Array(city.size)]);
     }
 
     this.setupLights();
@@ -100,6 +99,8 @@ export class SceneManager implements ISceneManager {
 
         if (tile) {
           if (!tile.building && existingBuildingMesh) {
+            console.log('inside if', existingBuildingMesh);
+
             this.scene.remove(existingBuildingMesh);
             this.buildings[x][y] = null;
           }
