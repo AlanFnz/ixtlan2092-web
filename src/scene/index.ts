@@ -159,10 +159,7 @@ export function createScene(citySize: number) {
         : [object.material];
 
       materials.forEach((material) => {
-        if (
-          material instanceof THREE.MeshStandardMaterial ||
-          material instanceof THREE.MeshPhongMaterial
-        ) {
+        if (material instanceof THREE.MeshLambertMaterial) {
           material.emissive.setHex(color);
         }
       });
