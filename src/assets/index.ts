@@ -76,7 +76,7 @@ function createZoneMesh(x: number, y: number, data: Building): THREE.Mesh {
   mesh.userData = { x, y };
 
   if (data.height) {
-    mesh.scale.set(0.8, (data.height - 0.95) / 2, 0.8);
+    mesh.scale.set(0.8, 0.8 * data.height, 0.8);
     mesh.material.forEach(
       (material) => data.height && material.map?.repeat.set(1, data.height - 1)
     );
