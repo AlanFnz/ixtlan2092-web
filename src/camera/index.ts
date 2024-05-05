@@ -32,7 +32,6 @@ export function createCameraManager(
   onTouchEnd: (event: TouchEvent) => void;
   onWindowResize: () => void;
 } {
-  // Create a camera with a perspective projection.
   const camera = new THREE.PerspectiveCamera(
     75,
     gameWindow.offsetWidth / gameWindow.offsetHeight,
@@ -67,7 +66,6 @@ export function createCameraManager(
     camera.updateMatrix();
   }
 
-  // Handle window resizing
   function onWindowResize() {
     if (!gameWindow || !camera) return;
     camera.aspect = gameWindow.offsetWidth / gameWindow.offsetHeight;
@@ -111,7 +109,7 @@ export function createCameraManager(
       if (event.ctrlKey) {
         handlePanning(deltaY, deltaX);
       } else {
-        // Rotation
+        // rotation
         cameraAzimuth += -(deltaX * AZIMUTH_SENSITIVITY);
         cameraElevation += -(deltaY * ELEVATION_SENSITIVITY);
         cameraElevation = Math.min(
@@ -133,7 +131,6 @@ export function createCameraManager(
   function onMouseWheel(event: WheelEvent): void {
     event.preventDefault();
     
-    // Zoom
     const zoomAmount = event.deltaY * ZOOM_SENSITIVITY;
 
     cameraRadius += zoomAmount;

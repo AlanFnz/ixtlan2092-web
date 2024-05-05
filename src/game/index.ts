@@ -16,19 +16,19 @@ export function createGame(): Game {
     document.getElementById('button-select');
   let activeToolId: string | null = 'select';
   let isPaused = false;
-  let lastMove: any = new Date(); // Last time mouse was moved
+  let lastMove: any = new Date();
 
   function update() {
     if (isPaused) return;
-    // Update the city data model first, then update the scene
+    // update the city data model first, then update the scene
     city.update();
     scene.update(city);
 
-    // Update ui
+    // update ui
     updateTitleBar();
   }
 
-  // Hookup event listeners
+  // event listeners
   document.addEventListener('mousedown', onMouseDown, false);
   document.addEventListener('mouseup', scene.cameraManager.onMouseUp, false);
   document.addEventListener('mousemove', (event) => onMouseMove(event), false);
@@ -44,7 +44,7 @@ export function createGame(): Game {
   document.addEventListener('touchend', scene.cameraManager.onTouchEnd);
   window.addEventListener('resize', scene.onWindowResize, false);
 
-  // Prevent context menu from popping up
+  // prevent context menu from popping up
   document.addEventListener(
     'contextmenu',
     (event) => event.preventDefault(),
@@ -52,7 +52,6 @@ export function createGame(): Game {
   );
 
   function onMouseDown(event: MouseEvent) {
-    // Check if left mouse button pressed
     if (event.button === 0) {
       const selectedObject = scene.getSelectedObject(event);
       useActiveTool(selectedObject);
@@ -62,16 +61,16 @@ export function createGame(): Game {
   }
 
   function onMouseMove(event: MouseEvent) {
-    // Throttle event handler so it doesn't kill the browser
+    // throttle event handler so it doesn't hurts performance
     if (Date.now() - lastMove < 1 / 60.0) return;
     lastMove = Date.now();
 
-    // Get the object the mouse is currently hovering over
+    // get the object the mouse is currently hovering over
     const hoverObject = scene.getSelectedObject(event);
 
     scene.setHighlightedObject(hoverObject);
 
-    // If left mouse-button is down, use the tool as well
+    // if left mouse-button is down, use the tool as well
     if (hoverObject && event.buttons & 1) {
       useActiveTool(hoverObject);
     }
@@ -124,14 +123,12 @@ export function createGame(): Game {
     const tile = city.getTileByCoordinate({ x, y });
     if (!tile) return;
 
-    // Select
+    // select
     if (activeToolId === TOOLBAR_BUTTONS.SELECT.id) {
       scene.setActiveObject(object);
       updateInfoOverlay(tile);
-      // If bulldoze, remove building
     } else if (activeToolId === TOOLBAR_BUTTONS.BULLDOZE.id) {
       tile.removeBuilding();
-      // Otherwise, try to place building
     } else if (!tile.building && activeToolId) {
       tile.placeBuilding(activeToolId);
     }

@@ -52,10 +52,10 @@ const TOOLBAR_BUTTONS: ToolbarButtons = {
 
   TOGGLE_PAUSE: {
     id: 'TOGGLE_PAUSE',
-    icon: ICON_KEYS.PAUSE, // Fallback icon if needed
+    icon: ICON_KEYS.PAUSE, // fallback icon if needed
     iconPlay: ICON_KEYS.PLAY,
     iconPause: ICON_KEYS.PAUSE,
-    uiText: 'PAUSE', // Fallback text if needed
+    uiText: 'PAUSE', // fallback text if needed
     uiTextPlay: 'PLAY',
     uiTextPause: 'PAUSE',
   } as ToggleButton,

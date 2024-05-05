@@ -5,17 +5,15 @@ import { createAssetInstance } from '../assets';
 import { Building } from '../city/building/constants';
 
 export function createScene(citySize: number) {
-  // Initial scene setup
   const gameWindow = document.getElementById('render-target');
   if (!gameWindow) {
     console.error('Failed to find the render target element!');
     throw new Error('Failed to find the render target element!');
   }
 
-  // Create scene
   const scene = new THREE.Scene();
 
-  // Renderer config
+  // renderer config
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
   renderer.setClearColor(0x000000, 0);
@@ -23,7 +21,6 @@ export function createScene(citySize: number) {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   gameWindow.appendChild(renderer.domElement);
 
-  // Create camera
   const cameraManager = createCameraManager(gameWindow, renderer, citySize);
 
   if (!cameraManager) {
@@ -31,13 +28,12 @@ export function createScene(citySize: number) {
     throw new Error('Failed to create camera or camera not found');
   }
 
-  // Handle window resizing
   function onWindowResize() {
     if (!gameWindow || !cameraManager) return;
     cameraManager.onWindowResize();
   }
 
-  // Init scene
+  // init scene
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
   let activeObject: any = undefined;
@@ -55,8 +51,6 @@ export function createScene(citySize: number) {
       const column = [];
 
       for (let y = 0; y < city.size; y++) {
-        // Load the mesh/3D object corresponding to the tile at (x,y)
-        // Terrain
         const tile = city.getTileByCoordinate({ x, y });
         if (tile?.terrainId) {
           const terrainMesh = createAssetInstance(
@@ -75,7 +69,6 @@ export function createScene(citySize: number) {
       buildings.push(...Array(city.size).fill(undefined));
     }
 
-    // Add lights
     setupLights();
   }
 
@@ -85,13 +78,13 @@ export function createScene(citySize: number) {
         const tile = city.getTileByCoordinate({ x, y });
         const existingBuildingMesh = buildings[x][y];
 
-        // If the player removes a building, remove it from the scene
+        // if the player removes a building, remove it from the scene
         if (!tile?.building && existingBuildingMesh) {
           scene.remove(existingBuildingMesh);
           buildings[x][y] = undefined;
         }
 
-        // If the data model has changed, update the mesh
+        // if the data model has changed, update the mesh
         if (tile?.building && tile.building.updated) {
           scene.remove(existingBuildingMesh);
           buildings[x][y] = createAssetInstance(
@@ -124,7 +117,7 @@ export function createScene(citySize: number) {
   }
 
   function getSelectedObject(event: MouseEvent) {
-    // Compute normalized mouse coordinates
+    // compute normalized mouse coordinates
     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
     mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
@@ -140,7 +133,6 @@ export function createScene(citySize: number) {
   }
 
   function setHighlightedObject(object: THREE.Object3D | null) {
-    // Unhighlight the previously hovered object (if it isn't currently selected)
     if (hoverObject && hoverObject !== activeObject) {
       setObjectEmission(hoverObject, 0x000000);
     }
@@ -148,23 +140,19 @@ export function createScene(citySize: number) {
     hoverObject = object;
 
     if (hoverObject) {
-      // Highlight the new hovered object (if it isn't currently selected))
       setObjectEmission(hoverObject, 0x555555);
     }
   }
 
   function setActiveObject(object: Building) {
-    // Clear highlight on previously active object
     setObjectEmission(activeObject, 0x000000);
     activeObject = object;
-    // Highlight new active object
     setObjectEmission(activeObject, 0xaaaa55);
   }
 
   function setObjectEmission(object: THREE.Object3D, color: number) {
     if (!object) return;
 
-    // Ensure the object is a Mesh and has a material property before attempting to modify the emissive color.
     if (object instanceof THREE.Mesh) {
       const materials = Array.isArray(object.material)
         ? object.material
@@ -181,7 +169,6 @@ export function createScene(citySize: number) {
     }
   }
 
-  // Render and interaction handlers
   function draw() {
     renderer.render(scene, cameraManager.camera);
   }
@@ -196,10 +183,10 @@ export function createScene(citySize: number) {
   }
 
   return {
-    // Props
+    // props
     cameraManager,
 
-    // Methods
+    // functions
     initScene,
     start,
     stop,
