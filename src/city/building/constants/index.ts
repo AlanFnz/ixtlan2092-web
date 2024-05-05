@@ -1,5 +1,5 @@
-import { Citizen } from '../citizen/constants';
-import { City } from '../constants';
+import { Citizen } from '../../citizen/constants';
+import { City } from '../../constants';
 
 interface Building {
   id: string;
@@ -22,6 +22,7 @@ interface Building {
 }
 
 const BUILDING_TYPE = {
+  BUILDING: 'BUILDING',
   RESIDENTIAL: 'RESIDENTIAL',
   COMMERCIAL: 'COMMERCIAL',
   INDUSTRIAL: 'INDUSTRIAL',

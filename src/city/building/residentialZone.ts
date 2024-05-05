@@ -1,0 +1,62 @@
+import CONFIG from '../../config';
+import { Zone } from './zone';
+import { IResidentialZone } from './interfaces';
+import { BUILDING_TYPE } from './constants';
+import { Citizen } from '../citizen/constants';
+import { City } from '../constants';
+import { createCitizen } from '../citizen';
+
+export class ResidentialZone extends Zone implements IResidentialZone {
+  residents: Citizen[];
+
+  constructor(x: number, y: number) {
+    super(x, y);
+    this.type = BUILDING_TYPE.RESIDENTIAL;
+    this.residents = [];
+  }
+
+  step(city: City): void {
+    super.step(city);
+
+    if (this.abandoned) {
+      this.evictResidents();
+    } else if (
+      this.developed &&
+      this.residents.length < CONFIG.ZONE.MAX_RESIDENTS &&
+      Math.random() < CONFIG.ZONE.RESIDENT_MOVE_IN_CHANCE
+    ) {
+      const resident = createCitizen(this.id); // TODO: this should be -> new Citizen(this) after refactor
+      this.residents.push(resident);
+    }
+  }
+
+  private evictResidents(): void {
+    for (const resident of this.residents) {
+      // TODO: call here resident dispose method when available
+    }
+    this.residents = [];
+  }
+
+  dispose(): void {
+    this.evictResidents();
+    super.dispose();
+  }
+
+  toHTML(): string {
+    let html = super.toHTML();
+    html += `<br><strong>Residents</strong>`;
+
+    html += '<ul style="margin-top: 0; padding-left: 20px;">';
+    if (this.residents.length > 0) {
+      for (const resident of this.residents) {
+        html += resident.toHTML();
+      }
+    } else {
+      html += '<li>None</li>';
+    }
+    html += '</ul>';
+
+    return html;
+  }
+}
+
