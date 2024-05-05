@@ -1,4 +1,4 @@
-import { ASSET_ID } from '../../assets';
+import { ASSET_ID } from '../../assets/constants';
 import { createBuilding } from '../building';
 import { isValidBuildingId } from '../building/utils';
 import { Tile } from '../constants';
