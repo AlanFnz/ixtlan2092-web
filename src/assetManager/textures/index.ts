@@ -48,5 +48,9 @@ function loadTexture(url: string) {
   return tex;
 }
 
-export { textures, TextureKey, isValidTextureKey };
+function getSideMaterial(textureName: TextureKey) {
+  return new THREE.MeshLambertMaterial({ map: textures[textureName].clone() });
+}
+
+export { textures, TextureKey, isValidTextureKey, getSideMaterial };
 

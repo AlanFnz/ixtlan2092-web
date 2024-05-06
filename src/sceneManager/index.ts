@@ -99,18 +99,12 @@ export class SceneManager implements ISceneManager {
 
         if (tile) {
           if (!tile.building && existingBuildingMesh) {
-            console.log('inside if', existingBuildingMesh);
-
             this.scene.remove(existingBuildingMesh);
             this.buildings[x][y] = null;
           }
 
-          if (
-            tile.building &&
-            tile.building.isMeshOutOfDate &&
-            existingBuildingMesh
-          ) {
-            this.scene.remove(existingBuildingMesh);
+          if (tile.building && tile.building.isMeshOutOfDate) {
+            if (existingBuildingMesh) this.scene.remove(existingBuildingMesh);
             const newBuildingMesh = this.assetManager.createBuildingMesh(tile);
             if (newBuildingMesh) {
               this.scene.add(newBuildingMesh);

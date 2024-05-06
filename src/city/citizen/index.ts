@@ -91,6 +91,7 @@ export class Citizen implements ICitizen {
         // search for an industrial or commercial building with at least one available job
         const building = tile.building as CommercialZone | IndustrialZone;
         if (
+          building?.type &&
           checkIsWorkplace(building.type) &&
           building.numberOfJobsAvailable() > 0
         ) {

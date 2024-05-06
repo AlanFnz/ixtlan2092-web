@@ -1,6 +1,7 @@
 import { ICity } from '..';
 import CONFIG from '../../config';
 import { Building } from './building';
+import { BUILDING_TYPE } from './constants';
 import { IZone } from './interfaces';
 
 class Zone extends Building implements IZone {
@@ -36,7 +37,7 @@ class Zone extends Building implements IZone {
         this.isMeshOutOfDate = true;
       }
     } else {
-      this.abandonmentCounter++;
+      if (this.abandonmentCounter < CONFIG.ZONE.ABANDONMENT_THRESHOLD) this.abandonmentCounter++;
       if (this.abandonmentCounter >= CONFIG.ZONE.ABANDONMENT_THRESHOLD) {
         if (Math.random() < CONFIG.ZONE.ABANDONMENT_CHANCE) {
           this.abandoned = true;
@@ -53,7 +54,7 @@ class Zone extends Building implements IZone {
   private checkRoadAccess(city: ICity): void {
     const road = city.findTile(
       { x: this.x, y: this.y },
-      (tile) => tile.building?.type === 'road',
+      (tile) => tile.building?.type === BUILDING_TYPE.ROAD,
       CONFIG.ZONE.MAX_ROAD_SEARCH_DISTANCE
     );
     this.hasRoadAccess = !!road;

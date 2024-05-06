@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import UNDER_CONSTRUCTION_MODEL from './models/under_construction.gltf';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { textures } from './textures';
+import { TextureKey, getSideMaterial, textures } from './textures';
 import { ITile } from '../city/tile';
 import { IZone } from '../city/building/interfaces';
 import { BUILDING_TYPE } from '../city/building/constants';
@@ -87,33 +87,34 @@ export class AssetManager implements IAssetManager {
     const zone = tile.building as IZone;
 
     let mesh: THREE.Mesh;
+
     if (!zone.developed) {
       mesh = this.getModel('underConstruction');
       mesh.position.set(zone.x, 0.01, zone.y);
-    } else {
-      const textureName = zone.type + zone.style;
-      const topMaterial = this.getTopMaterial();
-      const sideMaterial = this.getSideMaterial(textureName);
-
-      if (zone.abandoned) {
-        sideMaterial.color.setHex(0x555555);
-      }
-
-      mesh = new THREE.Mesh(this.cubeGeometry, [
-        sideMaterial,
-        sideMaterial, // sides
-        topMaterial,
-        topMaterial, // top and bottom
-        sideMaterial,
-        sideMaterial, // front and back
-      ]);
-      mesh.scale.set(0.8, 0.8 * zone.level, 0.8);
-      mesh.position.set(zone.x, 0.4 * zone.level, zone.y);
+      return mesh
     }
+    const textureName = zone.type + zone.style as TextureKey;
+    const topMaterial = this.getTopMaterial();
+    const sideMaterial = getSideMaterial(textureName);
+
+    if (zone.abandoned) {
+      sideMaterial.color.setHex(0x555555);
+    }
+
+    mesh = new THREE.Mesh(this.cubeGeometry, [
+      sideMaterial,
+      sideMaterial, // sides
+      topMaterial,
+      topMaterial, // top and bottom
+      sideMaterial,
+      sideMaterial, // front and back
+    ]);
+    mesh.userData = tile;
+    mesh.scale.set(0.8, 0.8 * zone.level, 0.8);
+    mesh.position.set(zone.x, 0.4 * zone.level, zone.y);
 
     mesh.castShadow = true;
     mesh.receiveShadow = true;
-    this.updateMaterials(mesh, zone.level);
 
     return mesh;
   }
@@ -132,19 +133,11 @@ export class AssetManager implements IAssetManager {
 
   private getModel(modelName: string): THREE.Mesh {
     const model = this.models[modelName];
-    if (!model || !(model as THREE.Mesh).isMesh) {
-      throw new Error(`Model ${modelName} is not a Mesh.`);
-    }
     return model.clone() as THREE.Mesh;
   }
+
   private getTopMaterial(): THREE.MeshLambertMaterial {
     return new THREE.MeshLambertMaterial({ color: 0x555555 });
-  }
-
-  private getSideMaterial(textureName: string): THREE.MeshLambertMaterial {
-    return new THREE.MeshLambertMaterial({
-      map: this.textures[textureName].clone(),
-    });
   }
 
   private updateMaterials(mesh: THREE.Mesh, zoneLevel: number): void {

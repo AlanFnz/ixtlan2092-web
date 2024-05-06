@@ -126,13 +126,25 @@ export class City implements ICity {
     const visited = new Set<string>();
     const tilesToSearch: ITile[] = [startTile];
 
-    while (tilesToSearch.length) {
+    while (tilesToSearch.length > 0) {
       const tile = tilesToSearch.shift();
-      if (!tile || visited.has(tile.id)) continue;
-      visited.add(tile.id);
 
-      if (filter(tile)) return tile;
-      tilesToSearch.push(...this.getTileNeighbors(tile.x, tile.y));
+      if (tile) {
+        if (visited.has(tile.id)) {
+          continue;
+        } else {
+          visited.add(tile.id);
+        }
+
+        const distance = startTile.distanceTo(tile);
+        if (distance > maxDistance) continue;
+
+        tilesToSearch.push(...this.getTileNeighbors(tile.x, tile.y));
+
+        if (filter(tile)) {
+          return tile;
+        }
+      }
     }
 
     return null;
