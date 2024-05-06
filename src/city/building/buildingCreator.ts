@@ -29,7 +29,6 @@ export function createBuilding(
     case BUILDING_TYPE.ROAD:
       return new Road(x, y);
     default:
-      console.error(`${type} is not a recognized building type.`);
       return undefined;
   }
 }
