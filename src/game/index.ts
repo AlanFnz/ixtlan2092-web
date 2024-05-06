@@ -1,11 +1,12 @@
+import CONFIG from '../config';
 import { getIcon } from '../assetManager/icons';
 import { City, ICity } from '../city';
 import { BuildingEntity } from '../city/building/buildingCreator';
 import { ITile } from '../city/tile';
-import CONFIG from '../config';
 import { ISceneManager, SceneManager } from '../sceneManager';
 import { createUi } from '../ui';
 import { TOOLBAR_BUTTONS, ToggleButton } from '../ui/constants';
+import { setupEventListeners } from './utils';
 
 export interface IGame {
   selectedControl: HTMLElement | null;
@@ -18,9 +19,10 @@ export interface IGame {
 }
 
 export class Game implements IGame {
-  selectedControl: HTMLElement | null =
-    document.getElementById('button-select');
-  activeToolId: string | null = 'select';
+  selectedControl: HTMLElement | null = document.getElementById(
+    TOOLBAR_BUTTONS.SELECT.id
+  );
+  activeToolId: string | null = TOOLBAR_BUTTONS.SELECT.id;
   isPaused: boolean = false;
   focusedObject: BuildingEntity | ITile | null = null;
   lastMove: number = Date.now();
@@ -30,35 +32,14 @@ export class Game implements IGame {
   constructor() {
     this.sceneManager.start();
     createUi();
-    document.addEventListener(
-      'wheel',
-      this.sceneManager.cameraManager.onMouseWheel.bind(this),
-      false
-    );
-    document.addEventListener('mousedown', this.onMouseDown.bind(this), false);
-    document.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-    document.addEventListener(
-      'contextmenu',
-      (event) => event.preventDefault(),
-      false
-    );
-    document.addEventListener(
-      'touchstart',
-      this.sceneManager.cameraManager.onTouchStart,
-      {
-        passive: false,
-      }
-    );
-    document.addEventListener(
-      'touchmove',
-      this.sceneManager.cameraManager.onTouchMove,
-      {
-        passive: false,
-      }
-    );
-    document.addEventListener(
-      'touchend',
-      this.sceneManager.cameraManager.onTouchEnd
+
+    this.selectedControl = document.getElementById(TOOLBAR_BUTTONS.SELECT.id);
+    this.selectedControl?.classList.add('selected');
+    setupEventListeners(
+      this,
+      this.sceneManager,
+      this.onMouseDown,
+      this.onMouseMove
     );
     setInterval(() => this.step(), 1000);
   }
