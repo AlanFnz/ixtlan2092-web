@@ -42,6 +42,24 @@ export class Game implements IGame {
       (event) => event.preventDefault(),
       false
     );
+    document.addEventListener(
+      'touchstart',
+      this.sceneManager.cameraManager.onTouchStart,
+      {
+        passive: false,
+      }
+    );
+    document.addEventListener(
+      'touchmove',
+      this.sceneManager.cameraManager.onTouchMove,
+      {
+        passive: false,
+      }
+    );
+    document.addEventListener(
+      'touchend',
+      this.sceneManager.cameraManager.onTouchEnd
+    );
     setInterval(() => this.step(), 1000);
   }
 
@@ -111,11 +129,14 @@ export class Game implements IGame {
       return;
     }
     const tile = object.userData as ITile;
-    if (this.activeToolId === 'select') {
+    if (this.activeToolId === TOOLBAR_BUTTONS.SELECT.id) {
       this.sceneManager.setActiveObject(object);
       this.focusedObject = tile;
       this.updateInfoOverlay();
-    } else if (this.activeToolId === 'bulldoze' && tile.building) {
+    } else if (
+      this.activeToolId === TOOLBAR_BUTTONS.BULLDOZE.id &&
+      tile.building
+    ) {
       tile.removeBuilding();
       this.city.update();
       this.sceneManager.update(this.city);
