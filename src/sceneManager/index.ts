@@ -153,10 +153,7 @@ export class SceneManager implements ISceneManager {
       : [mesh.material];
 
     materials.forEach((material) => {
-      if (
-        material instanceof THREE.MeshStandardMaterial ||
-        material instanceof THREE.MeshPhongMaterial
-      ) {
+      if (material instanceof THREE.MeshLambertMaterial) {
         material.emissive.setHex(color);
       }
     });
@@ -180,13 +177,9 @@ export class SceneManager implements ISceneManager {
   }
 
   public setActiveObject(object: THREE.Object3D): void {
-    if (this.activeObject) {
-      this.setMeshEmission(this.activeObject, 0x000000);
-    }
+    if (this.activeObject) this.setMeshEmission(this.activeObject, 0x000000);
     this.activeObject = object;
-    if (this.activeObject) {
-      this.setMeshEmission(this.activeObject, 0xaaaa55);
-    }
+    if (this.activeObject) this.setMeshEmission(this.activeObject, 0xaaaa55);
   }
 
   private onResize(): void {
