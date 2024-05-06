@@ -110,7 +110,6 @@ export class Game implements IGame {
       return;
     }
     const tile = object.userData as ITile;
-    console.log('tile', tile)
     if (this.activeToolId === TOOLBAR_BUTTONS.SELECT.id) {
       this.sceneManager.setActiveObject(object);
       this.focusedObject = tile;
