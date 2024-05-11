@@ -1,5 +1,6 @@
 import { BuildingEntity, createBuilding } from '../building/buildingCreator';
 import { ICity } from '..';
+import { BuildingType } from '../building/constants';
 
 export interface ITile {
   id: string;
@@ -46,7 +47,7 @@ export class Tile implements ITile {
     }
   }
 
-  placeBuilding(type: string): void {
+  placeBuilding(type: BuildingType): void {
     this.building = createBuilding(this.x, this.y, type);
   }
 

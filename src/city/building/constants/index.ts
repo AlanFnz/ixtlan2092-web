@@ -4,7 +4,7 @@ const BUILDING_TYPE = {
   COMMERCIAL: 'COMMERCIAL',
   INDUSTRIAL: 'INDUSTRIAL',
   ROAD: 'ROAD',
-};
+} as const;
 
 type BuildingType = (typeof BUILDING_TYPE)[keyof typeof BUILDING_TYPE];
 
