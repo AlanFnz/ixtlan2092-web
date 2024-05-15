@@ -4,9 +4,11 @@ type AssetId = (typeof BUILDING_TYPE)[keyof typeof BUILDING_TYPE];
 
 interface ModelEntry {
   filename: string;
+  file: string;
   scale: number;
   front?: number;
   castShadow?: boolean;
+  receiveShadow?: boolean;
 }
 
 interface AssetCreators {
