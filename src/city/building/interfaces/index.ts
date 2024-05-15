@@ -5,6 +5,7 @@ import { BuildingType } from '../constants';
 interface IBuilding {
   x: number;
   y: number;
+  rotation?: number;
   id: string;
   name: string;
   type: BuildingType;

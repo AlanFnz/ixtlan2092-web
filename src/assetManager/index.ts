@@ -5,7 +5,10 @@ import { TextureKey, getSideMaterial, textures } from './textures';
 import { ITile } from '../city/tile';
 import { IZone } from '../city/building/interfaces';
 import { BUILDING_TYPE } from '../city/building/constants';
+import { models } from './models';
+import { ModelEntry, ModelKey } from './constants';
 
+const DEG2RAD = Math.PI / 180.0;
 export interface IAssetManager {
   createGroundMesh(tile: ITile): THREE.Mesh;
   createBuildingMesh(tile: ITile): THREE.Mesh | null;
@@ -14,8 +17,13 @@ export interface IAssetManager {
 export class AssetManager implements IAssetManager {
   private gltfLoader = new GLTFLoader();
   private cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-
-  private models: Record<string, THREE.Object3D> = {};
+  private onLoad = () => {};
+  private modelCount = 0;
+  private loadedModelCount = 0;
+  private loadedModels: Record<ModelKey, THREE.Mesh> = {} as Record<
+    ModelKey,
+    THREE.Mesh
+  >;
 
   private textures: Record<string, THREE.Texture> = {
     grass: textures.GRASS,
@@ -30,29 +38,58 @@ export class AssetManager implements IAssetManager {
     industrial3: textures.INDUSTRIAL3,
   };
 
-  constructor() {
-    this.loadModels();
+  constructor(onLoad: any) {
+    this.modelCount = Object.keys(models).length;
+    this.loadedModelCount = 0;
+
+    for (const [modelName, meta] of Object.entries(models)) {
+      this.loadModel(modelName as ModelKey, meta);
+    }
+
+    this.onLoad = onLoad;
   }
 
-  private loadModels() {
+  private loadModel(
+    modelName: ModelKey,
+    {
+      filename,
+      file,
+      scale = 1,
+      receiveShadow = true,
+      castShadow = true,
+    }: ModelEntry
+  ) {
     this.gltfLoader.load(
-      UNDER_CONSTRUCTION_MODEL,
+      file,
       (gltf) => {
-        const mesh = gltf.scene;
-        mesh.scale.set(0.01, 0.01, 0.01);
+        const mesh = (gltf.scene?.children[0] as THREE.Mesh).clone();
 
-        mesh.traverse((child) => {
-          if ((child as THREE.Mesh).isMesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
-          }
+        mesh.material = new THREE.MeshLambertMaterial({
+          map: this.textures?.base,
+          specularMap: this.textures?.specular,
         });
 
-        this.models['underConstruction'] = mesh;
+        mesh.position.set(0, 0, 0);
+        mesh.scale.set(scale / 30, scale / 30, scale / 30);
+        mesh.receiveShadow = receiveShadow;
+        mesh.castShadow = castShadow;
+
+        this.loadedModels[modelName] = mesh;
+
+        this.loadedModelCount++;
+        if (this.loadedModelCount === this.modelCount) {
+          this.onLoad();
+        }
       },
-      undefined,
-      (error) =>
-        console.error('An error happened while loading a model:', error)
+      (xhr) => {
+        console.log(`${modelName} ${(xhr.loaded / xhr.total) * 100}% loaded`);
+      },
+      (error) => {
+        console.error(
+          `An error happened while loading model ${modelName}:`,
+          error
+        );
+      }
     );
   }
 
@@ -84,38 +121,16 @@ export class AssetManager implements IAssetManager {
   }
 
   private createZoneMesh(tile: ITile): THREE.Mesh {
-    const zone = tile.building as IZone;
-
-    let mesh: THREE.Mesh;
-
-    if (!zone.developed) {
-      mesh = this.getModel('underConstruction');
-      mesh.position.set(zone.x, 0.01, zone.y);
-      return mesh
-    }
-    const textureName = zone.type + zone.style as TextureKey;
-    const topMaterial = this.getTopMaterial();
-    const sideMaterial = getSideMaterial(textureName);
-
-    if (zone.abandoned) {
-      sideMaterial.color.setHex(0x555555);
+    const zone = tile.building as IZone | null;
+    if (!zone) {
+      throw new Error('Tile does not have a valid building.');
     }
 
-    mesh = new THREE.Mesh(this.cubeGeometry, [
-      sideMaterial,
-      sideMaterial, // sides
-      topMaterial,
-      topMaterial, // top and bottom
-      sideMaterial,
-      sideMaterial, // front and back
-    ]);
+    const modelName = `${zone.type}-${zone.style}${zone.level}`;
+    let mesh = this.getMesh(modelName as ModelKey);
     mesh.userData = tile;
-    mesh.scale.set(0.8, 0.8 * zone.level, 0.8);
-    mesh.position.set(zone.x, 0.4 * zone.level, zone.y);
-
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-
+    mesh.rotation.set(0, (zone.rotation || 0) * DEG2RAD, 0);
+    mesh.position.set(zone.x, 0, zone.y);
     return mesh;
   }
 
@@ -131,9 +146,12 @@ export class AssetManager implements IAssetManager {
     return mesh;
   }
 
-  private getModel(modelName: string): THREE.Mesh {
-    const model = this.models[modelName];
-    return model.clone() as THREE.Mesh;
+  getMesh(name: ModelKey): THREE.Mesh {
+    const mesh = this.loadedModels[name].clone() as THREE.Mesh;
+    mesh.material = Array.isArray(mesh.material)
+      ? mesh.material.map((material) => material.clone())
+      : mesh.material.clone();
+    return mesh;
   }
 
   private getTopMaterial(): THREE.MeshLambertMaterial {

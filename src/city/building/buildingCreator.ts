@@ -2,7 +2,6 @@ import { CommercialZone } from './commercialZone';
 import { ResidentialZone } from './residentialZone';
 import { IndustrialZone } from './industrialZone';
 import { Road } from './road';
-import { Building } from './building';
 import { BUILDING_TYPE, BuildingType } from './constants';
 
 export type BuildingEntity = ResidentialZone | CommercialZone | IndustrialZone | Road;
