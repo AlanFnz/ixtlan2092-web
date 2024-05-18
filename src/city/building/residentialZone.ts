@@ -12,6 +12,7 @@ export class ResidentialZone extends Zone implements IResidentialZone {
     super(x, y);
     this.type = BUILDING_TYPE.RESIDENTIAL;
     this.residents = [];
+    this.maxLevel = 3;
   }
 
   step(city: ICity): void {

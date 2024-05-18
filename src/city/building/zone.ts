@@ -10,6 +10,7 @@ class Zone extends Building implements IZone {
   developed: boolean;
   hasRoadAccess: boolean;
   level: number;
+  maxLevel: number;
   abandonmentCounter: number;
 
   constructor(x: number, y: number) {
@@ -19,6 +20,7 @@ class Zone extends Building implements IZone {
     this.developed = false;
     this.hasRoadAccess = false;
     this.level = 1;
+    this.maxLevel = 1;
     this.abandonmentCounter = 0;
   }
 

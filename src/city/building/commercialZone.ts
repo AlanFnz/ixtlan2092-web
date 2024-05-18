@@ -15,6 +15,7 @@ export class CommercialZone extends Zone implements ICommercialZone {
     this.type = BUILDING_TYPE.COMMERCIAL;
     this.workers = [];
     this.maxWorkers = 4;
+    this.maxLevel = 3;
   }
 
   numberOfJobsAvailable(): number {

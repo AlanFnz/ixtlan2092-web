@@ -10,6 +10,7 @@ interface IBuilding {
   name: string;
   type: BuildingType;
   isMeshOutOfDate: boolean;
+  hideTerrain: boolean;
   update(city: ICity): void;
   step(city: ICity): void;
   dispose(): void;
@@ -22,6 +23,7 @@ interface IZone extends IBuilding {
   developed: boolean;
   hasRoadAccess: boolean;
   level: number;
+  maxLevel: number;
   abandonmentCounter: number;
 }
 

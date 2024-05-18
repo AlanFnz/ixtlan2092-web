@@ -15,6 +15,7 @@ export class IndustrialZone extends Zone implements IIndustrialZone {
     this.type = BUILDING_TYPE.INDUSTRIAL;
     this.workers = [];
     this.maxWorkers = 4;
+    this.maxLevel = 1;
   }
 
   numberOfJobsAvailable(): number {

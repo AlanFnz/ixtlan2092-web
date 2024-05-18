@@ -7,6 +7,8 @@ class Building implements IBuilding {
   name: string = 'Building';
   type: BuildingType = BUILDING_TYPE.BUILDING;
   isMeshOutOfDate: boolean = true;
+  hideTerrain: boolean = false;
+  rotation?: number | undefined;
 
   constructor(public x: number, public y: number) {}
 
