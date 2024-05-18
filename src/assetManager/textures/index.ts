@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import BASE from './base.png';
 import GRASS from './grass.png';
 import RESIDENTIAL1 from './residential1.png';
 import RESIDENTIAL2 from './residential2.png';
@@ -9,9 +10,12 @@ import COMMERCIAL3 from './commercial3.png';
 import INDUSTRIAL1 from './industrial1.png';
 import INDUSTRIAL2 from './industrial2.png';
 import INDUSTRIAL3 from './industrial3.png';
+import LIGHTRAYS from './lightrays-LPEC.png';
+import SPECULAR from './specular.png'
 
 const loader = new THREE.TextureLoader();
 type TextureKey =
+  | 'BASE'
   | 'GRASS'
   | 'RESIDENTIAL1'
   | 'RESIDENTIAL2'
@@ -21,9 +25,12 @@ type TextureKey =
   | 'COMMERCIAL3'
   | 'INDUSTRIAL1'
   | 'INDUSTRIAL2'
-  | 'INDUSTRIAL3';
+  | 'INDUSTRIAL3'
+  | 'LIGHTRAYS'
+  | 'SPECULAR';
 
 const textures: Record<TextureKey, THREE.Texture> = {
+  BASE: loadTexture(BASE),
   GRASS: loadTexture(GRASS),
   RESIDENTIAL1: loadTexture(RESIDENTIAL1),
   RESIDENTIAL2: loadTexture(RESIDENTIAL2),
@@ -34,6 +41,8 @@ const textures: Record<TextureKey, THREE.Texture> = {
   INDUSTRIAL1: loadTexture(INDUSTRIAL1),
   INDUSTRIAL2: loadTexture(INDUSTRIAL2),
   INDUSTRIAL3: loadTexture(INDUSTRIAL3),
+  LIGHTRAYS: loadTexture(LIGHTRAYS),
+  SPECULAR: loadTexture(SPECULAR),
 };
 
 function isValidTextureKey(key: string): key is TextureKey {
