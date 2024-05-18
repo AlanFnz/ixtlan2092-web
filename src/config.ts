@@ -9,7 +9,8 @@ export default {
     ABANDONMENT_CHANCE: 0.25,
     DEVELOPMENT_CHANCE: 0.25,
     MAX_ROAD_SEARCH_DISTANCE: 3, // max distance between buildng and road
-    MAX_RESIDENTS: 4,
+    MAX_RESIDENTS: 2, // used as exponential
+    MAX_WORKERS: 2, // used as exponential
     RESIDENT_MOVE_IN_CHANCE: 0.5,
   },
   CITY: {

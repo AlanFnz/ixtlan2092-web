@@ -5,7 +5,6 @@ import { BuildingType } from '../constants';
 interface IBuilding {
   x: number;
   y: number;
-  rotation?: number;
   id: string;
   name: string;
   type: BuildingType;
@@ -18,22 +17,25 @@ interface IBuilding {
 }
 
 interface IZone extends IBuilding {
-  style: number;
+  style: string;
   abandoned: boolean;
   developed: boolean;
   hasRoadAccess: boolean;
   level: number;
+  rotation?: number;
   maxLevel: number;
   abandonmentCounter: number;
 }
 
 interface IResidentialZone extends IZone {
   residents: ICitizen[];
+  getMaxResidents(): number;
 }
 
 export interface ICommercialZone {
   workers: ICitizen[];
   maxWorkers: number;
+  getMaxWorkers(): number;
   numberOfJobsAvailable(): number;
   numberOfJobsFilled(): number;
 }
@@ -41,6 +43,7 @@ export interface ICommercialZone {
 export interface IIndustrialZone {
   workers: ICitizen[];
   maxWorkers: number;
+  getMaxWorkers(): number;
   numberOfJobsAvailable(): number;
   numberOfJobsFilled(): number;
 }

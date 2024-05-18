@@ -4,6 +4,7 @@ import { BUILDING_TYPE } from './constants';
 import { ICommercialZone } from './interfaces';
 import { ICitizen } from '../citizen';
 import { ICity } from '..';
+import config from '../../config';
 
 export class CommercialZone extends Zone implements ICommercialZone {
   workers: ICitizen[];
@@ -14,14 +15,19 @@ export class CommercialZone extends Zone implements ICommercialZone {
     this.name = generateCommericalBuildingName();
     this.type = BUILDING_TYPE.COMMERCIAL;
     this.workers = [];
+    this.level = 1;
     this.maxWorkers = 4;
     this.maxLevel = 3;
+  }
+
+  getMaxWorkers() {
+    return Math.pow(config.ZONE.MAX_WORKERS, this.level);
   }
 
   numberOfJobsAvailable(): number {
     return this.abandoned || !this.developed
       ? 0
-      : this.maxWorkers - this.workers.length;
+      : this.getMaxWorkers() - this.workers.length;
   }
 
   numberOfJobsFilled(): number {
@@ -32,6 +38,13 @@ export class CommercialZone extends Zone implements ICommercialZone {
     super.step(city);
     if (this.abandoned) {
       this.layOffWorkers();
+      return;
+    }
+
+    if (this.developed) {
+      if (Math.random() < 0.03 && this.level < this.maxLevel) {
+        this.level++;
+      }
     }
   }
 
@@ -49,9 +62,7 @@ export class CommercialZone extends Zone implements ICommercialZone {
 
   toHTML(): string {
     let html = super.toHTML();
-    html += `<br><strong>Workers (${this.numberOfJobsFilled()}/${
-      this.maxWorkers
-    })</strong>`;
+    html += `<br><strong>Workers (${this.numberOfJobsFilled()}/${this.getMaxWorkers()})</strong>`;
 
     html += '<ul style="margin-top: 0; padding-left: 20px;">';
     if (this.workers.length > 0) {

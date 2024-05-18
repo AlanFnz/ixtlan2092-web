@@ -4,6 +4,7 @@ import { IResidentialZone } from './interfaces';
 import { BUILDING_TYPE } from './constants';
 import { Citizen, ICitizen } from '../citizen';
 import { ICity } from '..';
+import config from '../../config';
 
 export class ResidentialZone extends Zone implements IResidentialZone {
   residents: ICitizen[];
@@ -12,7 +13,12 @@ export class ResidentialZone extends Zone implements IResidentialZone {
     super(x, y);
     this.type = BUILDING_TYPE.RESIDENTIAL;
     this.residents = [];
+    this.level = 1;
     this.maxLevel = 3;
+  }
+
+  getMaxResidents() {
+    return Math.pow(config.ZONE.MAX_RESIDENTS, this.level);
   }
 
   step(city: ICity): void {
@@ -20,13 +26,21 @@ export class ResidentialZone extends Zone implements IResidentialZone {
 
     if (this.abandoned) {
       this.evictResidents();
-    } else if (
-      this.developed &&
-      this.residents.length < CONFIG.ZONE.MAX_RESIDENTS &&
-      Math.random() < CONFIG.ZONE.RESIDENT_MOVE_IN_CHANCE
-    ) {
-      const resident = new Citizen(this);
-      this.residents.push(resident);
+      return;
+    }
+    if (this.developed) {
+      if (
+        this.developed &&
+        this.residents.length < CONFIG.ZONE.MAX_RESIDENTS &&
+        Math.random() < CONFIG.ZONE.RESIDENT_MOVE_IN_CHANCE
+      ) {
+        const resident = new Citizen(this);
+        this.residents.push(resident);
+      } else {
+        if (Math.random() < 0.03 && this.level < this.maxLevel) {
+          this.level++;
+        }
+      }
     }
   }
 
@@ -44,7 +58,9 @@ export class ResidentialZone extends Zone implements IResidentialZone {
 
   toHTML(): string {
     let html = super.toHTML();
-    html += `<br><strong>Residents</strong>`;
+    html += `<br><strong>Residents (${
+      this.residents.length
+    }/${this.getMaxResidents()})</strong>`;
 
     html += '<ul style="margin-top: 0; padding-left: 20px;">';
     if (this.residents.length > 0) {
@@ -55,7 +71,6 @@ export class ResidentialZone extends Zone implements IResidentialZone {
       html += '<li>None</li>';
     }
     html += '</ul>';
-
     return html;
   }
 }

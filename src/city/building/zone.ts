@@ -5,21 +5,23 @@ import { BUILDING_TYPE } from './constants';
 import { IZone } from './interfaces';
 
 class Zone extends Building implements IZone {
-  style: number;
+  style: string;
   abandoned: boolean;
   developed: boolean;
   hasRoadAccess: boolean;
   level: number;
+  rotation: number;
   maxLevel: number;
   abandonmentCounter: number;
 
   constructor(x: number, y: number) {
     super(x, y);
-    this.style = Math.floor(3 * Math.random()) + 1;
+    this.style = String.fromCharCode(Math.floor(3 * Math.random()) + 65);
     this.abandoned = false;
     this.developed = false;
     this.hasRoadAccess = false;
     this.level = 1;
+    this.rotation = 90 * Math.floor(4 * Math.random());
     this.maxLevel = 1;
     this.abandonmentCounter = 0;
   }
@@ -39,7 +41,8 @@ class Zone extends Building implements IZone {
         this.isMeshOutOfDate = true;
       }
     } else {
-      if (this.abandonmentCounter < CONFIG.ZONE.ABANDONMENT_THRESHOLD) this.abandonmentCounter++;
+      if (this.abandonmentCounter < CONFIG.ZONE.ABANDONMENT_THRESHOLD)
+        this.abandonmentCounter++;
       if (this.abandonmentCounter >= CONFIG.ZONE.ABANDONMENT_THRESHOLD) {
         if (Math.random() < CONFIG.ZONE.ABANDONMENT_CHANCE) {
           this.abandoned = true;
