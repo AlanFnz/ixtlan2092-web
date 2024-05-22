@@ -29,160 +29,189 @@ export interface ICameraManager {
   onWindowResize(): void;
 }
 
-export function createCameraManager(
-  gameWindow: HTMLElement,
-  renderer: THREE.WebGLRenderer,
-  citySize: number
-): ICameraManager {
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    gameWindow.offsetWidth / gameWindow.offsetHeight,
-    0.1,
-    1000
-  );
-  let cameraOrigin = new THREE.Vector3(citySize / 2, 0, citySize / 2);
-  let cameraRadius = (MIN_CAMERA_RADIUS + MAX_CAMERA_RADIUS) / 2;
-  let cameraAzimuth = INIT_CAMERA_AZIMUTH;
-  let cameraElevation = INIT_CAMERA_ELEVATION;
-  let startTouches: { x: number; y: number } = { x: 0, y: 0 };
-  let isLeftMouseDown = false;
-  let isMiddleMouseDown = false;
-  let isRightMouseDown = false;
-  let isPanning = false;
-  let prevMouseX = 0;
-  let prevMouseY = 0;
-  updateCameraPosition();
+export class CameraManager implements ICameraManager {
+  public camera: THREE.PerspectiveCamera;
+  private gameWindow: HTMLElement;
+  private renderer: THREE.WebGLRenderer;
+  private citySize: number;
+  private cameraOrigin: THREE.Vector3;
+  private cameraRadius: number;
+  private cameraAzimuth: number;
+  private cameraElevation: number;
+  private startTouches: { x: number; y: number };
+  private isLeftMouseDown: boolean;
+  private isMiddleMouseDown: boolean;
+  private isRightMouseDown: boolean;
+  private isPanning: boolean;
+  private prevMouseX: number;
+  private prevMouseY: number;
 
-  function updateCameraPosition() {
-    camera.position.x =
-      cameraRadius *
-      Math.sin(cameraAzimuth * DEG2RAD) *
-      Math.cos(cameraElevation * DEG2RAD);
-    camera.position.y = cameraRadius * Math.sin(cameraElevation * DEG2RAD);
-    camera.position.z =
-      cameraRadius *
-      Math.cos(cameraAzimuth * DEG2RAD) *
-      Math.cos(cameraElevation * DEG2RAD);
-    camera.position.add(cameraOrigin);
-    camera.lookAt(cameraOrigin);
-    camera.updateMatrix();
+  constructor(
+    gameWindow: HTMLElement,
+    renderer: THREE.WebGLRenderer,
+    citySize: number
+  ) {
+    this.gameWindow = gameWindow;
+    this.renderer = renderer;
+    this.citySize = citySize;
+
+    this.camera = new THREE.PerspectiveCamera(
+      75,
+      gameWindow.offsetWidth / gameWindow.offsetHeight,
+      0.1,
+      1000
+    );
+
+    this.cameraOrigin = new THREE.Vector3(citySize / 2, 0, citySize / 2);
+    this.cameraRadius = (MIN_CAMERA_RADIUS + MAX_CAMERA_RADIUS) / 2;
+    this.cameraAzimuth = INIT_CAMERA_AZIMUTH;
+    this.cameraElevation = INIT_CAMERA_ELEVATION;
+    this.startTouches = { x: 0, y: 0 };
+    this.isLeftMouseDown = false;
+    this.isMiddleMouseDown = false;
+    this.isRightMouseDown = false;
+    this.isPanning = false;
+    this.prevMouseX = 0;
+    this.prevMouseY = 0;
+
+    this.updateCameraPosition();
   }
 
-  function onWindowResize() {
-    if (!gameWindow || !camera) return;
-    camera.aspect = gameWindow.offsetWidth / gameWindow.offsetHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(gameWindow.offsetWidth, gameWindow.offsetHeight);
+  private updateCameraPosition() {
+    this.camera.position.x =
+      this.cameraRadius *
+      Math.sin(this.cameraAzimuth * DEG2RAD) *
+      Math.cos(this.cameraElevation * DEG2RAD);
+    this.camera.position.y =
+      this.cameraRadius * Math.sin(this.cameraElevation * DEG2RAD);
+    this.camera.position.z =
+      this.cameraRadius *
+      Math.cos(this.cameraAzimuth * DEG2RAD) *
+      Math.cos(this.cameraElevation * DEG2RAD);
+    this.camera.position.add(this.cameraOrigin);
+    this.camera.lookAt(this.cameraOrigin);
+    this.camera.updateMatrix();
   }
 
-  function onMouseDown(event: MouseEvent) {
+  public onWindowResize() {
+    if (!this.gameWindow || !this.camera) return;
+    this.camera.aspect =
+      this.gameWindow.offsetWidth / this.gameWindow.offsetHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(
+      this.gameWindow.offsetWidth,
+      this.gameWindow.offsetHeight
+    );
+  }
+
+  public onMouseDown(event: MouseEvent) {
     if (event.button === LEFT_MOUSE_BUTTON) {
-      isLeftMouseDown = true;
+      this.isLeftMouseDown = true;
     }
 
     if (event.button === MIDDLE_MOUSE_BUTTON) {
-      isMiddleMouseDown = true;
+      this.isMiddleMouseDown = true;
     }
 
     if (event.button === RIGHT_MOUSE_BUTTON) {
-      isRightMouseDown = true;
+      this.isRightMouseDown = true;
     }
   }
 
-  function onMouseUp(event: MouseEvent) {
+  public onMouseUp(event: MouseEvent) {
     if (event.button === LEFT_MOUSE_BUTTON) {
-      isLeftMouseDown = false;
+      this.isLeftMouseDown = false;
     }
 
     if (event.button === MIDDLE_MOUSE_BUTTON) {
-      isMiddleMouseDown = false;
+      this.isMiddleMouseDown = false;
     }
 
     if (event.button === RIGHT_MOUSE_BUTTON) {
-      isRightMouseDown = false;
+      this.isRightMouseDown = false;
     }
   }
 
-  function onMouseMove(event: MouseEvent) {
-    const deltaX = event.clientX - prevMouseX;
-    const deltaY = event.clientY - prevMouseY;
+  public onMouseMove(event: MouseEvent) {
+    const deltaX = event.clientX - this.prevMouseX;
+    const deltaY = event.clientY - this.prevMouseY;
 
-    if (isRightMouseDown) {
+    if (this.isRightMouseDown) {
       if (event.ctrlKey) {
-        handlePanning(deltaY, deltaX);
+        this.handlePanning(deltaY, deltaX);
       } else {
         // rotation
-        cameraAzimuth += -(deltaX * AZIMUTH_SENSITIVITY);
-        cameraElevation += -(deltaY * ELEVATION_SENSITIVITY);
-        cameraElevation = Math.min(
+        this.cameraAzimuth += -(deltaX * AZIMUTH_SENSITIVITY);
+        this.cameraElevation += -(deltaY * ELEVATION_SENSITIVITY);
+        this.cameraElevation = Math.min(
           MAX_CAMERA_ELEVATION,
-          Math.max(MIN_CAMERA_ELEVATION, cameraElevation)
+          Math.max(MIN_CAMERA_ELEVATION, this.cameraElevation)
         );
       }
-      updateCameraPosition();
+      this.updateCameraPosition();
     }
 
-    if (isMiddleMouseDown) {
-      handlePanning(deltaY, deltaX);
+    if (this.isMiddleMouseDown) {
+      this.handlePanning(deltaY, deltaX);
     }
 
-    prevMouseX = event.clientX;
-    prevMouseY = event.clientY;
+    this.prevMouseX = event.clientX;
+    this.prevMouseY = event.clientY;
   }
 
-  function onMouseWheel(event: WheelEvent): void {
+  public onMouseWheel(event: WheelEvent): void {
     event.preventDefault();
 
     const zoomAmount = event.deltaY * ZOOM_SENSITIVITY;
 
-    cameraRadius += zoomAmount;
-    cameraRadius = Math.max(
+    this.cameraRadius += zoomAmount;
+    this.cameraRadius = Math.max(
       MIN_CAMERA_RADIUS,
-      Math.min(MAX_CAMERA_RADIUS, cameraRadius)
+      Math.min(MAX_CAMERA_RADIUS, this.cameraRadius)
     );
 
-    updateCameraPosition();
+    this.updateCameraPosition();
   }
 
-  function onTouchStart(event: TouchEvent): void {
+  public onTouchStart(event: TouchEvent): void {
     if (event.touches.length === 2) {
-      isPanning = true;
-      startTouches = getAverageTouchPosition(event.touches);
+      this.isPanning = true;
+      this.startTouches = this.getAverageTouchPosition(event.touches);
       event.preventDefault();
     }
   }
 
-  function onTouchMove(event: TouchEvent): void {
-    if (isPanning && event.touches.length === 2) {
-      const currentTouches = getAverageTouchPosition(event.touches);
-      const deltaX: number = currentTouches.x - startTouches.x;
-      const deltaY: number = currentTouches.y - startTouches.y;
+  public onTouchMove(event: TouchEvent): void {
+    if (this.isPanning && event.touches.length === 2) {
+      const currentTouches = this.getAverageTouchPosition(event.touches);
+      const deltaX: number = currentTouches.x - this.startTouches.x;
+      const deltaY: number = currentTouches.y - this.startTouches.y;
 
       const forward = new THREE.Vector3(0, 0, 1).applyAxisAngle(
         Y_AXIS,
-        cameraAzimuth * DEG2RAD
+        this.cameraAzimuth * DEG2RAD
       );
       const left = new THREE.Vector3(1, 0, 0).applyAxisAngle(
         Y_AXIS,
-        cameraAzimuth * DEG2RAD
+        this.cameraAzimuth * DEG2RAD
       );
 
-      cameraOrigin.add(forward.multiplyScalar(-PAN_SENSITIVITY * deltaY));
-      cameraOrigin.add(left.multiplyScalar(-PAN_SENSITIVITY * deltaX));
-      updateCameraPosition();
+      this.cameraOrigin.add(forward.multiplyScalar(-PAN_SENSITIVITY * deltaY));
+      this.cameraOrigin.add(left.multiplyScalar(-PAN_SENSITIVITY * deltaX));
+      this.updateCameraPosition();
 
-      startTouches = currentTouches; // Update the start position for the next move
+      this.startTouches = currentTouches; // Update the start position for the next move
       event.preventDefault();
     }
   }
 
-  function onTouchEnd(event: TouchEvent): void {
+  public onTouchEnd(event: TouchEvent): void {
     if (event.touches.length < 2) {
-      isPanning = false;
+      this.isPanning = false;
     }
   }
 
-  function getAverageTouchPosition(touches: TouchList): {
+  private getAverageTouchPosition(touches: TouchList): {
     x: number;
     y: number;
   } {
@@ -197,32 +226,20 @@ export function createCameraManager(
     return { x: avgX, y: avgY };
   }
 
-  function handlePanning(deltaY: number, deltaX: number) {
+  private handlePanning(deltaY: number, deltaX: number) {
     const forward = new THREE.Vector3(0, 0, 1).applyAxisAngle(
       Y_AXIS,
-      cameraAzimuth * DEG2RAD
+      this.cameraAzimuth * DEG2RAD
     );
     const left = new THREE.Vector3(1, 0, 0).applyAxisAngle(
       Y_AXIS,
-      cameraAzimuth * DEG2RAD
+      this.cameraAzimuth * DEG2RAD
     );
 
-    cameraOrigin.add(forward.multiplyScalar(PAN_SENSITIVITY * deltaY));
-    cameraOrigin.add(left.multiplyScalar(PAN_SENSITIVITY * deltaX));
+    this.cameraOrigin.add(forward.multiplyScalar(PAN_SENSITIVITY * deltaY));
+    this.cameraOrigin.add(left.multiplyScalar(PAN_SENSITIVITY * deltaX));
 
-    updateCameraPosition();
+    this.updateCameraPosition();
   }
-
-  return {
-    camera,
-    onMouseDown,
-    onMouseUp,
-    onMouseMove,
-    onMouseWheel,
-    onTouchStart,
-    onTouchMove,
-    onTouchEnd,
-    onWindowResize,
-  };
 }
 
