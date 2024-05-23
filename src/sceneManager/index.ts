@@ -180,12 +180,10 @@ export class SceneManager implements ISceneManager {
   }
 
   private onResize(): void {
-    this.cameraManager.camera.aspect =
-      this.gameWindow.offsetWidth / this.gameWindow.offsetHeight;
-    this.cameraManager.camera.updateProjectionMatrix();
+    this.cameraManager.onWindowResize();
     this.renderer.setSize(
-      this.gameWindow.offsetWidth,
-      this.gameWindow.offsetHeight
+      this.gameWindow.clientWidth,
+      this.gameWindow.clientHeight
     );
   }
 }
