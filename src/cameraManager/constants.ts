@@ -6,6 +6,7 @@ export const LEFT_MOUSE_BUTTON = 0;
 export const MIDDLE_MOUSE_BUTTON = 1;
 export const RIGHT_MOUSE_BUTTON = 2;
 
+export const CAMERA_SIZE = 10;
 export const MIN_CAMERA_RADIUS = 10;
 export const MAX_CAMERA_RADIUS = 50;
 export const INIT_CAMERA_ELEVATION = 45;

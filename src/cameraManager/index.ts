@@ -15,10 +15,11 @@ import {
   INIT_CAMERA_ELEVATION,
   INIT_CAMERA_AZIMUTH,
   ELEVATION_SENSITIVITY,
+  CAMERA_SIZE,
 } from './constants';
 
 export interface ICameraManager {
-  camera: THREE.PerspectiveCamera;
+  camera: THREE.OrthographicCamera;
   onMouseDown(event: MouseEvent): void;
   onMouseUp(event: MouseEvent): void;
   onMouseMove(event: MouseEvent): void;
@@ -30,7 +31,7 @@ export interface ICameraManager {
 }
 
 export class CameraManager implements ICameraManager {
-  public camera: THREE.PerspectiveCamera;
+  public camera: THREE.OrthographicCamera;
   private gameWindow: HTMLElement;
   private renderer: THREE.WebGLRenderer;
   private citySize: number;
@@ -55,7 +56,7 @@ export class CameraManager implements ICameraManager {
     this.renderer = renderer;
     this.citySize = citySize;
 
-    this.camera = new THREE.PerspectiveCamera(
+    this.camera = new THREE.OrthographicCamera(
       75,
       gameWindow.offsetWidth / gameWindow.offsetHeight,
       0.1,
@@ -75,6 +76,7 @@ export class CameraManager implements ICameraManager {
     this.prevMouseY = 0;
 
     this.updateCameraPosition();
+    this.camera.updateProjectionMatrix();
   }
 
   private updateCameraPosition() {
@@ -95,13 +97,10 @@ export class CameraManager implements ICameraManager {
 
   public onWindowResize() {
     if (!this.gameWindow || !this.camera) return;
-    this.camera.aspect =
-      this.gameWindow.offsetWidth / this.gameWindow.offsetHeight;
+    const aspect = this.gameWindow.clientWidth / this.gameWindow.clientHeight;
+    this.camera.left = (CAMERA_SIZE * aspect) / -2;
+    this.camera.right = (CAMERA_SIZE * aspect) / 2;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(
-      this.gameWindow.offsetWidth,
-      this.gameWindow.offsetHeight
-    );
   }
 
   public onMouseDown(event: MouseEvent) {
