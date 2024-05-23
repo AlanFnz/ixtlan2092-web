@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import CONFIG from '../config';
 import { ICity } from '../city';
 import { AssetManager, IAssetManager } from '../assetManager';
-import { ICameraManager, createCameraManager } from '../cameraManager';
+import { ICameraManager, CameraManager } from '../cameraManager';
 
 export interface ISceneManager {
   start(): void;
@@ -20,25 +20,31 @@ export class SceneManager implements ISceneManager {
   private gameWindow: HTMLElement;
   private assetManager: IAssetManager;
   private buildings: (THREE.Mesh | null)[][];
+  private terrain: THREE.Mesh[][] = [];
   private raycaster: THREE.Raycaster;
   private mouse: THREE.Vector2;
   private activeObject: THREE.Object3D | null;
   private hoverObject: THREE.Object3D | null;
   cameraManager: ICameraManager;
 
-  constructor(city: ICity) {
+  constructor(city: ICity, onLoad: () => void) {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
     });
     this.scene = new THREE.Scene();
     this.gameWindow = document.getElementById('render-target') as HTMLElement;
-    this.assetManager = new AssetManager();
-    this.cameraManager = createCameraManager(
+    this.assetManager = new AssetManager(() => {
+      console.log('assets loaded');
+      this.initialize(city);
+      onLoad();
+    });
+    this.cameraManager = new CameraManager(
       this.gameWindow,
       this.renderer,
       CONFIG.CITY.SIZE
     );
     this.buildings = [];
+    this.terrain = [];
 
     this.renderer.setSize(
       this.gameWindow.offsetWidth,
@@ -72,6 +78,7 @@ export class SceneManager implements ISceneManager {
         }
       }
       this.buildings.push([...Array(city.size)]);
+      this.terrain.push(column);
     }
 
     this.setupLights();
@@ -79,7 +86,7 @@ export class SceneManager implements ISceneManager {
 
   private setupLights(): void {
     const sun = new THREE.DirectionalLight(0xffffff, 1);
-    sun.position.set(20, 20, 20);
+    sun.position.set(10, 20, 20);
     sun.castShadow = true;
     sun.shadow.camera.left = -10;
     sun.shadow.camera.right = 10;
@@ -87,7 +94,7 @@ export class SceneManager implements ISceneManager {
     sun.shadow.camera.bottom = -10;
     sun.shadow.mapSize.width = 1024;
     sun.shadow.mapSize.height = 1024;
-    sun.shadow.camera.near = 0.5;
+    sun.shadow.camera.near = 10;
     sun.shadow.camera.far = 50;
     this.scene.add(sun);
     this.scene.add(new THREE.AmbientLight(0xffffff, 0.3));
@@ -108,6 +115,9 @@ export class SceneManager implements ISceneManager {
           if (tile.building && tile.building.isMeshOutOfDate) {
             if (existingBuildingMesh) this.scene.remove(existingBuildingMesh);
             const newBuildingMesh = this.assetManager.createBuildingMesh(tile);
+
+            this.terrain[x][y].visible = !tile.building?.hideTerrain ?? true;
+
             if (newBuildingMesh) {
               this.scene.add(newBuildingMesh);
               this.buildings[x][y] = newBuildingMesh;
