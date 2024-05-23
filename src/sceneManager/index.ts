@@ -153,16 +153,7 @@ export class SceneManager implements ISceneManager {
 
   private setMeshEmission(mesh: THREE.Object3D | null, color: number): void {
     if (!mesh || !(mesh instanceof THREE.Mesh)) return;
-
-    const materials = Array.isArray(mesh.material)
-      ? mesh.material
-      : [mesh.material];
-
-    materials.forEach((material) => {
-      if (material instanceof THREE.MeshLambertMaterial) {
-        material.emissive.setHex(color);
-      }
-    });
+    mesh.material.emissive?.setHex(color);
   }
 
   public getSelectedObject(event: MouseEvent): THREE.Object3D | null {
@@ -173,7 +164,7 @@ export class SceneManager implements ISceneManager {
     this.raycaster.setFromCamera(this.mouse, this.cameraManager.camera);
     let intersections = this.raycaster.intersectObjects(
       this.scene.children,
-      false
+      true
     );
     if (intersections.length > 0) {
       return intersections[0].object;
