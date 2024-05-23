@@ -27,7 +27,9 @@ export class SceneManager implements ISceneManager {
   cameraManager: ICameraManager;
 
   constructor(city: ICity) {
-    this.renderer = new THREE.WebGLRenderer();
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+    });
     this.scene = new THREE.Scene();
     this.gameWindow = document.getElementById('render-target') as HTMLElement;
     this.assetManager = new AssetManager();
