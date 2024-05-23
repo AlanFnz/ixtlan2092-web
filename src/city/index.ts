@@ -9,7 +9,7 @@ export interface ICoordinate {
 export interface ICity {
   size: number;
   tiles: ITile[][];
-  getTile(x: number, y: number): ITile | undefined;
+  getTile(x: number, y: number): ITile | null;
   getPopulation(): string;
   update(): void;
   step(): void;
@@ -44,8 +44,12 @@ export class City implements ICity {
     return tiles;
   }
 
-  getTile(x: number, y: number): ITile | undefined {
-    return this.tiles[x]?.[y];
+  getTile(x: number, y: number): ITile | null {
+    if (x < 0 || y < 0 || x >= this.size || y >= this.size) {
+      return null;
+    } else {
+      return this.tiles[x][y];
+    }
   }
 
   getPopulation() {
