@@ -10,30 +10,43 @@ module.exports = {
   module: {
     rules: [
       {
-        // Load GLSL shaders in as text
+        // load GLSL shaders in as text
         test: /.(glsl|vs|fs|vert|frag)$/,
         exclude: /node_modules/,
         use: ['raw-loader'],
       },
       {
-        // Process typescript
+        // process typescript
         test: /.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
       {
-        // Process css
+        // process css
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
       {
-        // Handle images and GLTF files
+        // images and GLTF files
         test: /\.(png|jpe?g|gif|svg|gltf|glb)$/i,
         use: [
           {
             loader: 'file-loader',
             options: {
               outputPath: 'assets',
+              name: '[name].[ext]',
+            },
+          },
+        ],
+      },
+      {
+        // font files
+        test: /\.(otf|ttf)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'assets/fonts',
               name: '[name].[ext]',
             },
           },
