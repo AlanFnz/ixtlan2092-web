@@ -77,6 +77,15 @@ export class CameraManager implements ICameraManager {
 
     this.updateCameraPosition();
     this.camera.updateProjectionMatrix();
+
+    this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onMouseWheel = this.onMouseWheel.bind(this);
+    this.onTouchStart = this.onTouchStart.bind(this);
+    this.onTouchMove = this.onTouchMove.bind(this);
+    this.onTouchEnd = this.onTouchEnd.bind(this);
+    this.onWindowResize = this.onWindowResize.bind(this);
   }
 
   private updateCameraPosition() {
