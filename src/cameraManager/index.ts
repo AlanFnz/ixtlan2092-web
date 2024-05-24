@@ -35,6 +35,7 @@ export class CameraManager implements ICameraManager {
   private gameWindow: HTMLElement;
   private renderer: THREE.WebGLRenderer;
   private citySize: number;
+  private aspect: number;
   private cameraOrigin: THREE.Vector3;
   private cameraRadius: number;
   private cameraAzimuth: number;
@@ -52,14 +53,17 @@ export class CameraManager implements ICameraManager {
     renderer: THREE.WebGLRenderer,
     citySize: number
   ) {
+    this.aspect = gameWindow.clientWidth / gameWindow.clientHeight;
     this.gameWindow = gameWindow;
     this.renderer = renderer;
     this.citySize = citySize;
 
     this.camera = new THREE.OrthographicCamera(
-      75,
-      gameWindow.offsetWidth / gameWindow.offsetHeight,
-      0.1,
+      (CAMERA_SIZE * this.aspect) / -2,
+      (CAMERA_SIZE * this.aspect) / 2,
+      CAMERA_SIZE / 2,
+      CAMERA_SIZE / -2,
+      1,
       1000
     );
 
@@ -106,9 +110,8 @@ export class CameraManager implements ICameraManager {
 
   public onWindowResize() {
     if (!this.gameWindow || !this.camera) return;
-    const aspect = this.gameWindow.clientWidth / this.gameWindow.clientHeight;
-    this.camera.left = (CAMERA_SIZE * aspect) / -2;
-    this.camera.right = (CAMERA_SIZE * aspect) / 2;
+    this.camera.left = (CAMERA_SIZE * this.aspect) / -2;
+    this.camera.right = (CAMERA_SIZE * this.aspect) / 2;
     this.camera.updateProjectionMatrix();
   }
 
