@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import UNDER_CONSTRUCTION_MODEL from './models/under_construction.gltf';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { TextureKey, getSideMaterial, textures } from './textures';
+import { textures } from './textures';
 import { ITile } from '../city/tile';
 import { IZone } from '../city/building/interfaces';
 import { BUILDING_TYPE } from '../city/building/constants';
@@ -27,16 +27,8 @@ export class AssetManager implements IAssetManager {
   >;
 
   private textures: Record<string, THREE.Texture> = {
-    grass: textures.GRASS,
-    residential1: textures.RESIDENTIAL1,
-    residential2: textures.RESIDENTIAL2,
-    residential3: textures.RESIDENTIAL3,
-    commercial1: textures.COMMERCIAL1,
-    commercial2: textures.COMMERCIAL2,
-    commercial3: textures.COMMERCIAL3,
-    industrial1: textures.INDUSTRIAL1,
-    industrial2: textures.INDUSTRIAL2,
-    industrial3: textures.INDUSTRIAL3,
+    base: textures.BASE,
+    specular: textures.SPECULAR,
   };
 
   constructor(onLoad: any) {
