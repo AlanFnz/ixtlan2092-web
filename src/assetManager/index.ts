@@ -50,8 +50,8 @@ export class AssetManager implements IAssetManager {
     this.onLoad = onLoad;
   }
 
-  private loadModel(
-    modelName: ModelKey,
+  loadModel(
+    name: ModelKey,
     {
       filename,
       file,
@@ -59,30 +59,21 @@ export class AssetManager implements IAssetManager {
       receiveShadow = true,
       castShadow = true,
     }: ModelEntry
-  ) {
+  ): void {
     this.gltfLoader.load(
       file,
-      (gltf) => {
-        console.log(`Loaded model: ${modelName}`, gltf);
+      (glb) => {
+        let mesh = (glb.scene.children[0] as THREE.Object3D)
+          .children[0] as THREE.Mesh;
 
-        let mesh: THREE.Mesh | undefined;
-
-        gltf.scene.traverse((child) => {
-          if ((child as THREE.Mesh).isMesh) {
-            mesh = child as THREE.Mesh;
-          }
-        });
-
-        if (!mesh) {
-          console.error(
-            `No THREE.Mesh found in the GLTF scene for model ${modelName}`
-          );
+        if (!mesh.isMesh) {
+          console.error(`Model ${name} does not contain a mesh.`);
           return;
         }
 
         mesh.material = new THREE.MeshLambertMaterial({
-          map: this.textures?.base,
-          specularMap: this.textures?.specular,
+          map: this.textures.base,
+          specularMap: this.textures.specular,
         });
 
         mesh.position.set(0, 0, 0);
@@ -90,7 +81,7 @@ export class AssetManager implements IAssetManager {
         mesh.receiveShadow = receiveShadow;
         mesh.castShadow = castShadow;
 
-        this.loadedModels[modelName] = mesh;
+        this.loadedModels[name] = mesh;
 
         this.loadedModelCount++;
         if (this.loadedModelCount === this.modelCount) {
@@ -98,13 +89,10 @@ export class AssetManager implements IAssetManager {
         }
       },
       (xhr) => {
-        console.log(`${modelName} ${(xhr.loaded / xhr.total) * 100}% loaded`);
+        console.log(`${name} ${(xhr.loaded / xhr.total) * 100}% loaded`);
       },
       (error) => {
-        console.error(
-          `An error happened while loading model ${modelName}:`,
-          error
-        );
+        console.error(error);
       }
     );
   }
