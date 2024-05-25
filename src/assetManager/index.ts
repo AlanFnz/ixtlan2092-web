@@ -27,6 +27,7 @@ export class AssetManager implements IAssetManager {
   >;
 
   private textures: Record<string, THREE.Texture> = {
+    grass: textures.GRASS,
     base: textures.BASE,
     specular: textures.SPECULAR,
   };
