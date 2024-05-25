@@ -9,6 +9,7 @@ import { models } from './models';
 import { ModelEntry, ModelKey } from './constants';
 
 const DEG2RAD = Math.PI / 180.0;
+
 export interface IAssetManager {
   createGroundMesh(tile: ITile): THREE.Mesh;
   createBuildingMesh(tile: ITile): THREE.Mesh | null;
@@ -62,7 +63,22 @@ export class AssetManager implements IAssetManager {
     this.gltfLoader.load(
       file,
       (gltf) => {
-        const mesh = (gltf.scene?.children[0] as THREE.Mesh).clone();
+        console.log(`Loaded model: ${modelName}`, gltf);
+
+        let mesh: THREE.Mesh | undefined;
+
+        gltf.scene.traverse((child) => {
+          if ((child as THREE.Mesh).isMesh) {
+            mesh = child as THREE.Mesh;
+          }
+        });
+
+        if (!mesh) {
+          console.error(
+            `No THREE.Mesh found in the GLTF scene for model ${modelName}`
+          );
+          return;
+        }
 
         mesh.material = new THREE.MeshLambertMaterial({
           map: this.textures?.base,
@@ -120,7 +136,7 @@ export class AssetManager implements IAssetManager {
     }
   }
 
-  private createZoneMesh(tile: ITile): THREE.Mesh {
+  private createZoneMesh(tile: ITile): THREE.Mesh | null {
     const zone = tile.building as IZone | null;
     if (!zone) {
       throw new Error('Tile does not have a valid building.');
@@ -128,6 +144,7 @@ export class AssetManager implements IAssetManager {
 
     const modelName = `${zone.type}-${zone.style}${zone.level}`;
     let mesh = this.getMesh(modelName as ModelKey);
+    if (!mesh) return null;
     mesh.userData = tile;
     mesh.rotation.set(0, (zone.rotation || 0) * DEG2RAD, 0);
     mesh.position.set(zone.x, 0, zone.y);
@@ -146,8 +163,9 @@ export class AssetManager implements IAssetManager {
     return mesh;
   }
 
-  getMesh(name: ModelKey): THREE.Mesh {
-    const mesh = this.loadedModels[name].clone() as THREE.Mesh;
+  getMesh(name: ModelKey): THREE.Mesh | null {
+    const mesh = this.loadedModels[name]?.clone() as THREE.Mesh;
+    if (!mesh) return null;
     mesh.material = Array.isArray(mesh.material)
       ? mesh.material.map((material) => material.clone())
       : mesh.material.clone();
