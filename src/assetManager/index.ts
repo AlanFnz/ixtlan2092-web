@@ -135,10 +135,10 @@ export class AssetManager implements IAssetManager {
   private createRoadMesh(tile: ITile): THREE.Mesh | null {
     const road = tile.building;
     if (!road) return null;
-    const material = new THREE.MeshLambertMaterial({ color: 0x222222 });
-    const mesh = new THREE.Mesh(this.cubeGeometry, material);
+    const mesh = this.getMesh(`${road.type}-${road.style}` as ModelKey);
+    if (!mesh) return null;
     mesh.userData = tile;
-    mesh.scale.set(1, 0.02, 1);
+    if (road.rotation) mesh.rotation.set(0, road.rotation * DEG2RAD, 0);
     mesh.position.set(road.x, 0.01, road.y);
     mesh.receiveShadow = true;
     return mesh;

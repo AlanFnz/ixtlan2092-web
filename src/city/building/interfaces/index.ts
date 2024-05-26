@@ -22,7 +22,7 @@ interface IZone extends IBuilding {
   developed: boolean;
   hasRoadAccess: boolean;
   level: number;
-  rotation?: number;
+  rotation: number;
   maxLevel: number;
   abandonmentCounter: number;
 }
