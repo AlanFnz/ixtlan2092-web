@@ -94,6 +94,8 @@ export class Game implements IGame {
 
   private onMouseDown(event: MouseEvent): void {
     if (event.button === 0) {
+      event.stopPropagation();
+      if (this.isEventFromUiElement(event)) return;
       const selectedObject = this.sceneManager.getSelectedObject(event);
       this.useActiveTool(selectedObject as THREE.Object3D);
     }
@@ -101,6 +103,7 @@ export class Game implements IGame {
 
   private onMouseMove(event: MouseEvent): void {
     if (Date.now() - this.lastMove < 16) return;
+    if (this.isEventFromUiElement(event)) return;
     this.lastMove = Date.now();
     const hoverObject = this.sceneManager.getSelectedObject(event);
     this.sceneManager.setHighlightedMesh(hoverObject as THREE.Mesh);
@@ -146,6 +149,13 @@ export class Game implements IGame {
     if (populationCounter) {
       populationCounter.textContent = this.city.getPopulation();
     }
+  }
+
+  private isEventFromUiElement(event: Event): boolean {
+    const uiElements = ['ui-topbar', 'ui-toolbar', 'ui-info-overlay'];
+    return uiElements.some((id) =>
+      (event.target as HTMLElement).closest(`#${id}`)
+    );
   }
 }
 

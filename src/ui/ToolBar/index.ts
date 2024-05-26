@@ -30,7 +30,10 @@ function createToolBar() {
 
     if (isToggleButton(toolbarButton)) {
       const isPaused = window.game?.isPaused ?? false;
-      button.onclick = () => window.game.togglePause();
+      button.onclick = (event) => {
+        event.stopPropagation();
+        window.game.togglePause();
+      };
       iconImg.src = getIcon(
         isPaused ? toolbarButton.iconPlay : toolbarButton.iconPause
       );
@@ -38,7 +41,10 @@ function createToolBar() {
         ? toolbarButton.uiTextPause
         : toolbarButton.uiTextPlay;
     } else {
-      button.onclick = (event) => window.game.onToolSelected(event);
+      button.onclick = (event) => {
+        event.stopPropagation();
+        window.game.onToolSelected(event);
+      };
       iconImg.src = getIcon(toolbarButton.icon as IconKey);
       iconImg.alt = toolbarButton.uiText;
     }
