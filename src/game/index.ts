@@ -63,6 +63,7 @@ export class Game implements IGame {
     this.selectedControl = event.target as HTMLElement;
     this.selectedControl.classList.add('selected');
     this.activeToolId = this.selectedControl.getAttribute('data-type') || null;
+    this.sceneManager.deactivateObject();
   }
 
   togglePause(): void {

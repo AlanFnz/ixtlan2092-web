@@ -11,6 +11,7 @@ export interface ISceneManager {
   cameraManager: ICameraManager;
   getSelectedObject(event: MouseEvent): THREE.Object3D | null;
   setActiveObject(object: THREE.Object3D): void;
+  deactivateObject(): void;
   setHighlightedMesh(mesh: THREE.Mesh | null): void;
 }
 
@@ -174,9 +175,16 @@ export class SceneManager implements ISceneManager {
   }
 
   public setActiveObject(object: THREE.Object3D): void {
-    if (this.activeObject) this.setMeshEmission(this.activeObject, 0x000000);
+    this.deactivateObject();
     this.activeObject = object;
     if (this.activeObject) this.setMeshEmission(this.activeObject, 0xaaaa55);
+  }
+
+  public deactivateObject(): void {
+    if (this.activeObject) {
+      this.setMeshEmission(this.activeObject, 0x000000);
+      this.activeObject = null;
+    }
   }
 
   private onResize(): void {
