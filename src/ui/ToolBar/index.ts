@@ -17,6 +17,8 @@ function createToolBar() {
     return;
   }
 
+  toolbar.className = 'container'
+
   Object.entries(TOOLBAR_BUTTONS).forEach(([key, toolbarButton]) => {
     const button = document.createElement('button');
     button.id = toolbarButton.id;
@@ -27,6 +29,7 @@ function createToolBar() {
     iconImg.style.width = '100%';
     iconImg.style.height = '100%';
     iconImg.style.pointerEvents = 'none';
+    iconImg.className = 'toolbar-icon';
 
     if (isToggleButton(toolbarButton)) {
       const isPaused = window.game?.isPaused ?? false;
