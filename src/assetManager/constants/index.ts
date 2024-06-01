@@ -6,7 +6,7 @@ interface ModelEntry {
   filename: string;
   file: string;
   scale: number;
-  front?: number;
+  type?: string;
   castShadow?: boolean;
   receiveShadow?: boolean;
 }
@@ -45,5 +45,11 @@ enum ModelKey {
   GRASS = 'GRASS',
 }
 
-export { AssetId, AssetCreators, ModelKey, ModelEntry };
+const modelType = {
+  ZONE: 'ZONE',
+  ROAD: 'ROAD',
+  TERRAIN: 'TERRAIN',
+};
+
+export { AssetId, AssetCreators, ModelKey, ModelEntry, modelType };
 
