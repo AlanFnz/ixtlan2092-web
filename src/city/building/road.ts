@@ -30,24 +30,24 @@ export class Road extends Building implements IRoad {
     // check all combinations
     // four-way intersection
     if (top && bottom && left && right) {
-      this.style = 'INTERSECTION';
+      this.style = 'FOUR-WAY';
       this.rotation = 0;
       // T intersection
     } else if (!top && bottom && left && right) {
       // bottom-left-right
-      this.style = 'TEE';
+      this.style = 'THREE-WAY';
       this.rotation = 180;
     } else if (top && !bottom && left && right) {
       // top-left-right
-      this.style = 'TEE';
+      this.style = 'THREE-WAY';
       this.rotation = 0;
     } else if (top && bottom && !left && right) {
       // top-bottom-right
-      this.style = 'TEE';
+      this.style = 'THREE-WAY';
       this.rotation = 90;
     } else if (top && bottom && left && !right) {
       // top-bottom-left
-      this.style = 'TEE';
+      this.style = 'THREE-WAY';
       this.rotation = 270;
       // Corner
     } else if (top && !bottom && left && !right) {
@@ -95,6 +95,16 @@ export class Road extends Building implements IRoad {
     }
 
     this.isMeshOutOfDate = true;
+  }
+
+  toHTML() {
+    let html = super.toHTML();
+    html += `
+    <span class="info-label">Style </span>
+    <span class="info-value">${this.style}</span>
+    <br>
+    `;
+    return html;
   }
 }
 
