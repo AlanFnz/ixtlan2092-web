@@ -26,14 +26,10 @@ class Zone extends Building implements IZone {
     this.abandonmentCounter = 0;
   }
 
-  update(city: ICity): void {
-    this.checkRoadAccess(city);
-  }
-
   step(city: ICity): void {
     super.step(city);
 
-    if (this.checkDevelopmentCriteria()) {
+    if (this.checkDevelopmentCriteria(city)) {
       this.abandonmentCounter = 0;
       if (Math.random() < CONFIG.ZONE.DEVELOPMENT_CHANCE) {
         this.abandoned = false;
@@ -52,7 +48,8 @@ class Zone extends Building implements IZone {
     }
   }
 
-  private checkDevelopmentCriteria(): boolean {
+  private checkDevelopmentCriteria(city: ICity): boolean {
+    this.checkRoadAccess(city);
     return this.hasRoadAccess;
   }
 
