@@ -166,7 +166,7 @@ h1 {
 
 /* INFO PANEL */
 
-#ui-info-overlay-container {
+#info-panel {
   position: fixed;
   top: 64px;
   right: 0px;
@@ -177,7 +177,7 @@ h1 {
   background-color: #00000048;
 }
 
-.info-overlay-header {
+.info-heading {
   text-align: center;
   font-size: 1em;
   margin: 8px 0px;

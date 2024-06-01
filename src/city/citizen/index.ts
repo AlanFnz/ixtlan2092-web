@@ -8,6 +8,9 @@ import { ITile } from '../tile';
 import { CITIZEN_STATE, CitizenState } from './constants';
 import { getRandomFirstName, getRandomSurname } from './utils';
 
+import calendarIcon from '../../assetManager/icons/person.png';
+import jobIcon from '../../assetManager/icons/person.png';
+
 export interface ICitizen {
   id: string;
   firstName: string;
@@ -118,12 +121,19 @@ export class Citizen implements ICitizen {
 
   toHTML(): string {
     return `
-      <li style="font-size:small">${this.firstName} ${this.surname} (Age: ${
-      this.age
-    } | State: ${this.state})
-        <ul style="padding-left:8px">
-          <li>Job: ${this.workplace?.name ?? 'N/A'}</li>
-        </ul>
+      <li class="info-citizen">
+        <span class="info-citizen-name">${this.firstName} ${this.surname}</span>
+        <br>
+        <span class="info-citizen-details">
+          <span>
+            <img class="info-citizen-icon" src=${calendarIcon}>
+            ${this.age} 
+          </span>
+          <span>
+            <img class="info-citizen-icon" src=${jobIcon}>
+            ${this.state}
+          </span>
+        </span>
       </li>
     `;
   }

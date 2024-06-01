@@ -6,10 +6,10 @@ function createInfoPanel() {
     return;
   }
 
-  infoOverlay.id = 'ui-info-overlay-container';
+  infoOverlay.id = 'info-panel';
 
   const headerContainer = document.createElement('div');
-  headerContainer.id = 'info-overlay-header';
+  headerContainer.className = 'info-heading';
 
   const infoTitle = document.createElement('span');
   infoTitle.textContent = 'INFO';
