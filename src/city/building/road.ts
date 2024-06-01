@@ -19,9 +19,9 @@ export class Road extends Building implements IRoad {
   update(city: ICity): void {
     // check which adjacent tiles are roads
     const top =
-      city.getTile(this.x, this.y + 1)?.building?.type === this.type ?? false;
-    const bottom =
       city.getTile(this.x, this.y - 1)?.building?.type === this.type ?? false;
+    const bottom =
+      city.getTile(this.x, this.y + 1)?.building?.type === this.type ?? false;
     const left =
       city.getTile(this.x - 1, this.y)?.building?.type === this.type ?? false;
     const right =
@@ -35,12 +35,11 @@ export class Road extends Building implements IRoad {
       // T intersection
     } else if (!top && bottom && left && right) {
       // bottom-left-right
-      this.style = 'THREE-WAY';
-      this.rotation = 180;
+      this.rotation = 0;
     } else if (top && !bottom && left && right) {
       // top-left-right
       this.style = 'THREE-WAY';
-      this.rotation = 0;
+      this.rotation = 180;
     } else if (top && bottom && !left && right) {
       // top-bottom-right
       this.style = 'THREE-WAY';
@@ -49,23 +48,23 @@ export class Road extends Building implements IRoad {
       // top-bottom-left
       this.style = 'THREE-WAY';
       this.rotation = 270;
-      // Corner
+      // corner
     } else if (top && !bottom && left && !right) {
       // top-left
       this.style = 'CORNER';
-      this.rotation = 270;
+      this.rotation = 180;
     } else if (top && !bottom && !left && right) {
       // top-right
       this.style = 'CORNER';
-      this.rotation = 0;
+      this.rotation = 90;
     } else if (!top && bottom && left && !right) {
       // bottom-left
       this.style = 'CORNER';
-      this.rotation = 180;
+      this.rotation = 270;
     } else if (!top && bottom && !left && right) {
       // bottom-right
       this.style = 'CORNER';
-      this.rotation = 90;
+      this.rotation = 0;
       // Straight
     } else if (top && bottom && !left && !right) {
       // top-bottom
@@ -75,15 +74,15 @@ export class Road extends Building implements IRoad {
       // left-right
       this.style = 'STRAIGHT';
       this.rotation = 90;
-      // Dead end
+      // dead end
     } else if (top && !bottom && !left && !right) {
       // top
       this.style = 'END';
-      this.rotation = 0;
+      this.rotation = 180;
     } else if (!top && bottom && !left && !right) {
       // bottom
       this.style = 'END';
-      this.rotation = 180;
+      this.rotation = 0;
     } else if (!top && !bottom && left && !right) {
       // left
       this.style = 'END';
