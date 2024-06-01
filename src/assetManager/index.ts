@@ -49,6 +49,7 @@ export class AssetManager implements IAssetManager {
       filename,
       file,
       scale = 1,
+      rotation = 0,
       receiveShadow = true,
       castShadow = true,
     }: ModelEntry
@@ -64,12 +65,17 @@ export class AssetManager implements IAssetManager {
           return;
         }
 
-        mesh.material = new THREE.MeshLambertMaterial({
-          map: this.textures.base,
-          specularMap: this.textures.specular,
+        mesh.traverse((node) => {
+          if ((node as THREE.Mesh).isMesh) {
+            (node as THREE.Mesh).material = new THREE.MeshLambertMaterial({
+              map: this.textures.base,
+              specularMap: this.textures.specular,
+            });
+          }
         });
 
         mesh.position.set(0, 0, 0);
+        mesh.rotation.set(0, THREE.MathUtils.degToRad(rotation), 0);
         mesh.scale.set(scale / 30, scale / 30, scale / 30);
         mesh.receiveShadow = receiveShadow;
         mesh.castShadow = castShadow;
@@ -124,18 +130,28 @@ export class AssetManager implements IAssetManager {
     }
 
     const modelName = `${zone.type}-${zone.style}${zone.level}`;
-    let mesh = this.getMesh(modelName as ModelKey);
+    if (zone.developed) {
+      // TODO  modelName = 'under-construction';
+    }
+
+    let mesh = this.cloneMesh(modelName as ModelKey);
     if (!mesh) return null;
     mesh.userData = tile;
     mesh.rotation.set(0, (zone.rotation || 0) * DEG2RAD, 0);
     mesh.position.set(zone.x, 0, zone.y);
+
+    if (zone.abandoned) {
+      const material = mesh.material as THREE.MeshLambertMaterial;
+      material.color = new THREE.Color(0x707070);
+    }
+
     return mesh;
   }
 
   private createRoadMesh(tile: ITile): THREE.Mesh | null {
     const road = tile.building;
     if (!road) return null;
-    const mesh = this.getMesh(`${road.type}-${road.style}` as ModelKey);
+    const mesh = this.cloneMesh(`${road.type}-${road.style}` as ModelKey);
     if (!mesh) return null;
     mesh.userData = tile;
     if (road.rotation) mesh.rotation.set(0, road.rotation * DEG2RAD, 0);
@@ -144,30 +160,22 @@ export class AssetManager implements IAssetManager {
     return mesh;
   }
 
-  getMesh(name: ModelKey): THREE.Mesh | null {
+  cloneMesh(name: ModelKey, transparent = false): THREE.Mesh | null {
     const mesh = this.loadedModels[name]?.clone() as THREE.Mesh;
     if (!mesh) return null;
     mesh.material = Array.isArray(mesh.material)
       ? mesh.material.map((material) => material.clone())
-      : mesh.material.clone();
+      : (mesh.material as THREE.Material).clone();
+
+    if (Array.isArray(mesh.material)) {
+      mesh.material.forEach((material) => {
+        (material as THREE.MeshLambertMaterial).transparent = transparent;
+      });
+    } else {
+      (mesh.material as THREE.MeshLambertMaterial).transparent = transparent;
+    }
+
     return mesh;
-  }
-
-  private getTopMaterial(): THREE.MeshLambertMaterial {
-    return new THREE.MeshLambertMaterial({ color: 0x555555 });
-  }
-
-  private updateMaterials(mesh: THREE.Mesh, zoneLevel: number): void {
-    const materials = Array.isArray(mesh.material)
-      ? mesh.material
-      : [mesh.material];
-    materials.forEach((material: THREE.Material) => {
-      // Cast map explicitly to THREE.Texture to access the repeat property
-      const texture = (material as THREE.MeshBasicMaterial).map;
-      if (texture instanceof THREE.Texture) {
-        texture.repeat.set(1, zoneLevel);
-      }
-    });
   }
 }
 

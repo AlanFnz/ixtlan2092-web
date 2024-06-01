@@ -6,6 +6,7 @@ interface ModelEntry {
   filename: string;
   file: string;
   scale: number;
+  rotation?: number;
   type?: string;
   castShadow?: boolean;
   receiveShadow?: boolean;
