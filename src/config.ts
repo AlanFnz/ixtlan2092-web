@@ -16,5 +16,12 @@ export default {
   CITY: {
     SIZE: 16,
   },
+  VEHICLE: {
+    SPEED: 0.0005, // distance travelled per millisecond
+    FADE_TIME: 1000, // start/end time where the vehicle should fade
+    MAX_LIFETIME: 10000, // maximum lifetime of a vehicle
+    MAX_VEHICLE_COUNT: 10, // maximum number of vehicles in scene
+    SPAWN_INTERVAL: 1000, // how often vehicles are spawned in milliseconds
+  },
 };
 
