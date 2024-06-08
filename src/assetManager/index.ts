@@ -6,7 +6,7 @@ import { ITile } from '../city/tile';
 import { IZone } from '../city/building/interfaces';
 import { BUILDING_TYPE } from '../city/building/constants';
 import { models } from './models';
-import { ModelEntry, ModelKey } from './constants';
+import { ModelEntry, ModelKey, modelType } from './constants';
 
 const DEG2RAD = Math.PI / 180.0;
 
@@ -96,6 +96,24 @@ export class AssetManager implements IAssetManager {
     );
   }
 
+  cloneMesh(name: ModelKey, transparent = false): THREE.Mesh | null {
+    const mesh = this.loadedModels[name]?.clone() as THREE.Mesh;
+    if (!mesh) return null;
+    mesh.material = Array.isArray(mesh.material)
+      ? mesh.material.map((material) => material.clone())
+      : (mesh.material as THREE.Material).clone();
+
+    if (Array.isArray(mesh.material)) {
+      mesh.material.forEach((material) => {
+        (material as THREE.MeshLambertMaterial).transparent = transparent;
+      });
+    } else {
+      (mesh.material as THREE.MeshLambertMaterial).transparent = transparent;
+    }
+
+    return mesh;
+  }
+
   createGroundMesh(tile: ITile): THREE.Mesh {
     const material = new THREE.MeshLambertMaterial({
       map: this.textures['grass'],
@@ -160,22 +178,16 @@ export class AssetManager implements IAssetManager {
     return mesh;
   }
 
-  cloneMesh(name: ModelKey, transparent = false): THREE.Mesh | null {
-    const mesh = this.loadedModels[name]?.clone() as THREE.Mesh;
-    if (!mesh) return null;
-    mesh.material = Array.isArray(mesh.material)
-      ? mesh.material.map((material) => material.clone())
-      : (mesh.material as THREE.Material).clone();
+  createRandomVehicleMesh(): THREE.Mesh | null {
+    const types = Object.entries(models)
+      .filter(([_, model]) => model.type === modelType.VEHICLE)
+      .map(([key]) => key as ModelKey);
 
-    if (Array.isArray(mesh.material)) {
-      mesh.material.forEach((material) => {
-        (material as THREE.MeshLambertMaterial).transparent = transparent;
-      });
-    } else {
-      (mesh.material as THREE.MeshLambertMaterial).transparent = transparent;
-    }
+    console.log(types);
 
-    return mesh;
+    const i = Math.floor(types.length * Math.random());
+    console.log(types[i]);
+    return this.cloneMesh(types[i], true);
   }
 }
 
