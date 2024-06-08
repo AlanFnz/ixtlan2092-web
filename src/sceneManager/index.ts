@@ -39,11 +39,7 @@ export class SceneManager implements ISceneManager {
       this.initialize(city);
       onLoad();
     });
-    this.cameraManager = new CameraManager(
-      this.gameWindow,
-      this.renderer,
-      CONFIG.CITY.SIZE
-    );
+    this.cameraManager = new CameraManager(this.gameWindow);
     this.buildings = [];
     this.terrain = [];
 
@@ -188,7 +184,7 @@ export class SceneManager implements ISceneManager {
   }
 
   private onResize(): void {
-    this.cameraManager.onWindowResize();
+    this.cameraManager.onWindowResize(this.gameWindow);
     this.renderer.setSize(
       this.gameWindow.clientWidth,
       this.gameWindow.clientHeight
