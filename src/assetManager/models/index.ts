@@ -2,6 +2,9 @@ import { ModelEntry, ModelKey, modelType } from '../constants';
 import modelsFiles from './modelsFiles';
 
 const models: Record<ModelKey, ModelEntry> = {
+  /**
+   * terrain and buildings
+   */
   [ModelKey.RESIDENTIAL_A1]: {
     filename: 'building-house-block-big.glb',
     file: modelsFiles.BUILDING_HOUSE_BLOCK_BIG,
@@ -169,6 +172,69 @@ const models: Record<ModelKey, ModelEntry> = {
     file: modelsFiles.TILE_PLAIN_GRASS,
     scale: 1,
     castShadow: false,
+  },
+  /**
+   * cars
+   */
+  [ModelKey.CAR_TAXI]: {
+    filename: 'car-taxi.glb',
+    file: modelsFiles.CAR_TAXI,
+    rotation: 90,
+    type: modelType.VEHICLE,
+  },
+  [ModelKey.CAR_POLICE]: {
+    filename: 'car-police.glb',
+    file: modelsFiles.CAR_POLICE,
+    rotation: 90,
+    type: modelType.VEHICLE,
+  },
+  [ModelKey.CAR_PASSENGER]: {
+    filename: 'car-passenger.glb',
+    file: modelsFiles.CAR_PASSENGER,
+    rotation: 90,
+    type: modelType.VEHICLE,
+  },
+  [ModelKey.CAR_VETERAN]: {
+    filename: 'car-veteran.glb',
+    file: modelsFiles.CAR_VETERAN,
+    rotation: 90,
+    type: modelType.VEHICLE,
+  },
+  [ModelKey.CAR_TRUCK]: {
+    filename: 'truck.glb',
+    file: modelsFiles.TRUCK,
+    rotation: 90,
+    type: modelType.VEHICLE,
+  },
+  [ModelKey.CAR_HIPPIE_VAN]: {
+    filename: 'car-hippie-van.glb',
+    file: modelsFiles.CAR_HIPPIE_VAN,
+    rotation: 90,
+    type: modelType.VEHICLE,
+  },
+  [ModelKey.CAR_TOW_TRUCK]: {
+    filename: 'car-tow-truck.glb',
+    file: modelsFiles.CAR_TOW_TRUCK,
+    rotation: 90,
+    type: modelType.VEHICLE,
+  },
+  [ModelKey.CAR_AMBULANCE_PICKUP]: {
+    filename: 'car-ambulance-pickup.glb',
+    file: modelsFiles.CAR_AMBULANCE_PICKUP,
+    rotation: 90,
+    type: modelType.VEHICLE,
+  },
+  [ModelKey.CAR_PASSENGER_RACE]: {
+    filename: 'car-passenger-race.glb',
+    file: modelsFiles.CAR_PASSENGER_RACE,
+    rotation: 90,
+    type: modelType.VEHICLE,
+  },
+  [ModelKey.CAR_BAYWATCH]: {
+    filename: 'car-baywatch.glb',
+    file: modelsFiles.CAR_BAYWATCH,
+    rotation: 90,
+    type: modelType.VEHICLE,
   },
 };
 

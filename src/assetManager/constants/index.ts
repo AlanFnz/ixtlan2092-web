@@ -5,7 +5,7 @@ type AssetId = (typeof BUILDING_TYPE)[keyof typeof BUILDING_TYPE];
 interface ModelEntry {
   filename: string;
   file: string;
-  scale: number;
+  scale?: number;
   rotation?: number;
   type?: string;
   castShadow?: boolean;
@@ -17,6 +17,9 @@ interface AssetCreators {
 }
 
 enum ModelKey {
+  /**
+   * terrain and buildings
+   */
   RESIDENTIAL_A1 = 'RESIDENTIAL-A1',
   RESIDENTIAL_B1 = 'RESIDENTIAL-B1',
   RESIDENTIAL_C1 = 'RESIDENTIAL-C1',
@@ -44,12 +47,26 @@ enum ModelKey {
   ROAD_TEE = 'ROAD-THREE-WAY',
   ROAD_INTERSECTION = 'ROAD-FOUR-WAY',
   GRASS = 'GRASS',
+  /**
+   * cars
+   */
+  CAR_TAXI = 'CAR_TAXI',
+  CAR_POLICE = 'CAR_POLICE',
+  CAR_PASSENGER = 'CAR_PASSENGER',
+  CAR_VETERAN = 'CAR_VETERAN',
+  CAR_TRUCK = 'CAR_TRUCK',
+  CAR_HIPPIE_VAN = 'CAR_HIPPIE_VAN',
+  CAR_TOW_TRUCK = 'CAR_TOW_TRUCK',
+  CAR_AMBULANCE_PICKUP = 'CAR_AMBULANCE_PICKUP',
+  CAR_PASSENGER_RACE = 'CAR_PASSENGER_RACE',
+  CAR_BAYWATCH = 'CAR_BAYWATCH',
 }
 
 const modelType = {
   ZONE: 'ZONE',
   ROAD: 'ROAD',
   TERRAIN: 'TERRAIN',
+  VEHICLE: 'VEHICLE',
 };
 
 export { AssetId, AssetCreators, ModelKey, ModelEntry, modelType };
