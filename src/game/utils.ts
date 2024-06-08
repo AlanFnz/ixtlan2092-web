@@ -9,19 +9,17 @@ function isActiveToolIdValid(
 }
 
 export function setupEventListeners(
-  game: IGame,
   sceneManager: ISceneManager,
   onMouseDown: (event: MouseEvent) => void,
-  onMouseMove: (event: MouseEvent) => void
+  onMouseMove: (event: MouseEvent) => void,
+  onMouseScroll: (event: WheelEvent) => void
 ) {
-  document.addEventListener(
-    'wheel',
-    sceneManager.cameraManager.onMouseWheel.bind(game),
-    { passive: false }
-  );
+  document.addEventListener('wheel', onMouseScroll, {
+    passive: false,
+  });
 
-  document.addEventListener('mousedown', onMouseDown.bind(game), false);
-  document.addEventListener('mousemove', onMouseMove.bind(game), false);
+  document.addEventListener('mousedown', onMouseDown, false);
+  document.addEventListener('mousemove', onMouseMove, false);
 
   document.addEventListener(
     'contextmenu',

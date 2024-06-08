@@ -40,10 +40,10 @@ export class Game implements IGame {
     this.selectedControl = document.getElementById(TOOLBAR_BUTTONS.SELECT.id);
     this.selectedControl?.classList.add('selected');
     setupEventListeners(
-      this,
       this.sceneManager,
-      this.onMouseDown,
-      this.onMouseMove
+      this.onMouseDown.bind(this),
+      this.onMouseMove.bind(this),
+      this.onMouseScroll.bind(this)
     );
     setInterval(() => this.step(), 1000);
   }
@@ -110,6 +110,12 @@ export class Game implements IGame {
     if (hoverObject && event.buttons & 1) {
       this.useActiveTool(hoverObject as THREE.Object3D);
     }
+
+    this.sceneManager.cameraManager.onMouseMove(event);
+  }
+
+  private onMouseScroll(event: WheelEvent): void {
+    this.sceneManager.cameraManager.onMouseScroll(event);
   }
 
   private useActiveTool(object: THREE.Object3D | null): void {
@@ -139,16 +145,14 @@ export class Game implements IGame {
   private updateInfoOverlay(clear?: boolean): void {
     const infoOverlayDetails = document.getElementById('info-overlay-details');
     const tile = clear ? null : this.focusedObject || null;
-    if (infoOverlayDetails) {
+    if (infoOverlayDetails)
       infoOverlayDetails.innerHTML = tile ? tile.toHTML() : '';
-    }
   }
 
   private updateTitleBar(): void {
     const populationCounter = document.getElementById('population-counter');
-    if (populationCounter) {
+    if (populationCounter)
       populationCounter.textContent = this.city.getPopulation();
-    }
   }
 
   private isEventFromUiElement(event: Event): boolean {
