@@ -1,6 +1,6 @@
 import { ICity } from '..';
 import { Building } from './building';
-import { BUILDING_TYPE, BuildingType } from './constants';
+import { BUILDING_TYPE, BuildingType, ROAD_TYPE } from './constants';
 
 export interface IRoad {}
 
@@ -12,7 +12,7 @@ export class Road extends Building implements IRoad {
     super(x, y);
     this.name = 'Two-Lane Road';
     this.type = BUILDING_TYPE.ROAD;
-    this.style = 'STRAIGHT';
+    this.style = ROAD_TYPE.STRAIGHT;
     this.hideTerrain = true;
   }
 
@@ -30,7 +30,7 @@ export class Road extends Building implements IRoad {
     // check all combinations
     // four-way intersection
     if (top && bottom && left && right) {
-      this.style = 'FOUR-WAY';
+      this.style = ROAD_TYPE.FOUR_WAY;
       this.rotation = 0;
       // T intersection
     } else if (!top && bottom && left && right) {
@@ -38,58 +38,58 @@ export class Road extends Building implements IRoad {
       this.rotation = 0;
     } else if (top && !bottom && left && right) {
       // top-left-right
-      this.style = 'THREE-WAY';
+      this.style = ROAD_TYPE.THREE_WAY;
       this.rotation = 180;
     } else if (top && bottom && !left && right) {
       // top-bottom-right
-      this.style = 'THREE-WAY';
+      this.style = ROAD_TYPE.THREE_WAY;
       this.rotation = 90;
     } else if (top && bottom && left && !right) {
       // top-bottom-left
-      this.style = 'THREE-WAY';
+      this.style = ROAD_TYPE.THREE_WAY;
       this.rotation = 270;
       // corner
     } else if (top && !bottom && left && !right) {
       // top-left
-      this.style = 'CORNER';
+      this.style = ROAD_TYPE.CORNER;
       this.rotation = 180;
     } else if (top && !bottom && !left && right) {
       // top-right
-      this.style = 'CORNER';
+      this.style = ROAD_TYPE.CORNER;
       this.rotation = 90;
     } else if (!top && bottom && left && !right) {
       // bottom-left
-      this.style = 'CORNER';
+      this.style = ROAD_TYPE.CORNER;
       this.rotation = 270;
     } else if (!top && bottom && !left && right) {
       // bottom-right
-      this.style = 'CORNER';
+      this.style = ROAD_TYPE.CORNER;
       this.rotation = 0;
       // Straight
     } else if (top && bottom && !left && !right) {
       // top-bottom
-      this.style = 'STRAIGHT';
+      this.style = ROAD_TYPE.STRAIGHT;
       this.rotation = 0;
     } else if (!top && !bottom && left && right) {
       // left-right
-      this.style = 'STRAIGHT';
+      this.style = ROAD_TYPE.STRAIGHT;
       this.rotation = 90;
       // dead end
     } else if (top && !bottom && !left && !right) {
       // top
-      this.style = 'END';
+      this.style = ROAD_TYPE.END;
       this.rotation = 180;
     } else if (!top && bottom && !left && !right) {
       // bottom
-      this.style = 'END';
+      this.style = ROAD_TYPE.END;
       this.rotation = 0;
     } else if (!top && !bottom && left && !right) {
       // left
-      this.style = 'END';
+      this.style = ROAD_TYPE.END;
       this.rotation = 270;
     } else if (!top && !bottom && !left && right) {
       // right
-      this.style = 'END';
+      this.style = ROAD_TYPE.END;
       this.rotation = 90;
     }
 

@@ -6,7 +6,15 @@ const BUILDING_TYPE = {
   ROAD: 'ROAD',
 } as const;
 
+const ROAD_TYPE = {
+  END: 'END',
+  STRAIGHT: 'STRAIGHT',
+  CORNER: 'CORNER',
+  THREE_WAY: 'THREE-WAY',
+  FOUR_WAY: 'FOUR-WAY',
+} as const;
+
 type BuildingType = (typeof BUILDING_TYPE)[keyof typeof BUILDING_TYPE];
 
-export { BUILDING_TYPE, BuildingType };
+export { BUILDING_TYPE, ROAD_TYPE, BuildingType };
 
