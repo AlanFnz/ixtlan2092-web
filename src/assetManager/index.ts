@@ -13,6 +13,8 @@ const DEG2RAD = Math.PI / 180.0;
 export interface IAssetManager {
   createGroundMesh(tile: ITile): THREE.Mesh;
   createBuildingMesh(tile: ITile): THREE.Mesh | null;
+  createRandomVehicleMesh(): THREE.Mesh | null;
+  textures: Record<string, THREE.Texture>;
 }
 
 export class AssetManager implements IAssetManager {
@@ -26,9 +28,10 @@ export class AssetManager implements IAssetManager {
     THREE.Mesh
   >;
 
-  private textures: Record<string, THREE.Texture> = {
+  public textures: Record<string, THREE.Texture> = {
     grass: textures.GRASS,
     base: textures.BASE,
+    grid: textures.GRID,
     specular: textures.SPECULAR,
   };
 
