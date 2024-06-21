@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { VehicleGraphTile } from './vehicleGraphTile';
-import { AssetManager } from '../../assetManager';
+import { IAssetManager } from '../../assetManager';
 import { VehicleGraphHelper } from './vehicleGraphHelper';
 import { IRoad } from '../building/road';
 import CONFIG from '../../config';
@@ -8,12 +8,12 @@ import { Vehicle } from '.';
 
 export class VehicleGraph extends THREE.Group {
   size: number;
-  assetManager: AssetManager;
+  assetManager: IAssetManager;
   tiles: (VehicleGraphTile | null)[][];
   vehicles: THREE.Group;
   helper: VehicleGraphHelper;
 
-  constructor(size: number, assetManager: AssetManager) {
+  constructor(size: number, assetManager: IAssetManager) {
     super();
 
     this.size = size;
