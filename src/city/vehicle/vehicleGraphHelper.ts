@@ -12,8 +12,9 @@ const CONNECTED_MATERIAL = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 const DISCONNECTED_MATERIAL = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 
 export class VehicleGraphHelper extends THREE.Group {
+  // update the visualization of the vehicle graph
   update(graph: VehicleGraph) {
-    this.clear();
+    this.clear(); // clear existing visualizations
 
     for (let x = 0; x < graph.size; x++) {
       for (let y = 0; y < graph.size; y++) {
@@ -21,6 +22,7 @@ export class VehicleGraphHelper extends THREE.Group {
 
         if (!tile) continue;
 
+        // create visualizations for each node in the tile
         for (const node of tile.children) {
           if (node instanceof VehicleGraphNode) {
             this.createNodeVisualization(node);
@@ -30,6 +32,7 @@ export class VehicleGraphHelper extends THREE.Group {
     }
   }
 
+  // create a visualization for a node
   createNodeVisualization(node: VehicleGraphNode) {
     const nodeMesh = new THREE.Mesh(
       NODE_GEOMETRY,
@@ -45,10 +48,10 @@ export class VehicleGraphHelper extends THREE.Group {
       nodeWorldPosition.z
     );
 
-    // Add edge visualizations for the connected nodes
+    // add edge visualizations for the connected nodes
     if (node.next.length > 0) {
       for (const next of node.next) {
-        // Get world position of the next node
+        // get world position of the next node
         const nextWorldPosition = new THREE.Vector3();
         next.getWorldPosition(nextWorldPosition);
 
