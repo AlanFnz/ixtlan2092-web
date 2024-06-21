@@ -136,7 +136,7 @@ export class Game implements IGame {
       this.city.update();
       this.sceneManager.update(this.city);
     } else if (!tile.building) {
-      tile.placeBuilding(this.activeToolId);
+      tile.placeBuilding && tile.placeBuilding(this.activeToolId);
       this.city.update();
       this.sceneManager.update(this.city);
     }

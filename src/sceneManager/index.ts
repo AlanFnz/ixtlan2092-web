@@ -3,6 +3,8 @@ import CONFIG from '../config';
 import { ICity } from '../city';
 import { AssetManager, IAssetManager } from '../assetManager';
 import { ICameraManager, CameraManager } from '../cameraManager';
+import { VehicleGraph } from '../city/vehicle/vehicleGraph';
+import { BUILDING_TYPE } from '../city/building/constants';
 
 export interface ISceneManager {
   start(): void;
@@ -26,6 +28,8 @@ export class SceneManager implements ISceneManager {
   private mouse: THREE.Vector2;
   private activeObject: THREE.Object3D | null;
   private hoverObject: THREE.Object3D | null;
+  private vehicleGraph: VehicleGraph = null!;
+  private root: THREE.Group = new THREE.Group();
   cameraManager: ICameraManager;
 
   constructor(city: ICity, onLoad: () => void) {
@@ -63,6 +67,14 @@ export class SceneManager implements ISceneManager {
 
   private initialize(city: ICity): void {
     this.scene.clear();
+    this.root = new THREE.Group();
+    this.scene.add(this.root);
+
+    this.vehicleGraph = new VehicleGraph(city.size, this.assetManager);
+    this.root.add(this.vehicleGraph);
+
+    this.buildings = [];
+    this.terrain = [];
 
     for (let x = 0; x < city.size; x++) {
       const column = [];
@@ -79,6 +91,7 @@ export class SceneManager implements ISceneManager {
     }
 
     this.setupLights();
+    this.setupGrid(city);
   }
 
   private setupLights(): void {
@@ -93,33 +106,58 @@ export class SceneManager implements ISceneManager {
     sun.shadow.mapSize.height = 1024;
     sun.shadow.camera.near = 10;
     sun.shadow.camera.far = 50;
-    this.scene.add(sun);
-    this.scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+    this.root.add(sun);
+    this.root.add(new THREE.AmbientLight(0xffffff, 0.2));
   }
 
-  update(city: ICity) {
+  private setupGrid(city: ICity): void {
+    const gridMaterial = new THREE.MeshBasicMaterial({
+      color: 0x000000,
+      map: this.assetManager.textures.grid,
+      transparent: true,
+      opacity: 0.2,
+    });
+
+    if (gridMaterial.map) {
+      gridMaterial.map.repeat = new THREE.Vector2(city.size, city.size);
+      gridMaterial.map.wrapS = THREE.RepeatWrapping;
+      gridMaterial.map.wrapT = THREE.RepeatWrapping;
+      gridMaterial.map.needsUpdate = true;
+    }
+
+    const grid = new THREE.Mesh(
+      new THREE.BoxGeometry(city.size, 0.1, city.size),
+      gridMaterial
+    );
+    grid.position.set(city.size / 2 - 0.5, -0.04, city.size / 2 - 0.5);
+    grid.userData.nonInteractive = true;
+    //grid.layers.set(1);
+    this.scene.add(grid);
+  }
+
+  update(city: ICity): void {
     for (let x = 0; x < city.size; x++) {
       for (let y = 0; y < city.size; y++) {
         const tile = city.getTile(x, y);
         const existingBuildingMesh = this.buildings[x][y];
 
         if (tile) {
+          this.terrain[x][y].visible = !tile.building?.hideTerrain ?? true;
+
           if (!tile.building && existingBuildingMesh) {
-            this.scene.remove(existingBuildingMesh);
+            this.root.remove(existingBuildingMesh);
             this.buildings[x][y] = null;
+            this.vehicleGraph.updateTile(x, y, null);
           }
 
           if (tile.building && tile.building.isMeshOutOfDate) {
-            if (existingBuildingMesh) this.scene.remove(existingBuildingMesh);
-            const newBuildingMesh = this.assetManager.createBuildingMesh(tile);
-
-            this.terrain[x][y].visible = !tile.building?.hideTerrain ?? true;
-
-            if (newBuildingMesh) {
-              this.scene.add(newBuildingMesh);
-              this.buildings[x][y] = newBuildingMesh;
-            }
+            if (existingBuildingMesh) this.root.remove(existingBuildingMesh);
+            this.buildings[x][y] = this.assetManager.createBuildingMesh(tile);
+            if (this.buildings[x][y] !== null)
+              this.root.add(this.buildings[x][y] as THREE.Object3D);
             tile.building.isMeshOutOfDate = false;
+            if (tile.building.type === BUILDING_TYPE.ROAD)
+              this.vehicleGraph.updateTile(x, y, tile.building);
           }
         }
       }
@@ -135,6 +173,7 @@ export class SceneManager implements ISceneManager {
   }
 
   private draw(): void {
+    this.vehicleGraph.updateVehicles();
     this.renderer.render(this.scene, this.cameraManager.camera);
   }
 
@@ -163,11 +202,12 @@ export class SceneManager implements ISceneManager {
       this.scene.children,
       true
     );
-    if (intersections.length > 0) {
-      return intersections[0].object;
-    } else {
-      return null;
+    for (const intersection of intersections) {
+      if (!intersection.object.userData.nonInteractive) {
+        return intersection.object;
+      }
     }
+    return null;
   }
 
   public setActiveObject(object: THREE.Object3D): void {
