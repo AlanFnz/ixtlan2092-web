@@ -2,7 +2,10 @@ import { ICity } from '..';
 import { Building } from './building';
 import { BUILDING_TYPE, BuildingType, ROAD_TYPE } from './constants';
 
-export interface IRoad {}
+export interface IRoad {
+  rotation?: number;
+  style: string;
+}
 
 export class Road extends Building implements IRoad {
   style: string;

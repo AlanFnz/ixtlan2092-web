@@ -187,16 +187,16 @@ export class StraightRoadTile extends VehicleGraphTile {
       out: new VehicleGraphNode(-roadOffset, tileOffset),
     };
 
-    // Add to tile
+    // add to tile
     this.addNonNull(this.top.in);
     this.addNonNull(this.top.out);
     this.addNonNull(this.bottom.in);
     this.addNonNull(this.bottom.out);
 
-    // Connect together
-    // Path #1: Bottom -> Top
+    // connect together
+    // path #1: bottom -> top
     this.bottom.in?.connect(this.top.out);
-    // Path #2: Top -> Bottom
+    // path #2: top -> bottom
     this.top.in?.connect(this.bottom.out);
   }
 }
@@ -234,11 +234,11 @@ export class CornerRoadTile extends VehicleGraphTile {
     this.addNonNull(this.bottom.in);
     this.addNonNull(this.bottom.out);
 
-    // Connect together
-    // Path #1: Bottom -> Right
+    // connect together
+    // path #1: bottom -> right
     this.bottom.in?.connect(midpointBottomRight);
     midpointBottomRight.connect(this.right.out);
-    // Path #2: Right -> Bottom
+    // path #2: right -> bottom
     this.right.in?.connect(midpointTopLeft);
     midpointTopLeft.connect(this.bottom.out);
   }
@@ -250,7 +250,7 @@ export class ThreeWayRoadTile extends VehicleGraphTile {
 
     this.name = `TeeRoadTile (${this.position})`;
 
-    // Create nodes
+    // create nodes
     this.left = {
       in: new VehicleGraphNode(-tileOffset, roadOffset),
       out: new VehicleGraphNode(-tileOffset, -roadOffset),
@@ -271,7 +271,7 @@ export class ThreeWayRoadTile extends VehicleGraphTile {
     const midpointTopLeft = new VehicleGraphNode(-roadOffset, -roadOffset);
     const midpointTopRight = new VehicleGraphNode(roadOffset, -roadOffset);
 
-    // Add to tile
+    // add to tile
     this.addNonNull(this.left.in);
     this.addNonNull(this.left.out);
     this.addNonNull(this.right.in);
@@ -283,18 +283,18 @@ export class ThreeWayRoadTile extends VehicleGraphTile {
     this.addNonNull(midpointTopLeft);
     this.addNonNull(midpointTopRight);
 
-    // Connect midpoints
+    // connect midpoints
     midpointBottomLeft.connect(midpointBottomRight);
     midpointBottomRight.connect(midpointTopRight);
     midpointTopRight.connect(midpointTopLeft);
     midpointTopLeft.connect(midpointBottomLeft);
 
-    // Connect inputs to midpoints
+    // connect inputs to midpoints
     this.left.in?.connect(midpointBottomLeft);
     this.right.in?.connect(midpointTopRight);
     this.bottom.in?.connect(midpointBottomRight);
 
-    // Connect midpoints to outputs
+    // connect midpoints to outputs
     midpointBottomLeft.connect(this.bottom.out);
     midpointBottomRight.connect(this.right.out);
     midpointTopLeft.connect(this.left.out);
@@ -307,7 +307,7 @@ export class FourWayRoadTile extends VehicleGraphTile {
 
     this.name = `IntersectionRoadTile (${this.position})`;
 
-    // Create nodes
+    // create nodes
     this.left = {
       in: new VehicleGraphNode(-tileOffset, roadOffset),
       out: new VehicleGraphNode(-tileOffset, -roadOffset),
@@ -333,7 +333,7 @@ export class FourWayRoadTile extends VehicleGraphTile {
     const midpointTopLeft = new VehicleGraphNode(-roadOffset, -roadOffset);
     const midpointTopRight = new VehicleGraphNode(roadOffset, -roadOffset);
 
-    // Add to tile
+    // add to tile
     this.addNonNull(this.left.in);
     this.addNonNull(this.left.out);
     this.addNonNull(this.right.in);
@@ -347,19 +347,19 @@ export class FourWayRoadTile extends VehicleGraphTile {
     this.addNonNull(midpointTopLeft);
     this.addNonNull(midpointTopRight);
 
-    // Connect midpoints
+    // connect midpoints
     midpointBottomLeft.connect(midpointBottomRight);
     midpointBottomRight.connect(midpointTopRight);
     midpointTopRight.connect(midpointTopLeft);
     midpointTopLeft.connect(midpointBottomLeft);
 
-    // Connect inputs to midpoints
+    // connect inputs to midpoints
     this.left.in?.connect(midpointBottomLeft);
     this.right.in?.connect(midpointTopRight);
     this.bottom.in?.connect(midpointBottomRight);
     this.top.in?.connect(midpointTopLeft);
 
-    // Connect midpoints to outputs
+    // connect midpoints to outputs
     midpointBottomLeft.connect(this.bottom.out);
     midpointBottomRight.connect(this.right.out);
     midpointTopRight.connect(this.top.out);

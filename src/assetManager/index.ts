@@ -149,7 +149,7 @@ export class AssetManager implements IAssetManager {
 
     const modelName = `${zone.type}-${zone.style}${zone.level}`;
     if (zone.developed) {
-      // TODO  modelName = 'under-construction';
+      // TODO:  modelName = 'under-construction';
     }
 
     let mesh = this.cloneMesh(modelName as ModelKey);
@@ -183,10 +183,7 @@ export class AssetManager implements IAssetManager {
       .filter(([_, model]) => model.type === modelType.VEHICLE)
       .map(([key]) => key as ModelKey);
 
-    console.log(types);
-
     const i = Math.floor(types.length * Math.random());
-    console.log(types[i]);
     return this.cloneMesh(types[i], true);
   }
 }
