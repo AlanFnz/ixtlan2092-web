@@ -60,15 +60,21 @@ export class AssetManager implements IAssetManager {
     this.gltfLoader.load(
       file,
       (glb) => {
-        let mesh = (glb.scene.children[0] as THREE.Object3D)
-          .children[0] as THREE.Mesh;
+        console.log(`Loaded file: ${file}`);
+        // try to find a mesh in the children of the scene
+        let mesh: THREE.Mesh | null = null;
+        glb.scene.traverse((child) => {
+          if ((child as THREE.Mesh).isMesh) {
+            mesh = child as THREE.Mesh;
+          }
+        });
 
-        if (!mesh.isMesh) {
+        if (!mesh) {
           console.error(`Model ${name} does not contain a mesh.`);
           return;
         }
 
-        mesh.traverse((node) => {
+        (mesh as THREE.Object3D).traverse((node) => {
           if ((node as THREE.Mesh).isMesh) {
             (node as THREE.Mesh).material = new THREE.MeshLambertMaterial({
               map: this.textures.base,
@@ -77,11 +83,15 @@ export class AssetManager implements IAssetManager {
           }
         });
 
-        mesh.position.set(0, 0, 0);
-        mesh.rotation.set(0, THREE.MathUtils.degToRad(rotation), 0);
-        mesh.scale.set(scale / 30, scale / 30, scale / 30);
-        mesh.receiveShadow = receiveShadow;
-        mesh.castShadow = castShadow;
+        (mesh as THREE.Object3D).position.set(0, 0, 0);
+        (mesh as THREE.Object3D).rotation.set(
+          0,
+          THREE.MathUtils.degToRad(rotation),
+          0
+        );
+        (mesh as THREE.Object3D).scale.set(scale / 30, scale / 30, scale / 30);
+        (mesh as THREE.Object3D).receiveShadow = receiveShadow;
+        (mesh as THREE.Object3D).castShadow = castShadow;
 
         this.loadedModels[name] = mesh;
 
@@ -187,6 +197,7 @@ export class AssetManager implements IAssetManager {
       .map(([key]) => key as ModelKey);
 
     const i = Math.floor(types.length * Math.random());
+    console.log('types[i]', types[i]);
     return this.cloneMesh(types[i], true);
   }
 }
