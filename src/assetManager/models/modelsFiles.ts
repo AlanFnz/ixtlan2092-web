@@ -1,12 +1,7 @@
-import AIRPORT_HANGAR from './glb/airport-hangar.glb';
-import AIRPORT_JET_BRIDGE from './glb/airport-jet-bridge.glb';
-import AIRPORT_TERMINAL from './glb/airport-terminal.glb';
-import ANCHOR from './glb/anchor.glb';
 import ARMORED_TRUCK from './glb/armored-truck.glb';
 import ATM_MACHINE from './glb/atm-mechine.glb';
 import BABY_CARRIAGE from './glb/baby-carriage.glb';
 import BALLOON_STRIPES from './glb/balloon-stripes.glb';
-import BALLOON from './glb/balloon.glb';
 import BASKETBALL_STAND from './glb/basketball-stand.glb';
 import BENCH_FOREST from './glb/bench-forest.glb';
 import BENCH_OLD from './glb/bench-old.glb';
@@ -66,11 +61,6 @@ import BUILDING_SKYSCRAPER from './glb/building-skyscraper.glb';
 import BUILDING_STADIUM from './glb/building-stadium.glb';
 import BUILDING_TEMPLE_CHINA from './glb/building-temple-china.glb';
 import BUILDING_TRAIN_STATION from './glb/building-train-station.glb';
-import BULLDOZER from './glb/bulldozer.glb';
-import BUMPER_CAR_BLUE from './glb/bumper-car_blue.glb';
-import BUMPER_CAR_YELLOW from './glb/bumper-car_yellow.glb';
-import BUMPER_CAR_RED from './glb/bumper-car-red.glb';
-import BUMPER_CARS_BOOTH from './glb/bumper-cars-booth.glb';
 import BURGER_JOINT_SIGN from './glb/burger-joint-sign.glb';
 import BURGER_STATUE from './glb/burger-statue.glb';
 import BUS_PASSENGER from './glb/bus-passenger.glb';
@@ -100,20 +90,11 @@ import CARGO_SHIPPING_ORANGE from './glb/cargo-shipping_orange.glb';
 import CARGO_SHIPPING_RED from './glb/cargo-shipping_red.glb';
 import CARGO_SHIPPING_WHITE from './glb/cargo-shipping_white.glb';
 import CARGO_SIMPLE from './glb/cargo-smple.glb';
-import CARNATIONS from './glb/carnations.glb';
 import CHAIR_FOLDING from './glb/chair-folding.glb';
 import CHIMNEY_BIG from './glb/chimney-big.glb';
-import CLOUD_BIG from './glb/cloud-big.glb';
-import CLOUD_FLUFFY from './glb/cloud-fluffy.glb';
-import CLOUD_LONG from './glb/cloud-long.glb';
-import CLOUD_TRIANGLE from './glb/cloud-triangle.glb';
+import CONSTRUCTION_SMALL from './glb/construction-small.glb';
 import CONTROL_TOWER from './glb/control-tower.glb';
 import COOLING_TOWER from './glb/cooling-tower.glb';
-import CRANE_CRAWLER from './glb/crane-crawler.glb';
-import CRANE_DOCKS from './glb/crane-docks.glb';
-import CRANE_PORT from './glb/crane-port.glb';
-import DAM_BRANCH from './glb/dam-branch.glb';
-import DAM from './glb/dam.glb';
 import DATA_CENTER from './glb/data-center.glb';
 import DRYER_OUTSIDE from './glb/dryer-outside.glb';
 import DUMPSTER from './glb/dumpster.glb';
@@ -152,7 +133,6 @@ import GROUND_CRACKED from './glb/ground-cracked.glb';
 import GROUND_LINES from './glb/ground-lines.glb';
 import GUIDEPOST from './glb/guidepost.glb';
 import HELICOPTER from './glb/helicopter.glb';
-import HOT_DOG_STAND from './glb/hot-dog-stand.glb';
 import INDUSTRY_BUILDING from './glb/industry-building.glb';
 import INDUSTRY_FACTORY_HALL from './glb/industry-factory-hall.glb';
 import INDUSTRY_FACTORY_OLD from './glb/industry-factory-old.glb';
@@ -166,42 +146,26 @@ import LAMP_ROAD_DOUBLE from './glb/lamp-road-double.glb';
 import LAMP_ROAD from './glb/lamp-road.glb';
 import LANTERN_LONG from './glb/lantern-long.glb';
 import LANTERN_SPHERE from './glb/lantern-sphere.glb';
-import LAWN_MOWER_RIDE from './glb/lawn-mower-ride.glb';
-import LAWN_MOWER from './glb/lawn-mower.glb';
-import LIGHTHOUSE from './glb/lighthouse.glb';
 import MAIL_BOX from './glb/mail-box.glb';
 import MAINROAD_SIGN_GREEN from './glb/mainroad-sign-green.glb';
 import MARKETPLACE_STAND_SIMPLE from './glb/marketplace-stand-simple.glb';
 import MOSQUE_TOWER from './glb/mosque-tower.glb';
 import MOSQUE from './glb/mosque.glb';
-import MOTORBIKE_OLD from './glb/motorbike-old.glb';
 import MOUNTAIN_DESERT from './glb/mountain-desert.glb';
 import MOUNTAINS from './glb/mountains.glb';
 import NUCLEAR_POWER_PLANT from './glb/nuclear-power-plant.glb';
-import PACKAGE_BOX_OPEN from './glb/package-box-open.glb';
-import PACKAGE_BOX from './glb/package-box.glb';
 import PALETTE from './glb/palette.glb';
 import PALM_ROUND from './glb/palm-round.glb';
 import PALM_SMALL from './glb/palm-small.glb';
 import PALM from './glb/palm.glb';
 import PIER_TILE_STRAIGHT from './glb/pier-tile-straight.glb';
 import PLANE_PASSENGER from './glb/plane-passenger.glb';
-import POOL_INFLATABLE from './glb/pool-inflatable.glb';
 import POWER_LINE_POLE from './glb/power_line_pole.glb';
-import PUMPKIN_LEAVES from './glb/pumkin-leaves.glb';
-import PUMPKIN from './glb/pumkin.glb';
-import PUMPJACK from './glb/pumpjack.glb';
-import ROAD_ROLLER from './glb/road-roller.glb';
-import ROAD_SIGN_GREEN from './glb/road-sign-green.glb';
 import ROCK_PILLAR from './glb/rock-pillar.glb';
 import ROCK_SHARP from './glb/rock-sharp.glb';
 import ROCK_TERRASSE from './glb/rock-terrasse.glb';
 import ROCKS_SMALL from './glb/rocks-small.glb';
-import ROSES from './glb/roses.glb';
 import SAND_BOX from './glb/sand-box.glb';
-import SCOOTER_KICK from './glb/scooter-kick.glb';
-import SEA_REFINERY from './glb/sea-refinery.glb';
-import SHED_DOG from './glb/shed-dog.glb';
 import SHIP_CARGO from './glb/ship-cargo.glb';
 import SHIP_YACHT from './glb/ship-yacht.glb';
 import SHRUB_ROUND from './glb/shrub-round.glb';
@@ -215,12 +179,6 @@ import SKYSCRAPER_PART_TOP from './glb/skyscraper-part-top.glb';
 import SKYSCRAPER_SMALL from './glb/skyscraper-small.glb';
 import SKYSCRAPER_TINY from './glb/skyscraper-tiny.glb';
 import SKYSCRAPER from './glb/skyscraper.glb';
-import SKYSCRAPER2_PART_BOTTOM from './glb/skyscraper2-part-bottom.glb';
-import SKYSCRAPER2_PART_MIDDLE_SMALL from './glb/skyscraper2-part-middle-small.glb';
-import SKYSCRAPER2_PART_MIDDLE from './glb/skyscraper2-part-middle.glb';
-import SKYSCRAPER2_PART_SHRINKAGE from './glb/skyscraper2-part-shrinkage.glb';
-import SKYSCRAPER2_PART_TOP from './glb/skyscraper2-part-top.glb';
-import SOCCER_GATE from './glb/soccer-gate.glb';
 import SOLAR_PANEL_HOUSE from './glb/solar-panel-house.glb';
 import STONE_DIAMOND from './glb/stone-diamond.glb';
 import STONE_FLAT from './glb/stone-flat.glb';
@@ -275,27 +233,6 @@ import TILE_SIDEWALK_HILL from './glb/tile-sidewalk-hill.glb';
 import TILE_SIDEWALK_STRAIGHT from './glb/tile-sidewalk-straight.glb';
 import TILE_WATER from './glb/tile-water.glb';
 import TRAFFIC_LIGHTS from './glb/traffic-lights.glb';
-import TRAFFIC_SIGN_RHOMB from './glb/traffic-sign-rhomb.glb';
-import TRAIN_FREIGHT_BIG from './glb/train-freight-big.glb';
-import TRAIN_FREIGHT_SHORT from './glb/train-freight-short.glb';
-import TRAIN_PASSENGER_WAGON from './glb/train-passenger-wagon.glb';
-import TRAIN_PASSENGER from './glb/train-passenger.glb';
-import TRAIN_SPEED_WAGON from './glb/train-speed-wagon.glb';
-import TRAIN_SPEED from './glb/train-speed.glb';
-import TRAIN_STATION_PLATFORM_EMPTY_SMALL from './glb/train-station-platform-empty-small.glb';
-import TRAIN_STATION_PLATFORM_END_SMALL from './glb/train-station-platform-end-small.glb';
-import TRAIN_STATION_PLATFORM_LIGHT_SMALL from './glb/train-station-platform-light-small.glb';
-import TRAIN_STATION_PLATFORM_SIGN_SMALL from './glb/train-station-platform-sign-small.glb';
-import TRAIN_STATION_PLATFORM_STAIRS_SMALL from './glb/train-station-platform-stairs-small.glb';
-import TRAIN_STATION_PLATFORM_STAIRS from './glb/train-station-platform-stairs.glb';
-import TRAIN_STATION_PLATFORM from './glb/train-station-platform.glb';
-import TRAIN_WAGON_CARGO from './glb/train-wagon-cargo.glb';
-import TRAIN_WAGON_HOPPER from './glb/train-wagon-hopper.glb';
-import TRAIN_WAGON_OIL from './glb/train-wagon-oil.glb';
-import TRAINSTATION_OBERPASS_END from './glb/trainstation-oberpass-end.glb';
-import TRAINSTATION_OBERPASS_START from './glb/trainstation-oberpass-start.glb';
-import TRAINSTATION_OBERPASS from './glb/trainstation-oberpass.glb';
-import TRASH_CAN from './glb/trash-can.glb';
 import TREE_BEECH from './glb/tree-beech.glb';
 import TREE_BIRCH_TALL from './glb/tree-birch-tall.glb';
 import TREE_BIRCH from './glb/tree-birch.glb';
@@ -320,28 +257,12 @@ import TREE from './glb/tree.glb';
 import TRIBUNE_STREIGHT from './glb/tribune-streight.glb';
 import TRUCK from './glb/truck.glb';
 import UNDER_CONSTRUCTION from './glb/under_construction.gltf';
-import WALL_CONCRETE from './glb/wall-concrete.glb';
-import WALL_EDGE_SMALL from './glb/wall-edge-small.glb';
-import WALL_JAPAN_MEDIUM from './glb/wall-japan-medium.glb';
-import WALL_JAPAN_SMALL from './glb/wall-japan-small.glb';
-import WALL_MEDIUM from './glb/wall-medium.glb';
-import WALL_WOOD from './glb/wall-wood.glb';
-import WALLBOX_HOSE from './glb/wallbox-hose.glb';
-import WALLBOX from './glb/wallbox.glb';
-import WATER_RIDE_CART from './glb/water-ride-cart.glb';
-import WATER_RIDE from './glb/water-ride.glb';
-import WINDMILL from './glb/windmill.glb';
 
 const modelsFiles = {
-  AIRPORT_HANGAR,
-  AIRPORT_JET_BRIDGE,
-  AIRPORT_TERMINAL,
-  ANCHOR,
   ARMORED_TRUCK,
   ATM_MACHINE,
   BABY_CARRIAGE,
   BALLOON_STRIPES,
-  BALLOON,
   BASKETBALL_STAND,
   BENCH_FOREST,
   BENCH_OLD,
@@ -401,11 +322,6 @@ const modelsFiles = {
   BUILDING_STADIUM,
   BUILDING_TEMPLE_CHINA,
   BUILDING_TRAIN_STATION,
-  BULLDOZER,
-  BUMPER_CAR_BLUE,
-  BUMPER_CAR_YELLOW,
-  BUMPER_CAR_RED,
-  BUMPER_CARS_BOOTH,
   BURGER_JOINT_SIGN,
   BURGER_STATUE,
   BUS_PASSENGER,
@@ -435,20 +351,10 @@ const modelsFiles = {
   CARGO_SHIPPING_RED,
   CARGO_SHIPPING_WHITE,
   CARGO_SIMPLE,
-  CARNATIONS,
   CHAIR_FOLDING,
   CHIMNEY_BIG,
-  CLOUD_BIG,
-  CLOUD_FLUFFY,
-  CLOUD_LONG,
-  CLOUD_TRIANGLE,
   CONTROL_TOWER,
   COOLING_TOWER,
-  CRANE_CRAWLER,
-  CRANE_DOCKS,
-  CRANE_PORT,
-  DAM_BRANCH,
-  DAM,
   DATA_CENTER,
   DRYER_OUTSIDE,
   DUMPSTER,
@@ -487,7 +393,6 @@ const modelsFiles = {
   GROUND_LINES,
   GUIDEPOST,
   HELICOPTER,
-  HOT_DOG_STAND,
   INDUSTRY_BUILDING,
   INDUSTRY_FACTORY_HALL,
   INDUSTRY_FACTORY_OLD,
@@ -501,42 +406,26 @@ const modelsFiles = {
   LAMP_ROAD,
   LANTERN_LONG,
   LANTERN_SPHERE,
-  LAWN_MOWER_RIDE,
-  LAWN_MOWER,
-  LIGHTHOUSE,
   MAIL_BOX,
   MAINROAD_SIGN_GREEN,
   MARKETPLACE_STAND_SIMPLE,
   MOSQUE_TOWER,
   MOSQUE,
-  MOTORBIKE_OLD,
   MOUNTAIN_DESERT,
   MOUNTAINS,
   NUCLEAR_POWER_PLANT,
-  PACKAGE_BOX_OPEN,
-  PACKAGE_BOX,
   PALETTE,
   PALM_ROUND,
   PALM_SMALL,
   PALM,
   PIER_TILE_STRAIGHT,
   PLANE_PASSENGER,
-  POOL_INFLATABLE,
   POWER_LINE_POLE,
-  PUMPKIN_LEAVES,
-  PUMPKIN,
-  PUMPJACK,
-  ROAD_ROLLER,
-  ROAD_SIGN_GREEN,
   ROCK_PILLAR,
   ROCK_SHARP,
   ROCK_TERRASSE,
   ROCKS_SMALL,
-  ROSES,
   SAND_BOX,
-  SCOOTER_KICK,
-  SEA_REFINERY,
-  SHED_DOG,
   SHIP_CARGO,
   SHIP_YACHT,
   SHRUB_ROUND,
@@ -550,12 +439,6 @@ const modelsFiles = {
   SKYSCRAPER_SMALL,
   SKYSCRAPER_TINY,
   SKYSCRAPER,
-  SKYSCRAPER2_PART_BOTTOM,
-  SKYSCRAPER2_PART_MIDDLE_SMALL,
-  SKYSCRAPER2_PART_MIDDLE,
-  SKYSCRAPER2_PART_SHRINKAGE,
-  SKYSCRAPER2_PART_TOP,
-  SOCCER_GATE,
   SOLAR_PANEL_HOUSE,
   STONE_DIAMOND,
   STONE_FLAT,
@@ -610,27 +493,6 @@ const modelsFiles = {
   TILE_SIDEWALK_STRAIGHT,
   TILE_WATER,
   TRAFFIC_LIGHTS,
-  TRAFFIC_SIGN_RHOMB,
-  TRAIN_FREIGHT_BIG,
-  TRAIN_FREIGHT_SHORT,
-  TRAIN_PASSENGER_WAGON,
-  TRAIN_PASSENGER,
-  TRAIN_SPEED_WAGON,
-  TRAIN_SPEED,
-  TRAIN_STATION_PLATFORM_EMPTY_SMALL,
-  TRAIN_STATION_PLATFORM_END_SMALL,
-  TRAIN_STATION_PLATFORM_LIGHT_SMALL,
-  TRAIN_STATION_PLATFORM_SIGN_SMALL,
-  TRAIN_STATION_PLATFORM_STAIRS_SMALL,
-  TRAIN_STATION_PLATFORM_STAIRS,
-  TRAIN_STATION_PLATFORM,
-  TRAIN_WAGON_CARGO,
-  TRAIN_WAGON_HOPPER,
-  TRAIN_WAGON_OIL,
-  TRAINSTATION_OBERPASS_END,
-  TRAINSTATION_OBERPASS_START,
-  TRAINSTATION_OBERPASS,
-  TRASH_CAN,
   TREE_BEECH,
   TREE_BIRCH_TALL,
   TREE_BIRCH,
@@ -655,17 +517,6 @@ const modelsFiles = {
   TRIBUNE_STREIGHT,
   TRUCK,
   UNDER_CONSTRUCTION,
-  WALL_CONCRETE,
-  WALL_EDGE_SMALL,
-  WALL_JAPAN_MEDIUM,
-  WALL_JAPAN_SMALL,
-  WALL_MEDIUM,
-  WALL_WOOD,
-  WALLBOX_HOSE,
-  WALLBOX,
-  WATER_RIDE_CART,
-  WATER_RIDE,
-  WINDMILL,
 };
 
 export default modelsFiles;
