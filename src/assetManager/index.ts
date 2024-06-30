@@ -80,6 +80,8 @@ export class AssetManager implements IAssetManager {
               map: this.textures.base,
               specularMap: this.textures.specular,
             });
+            node.receiveShadow = receiveShadow;
+            node.castShadow = castShadow;
           }
         });
 
@@ -132,7 +134,7 @@ export class AssetManager implements IAssetManager {
       map: this.textures['grass'],
     });
     const mesh = new THREE.Mesh(this.cubeGeometry, material);
-    mesh.userData = tile;
+    mesh.traverse((obj) => (obj.userData = tile));
     mesh.position.set(tile.x, -0.5, tile.y);
     mesh.receiveShadow = true;
     return mesh;
@@ -160,7 +162,7 @@ export class AssetManager implements IAssetManager {
       throw new Error('Tile does not have a valid building.');
     }
 
-    let modelName = ''
+    let modelName = '';
     if (zone.developed) {
       modelName = `${zone.type}-${zone.style}${zone.level}`;
     } else {
@@ -169,7 +171,7 @@ export class AssetManager implements IAssetManager {
 
     let mesh = this.cloneMesh(modelName as ModelKey);
     if (!mesh) return null;
-    mesh.userData = tile;
+    mesh.traverse((obj) => (obj.userData = tile));
     mesh.rotation.set(0, (zone.rotation || 0) * DEG2RAD, 0);
     mesh.position.set(zone.x, 0, zone.y);
 
@@ -186,7 +188,7 @@ export class AssetManager implements IAssetManager {
     if (!road) return null;
     const mesh = this.cloneMesh(`${road.type}-${road.style}` as ModelKey);
     if (!mesh) return null;
-    mesh.userData = tile;
+    mesh.traverse((obj) => (obj.userData = tile));
     if (road.rotation) mesh.rotation.set(0, road.rotation * DEG2RAD, 0);
     mesh.position.set(road.x, 0.01, road.y);
     mesh.receiveShadow = true;
