@@ -5,6 +5,12 @@ const models: Record<ModelKey, ModelEntry> = {
   /**
    * terrain and buildings
    */
+  [ModelKey.UNDER_CONSTRUCTION]: {
+    filename: 'construction-small.glb',
+    file: modelsFiles.CONSTRUCTION_SMALL,
+    scale: 300,
+    type: modelType.ZONE,
+  },
   [ModelKey.RESIDENTIAL_A1]: {
     filename: 'building-house-block-big.glb',
     file: modelsFiles.BUILDING_HOUSE_BLOCK_BIG,

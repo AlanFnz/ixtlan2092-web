@@ -160,9 +160,11 @@ export class AssetManager implements IAssetManager {
       throw new Error('Tile does not have a valid building.');
     }
 
-    const modelName = `${zone.type}-${zone.style}${zone.level}`;
+    let modelName = ''
     if (zone.developed) {
-      // TODO:  modelName = 'under-construction';
+      modelName = `${zone.type}-${zone.style}${zone.level}`;
+    } else {
+      modelName = 'UNDER-CONSTRUCTION';
     }
 
     let mesh = this.cloneMesh(modelName as ModelKey);

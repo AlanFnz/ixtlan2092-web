@@ -256,7 +256,6 @@ import TREE_TALL from './glb/tree-tall.glb';
 import TREE from './glb/tree.glb';
 import TRIBUNE_STREIGHT from './glb/tribune-streight.glb';
 import TRUCK from './glb/truck.glb';
-import UNDER_CONSTRUCTION from './glb/under_construction.gltf';
 
 const modelsFiles = {
   ARMORED_TRUCK,
@@ -353,6 +352,7 @@ const modelsFiles = {
   CARGO_SIMPLE,
   CHAIR_FOLDING,
   CHIMNEY_BIG,
+  CONSTRUCTION_SMALL,
   CONTROL_TOWER,
   COOLING_TOWER,
   DATA_CENTER,
@@ -516,7 +516,6 @@ const modelsFiles = {
   TREE,
   TRIBUNE_STREIGHT,
   TRUCK,
-  UNDER_CONSTRUCTION,
 };
 
 export default modelsFiles;
