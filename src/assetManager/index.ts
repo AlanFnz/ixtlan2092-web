@@ -7,6 +7,7 @@ import { IZone } from '../city/building/interfaces';
 import { BUILDING_TYPE } from '../city/building/constants';
 import { models } from './models';
 import { ModelEntry, ModelKey, modelType } from './constants';
+import { DevelopmentState } from '../city/building/attributes/development';
 
 const DEG2RAD = Math.PI / 180.0;
 
@@ -163,7 +164,7 @@ export class AssetManager implements IAssetManager {
     }
 
     let modelName = '';
-    if (zone.developed) {
+    if (zone.development.state === DevelopmentState.DEVELOPED) {
       modelName = `${zone.type}-${zone.style}${zone.level}`;
     } else {
       modelName = 'UNDER-CONSTRUCTION';

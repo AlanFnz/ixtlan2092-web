@@ -2,75 +2,34 @@ import { Zone } from './zone';
 import { generateCommericalBuildingName } from './utils';
 import { BUILDING_TYPE } from './constants';
 import { ICommercialZone } from './interfaces';
-import { ICitizen } from '../citizen';
 import { ICity } from '..';
-import config from '../../config';
+import { JobsAttribute } from './attributes/jobs';
 
 export class CommercialZone extends Zone implements ICommercialZone {
-  workers: ICitizen[];
-  maxWorkers: number;
+  jobs: JobsAttribute;
 
   constructor(x: number, y: number) {
     super(x, y);
     this.name = generateCommericalBuildingName();
     this.type = BUILDING_TYPE.COMMERCIAL;
-    this.workers = [];
     this.level = 1;
-    this.maxWorkers = 4;
     this.maxLevel = 3;
-  }
-
-  getMaxWorkers() {
-    return Math.pow(config.ZONE.MAX_WORKERS, this.level);
-  }
-
-  numberOfJobsAvailable(): number {
-    return this.abandoned || !this.developed
-      ? 0
-      : this.getMaxWorkers() - this.workers.length;
-  }
-
-  numberOfJobsFilled(): number {
-    return this.workers.length;
+    this.jobs = new JobsAttribute(this);
   }
 
   step(city: ICity): void {
     super.step(city);
-    if (this.abandoned) {
-      this.layOffWorkers();
-      return;
-    }
-
-    if (this.developed) {
-      if (Math.random() < 0.03 && this.level < this.maxLevel) {
-        this.level++;
-      }
-    }
-  }
-
-  private layOffWorkers(): void {
-    for (const worker of this.workers) {
-      // TODO: set here the workplace as null
-    }
-    this.workers = [];
+    this.jobs.update();
   }
 
   dispose(): void {
-    this.layOffWorkers();
+    this.jobs.dispose();
     super.dispose();
   }
 
   toHTML(): string {
     let html = super.toHTML();
-    html += `
-    <div class="info-heading">Workers (${this.numberOfJobsFilled()}/${this.getMaxWorkers()})</div>`;
-
-    html += '<ul class="info-citizen-list">';
-    for (const worker of this.workers) {
-      html += worker.toHTML();
-    }
-    html += '</ul>';
-
+    html += this.jobs.toHTML();
     return html;
   }
 }

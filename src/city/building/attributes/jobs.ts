@@ -1,4 +1,4 @@
-import { City } from '../..';
+
 import CONFIG from '../../../config';
 import { Citizen } from '../../citizen';
 import { Zone } from '../zone';
@@ -32,7 +32,7 @@ export class JobsAttribute {
     return this.workers.length;
   }
 
-  update(city: City): void {
+  update(): void {
     // if building is abandoned, all workers are laid off and no
     // more workers are allowed to work here
     if (this.zone.development.state === DevelopmentState.ABANDONED) {

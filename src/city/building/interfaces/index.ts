@@ -1,6 +1,7 @@
 import { ICity } from '../..';
 import { ICitizen } from '../../citizen';
 import { DevelopmentAttribute } from '../attributes/development';
+import { JobsAttribute } from '../attributes/jobs';
 import { BuildingType } from '../constants';
 
 interface IBuilding {
@@ -34,19 +35,11 @@ interface IResidentialZone extends IZone {
 }
 
 export interface ICommercialZone {
-  workers: ICitizen[];
-  maxWorkers: number;
-  getMaxWorkers(): number;
-  numberOfJobsAvailable(): number;
-  numberOfJobsFilled(): number;
+  jobs: JobsAttribute;
 }
 
 export interface IIndustrialZone {
-  workers: ICitizen[];
-  maxWorkers: number;
-  getMaxWorkers(): number;
-  numberOfJobsAvailable(): number;
-  numberOfJobsFilled(): number;
+  jobs: JobsAttribute;
 }
 
 export { IBuilding, IZone, IResidentialZone };
