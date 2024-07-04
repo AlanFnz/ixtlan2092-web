@@ -1,5 +1,6 @@
 import { ICity } from '../..';
 import { ICitizen } from '../../citizen';
+import { DevelopmentAttribute } from '../attributes/development';
 import { BuildingType } from '../constants';
 
 interface IBuilding {
@@ -19,7 +20,7 @@ interface IBuilding {
 interface IZone extends IBuilding {
   style: string;
   abandoned: boolean;
-  developed: boolean;
+  development: DevelopmentAttribute;
   hasRoadAccess: boolean;
   level: number;
   rotation: number;

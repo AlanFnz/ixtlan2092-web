@@ -10,11 +10,9 @@ export enum DevelopmentState {
 }
 
 export class DevelopmentAttribute {
-  private zone: Zone;
-
-  private state: DevelopmentState = DevelopmentState.UNDEVELOPED;
-
-  private level: number = 1;
+  zone: Zone;
+  state: DevelopmentState = DevelopmentState.UNDEVELOPED;
+  level: number = 1;
   maxLevel: number = 3;
 
   /**

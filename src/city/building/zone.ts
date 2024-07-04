@@ -1,5 +1,6 @@
 import { ICity } from '..';
 import CONFIG from '../../config';
+import { DevelopmentAttribute } from './attributes/development';
 import { Building } from './building';
 import { BUILDING_TYPE } from './constants';
 import { IZone } from './interfaces';
@@ -7,7 +8,7 @@ import { IZone } from './interfaces';
 class Zone extends Building implements IZone {
   style: string;
   abandoned: boolean;
-  developed: boolean;
+  development: DevelopmentAttribute;
   hasRoadAccess: boolean;
   level: number;
   rotation: number;
@@ -18,7 +19,7 @@ class Zone extends Building implements IZone {
     super(x, y);
     this.style = String.fromCharCode(Math.floor(3 * Math.random()) + 65);
     this.abandoned = false;
-    this.developed = false;
+    this.development = new DevelopmentAttribute(this);
     this.hasRoadAccess = false;
     this.level = 1;
     this.rotation = 90 * Math.floor(4 * Math.random());
@@ -28,24 +29,7 @@ class Zone extends Building implements IZone {
 
   step(city: ICity): void {
     super.step(city);
-
-    if (this.checkDevelopmentCriteria(city)) {
-      this.abandonmentCounter = 0;
-      if (Math.random() < CONFIG.ZONE.DEVELOPMENT_CHANCE) {
-        this.abandoned = false;
-        this.developed = true;
-        this.isMeshOutOfDate = true;
-      }
-    } else {
-      if (this.abandonmentCounter < CONFIG.ZONE.ABANDONMENT_THRESHOLD)
-        this.abandonmentCounter++;
-      if (this.abandonmentCounter >= CONFIG.ZONE.ABANDONMENT_THRESHOLD) {
-        if (Math.random() < CONFIG.ZONE.ABANDONMENT_CHANCE) {
-          this.abandoned = true;
-          this.isMeshOutOfDate = true;
-        }
-      }
-    }
+    this.development.update(city);
   }
 
   private checkDevelopmentCriteria(city: ICity): boolean {
@@ -74,8 +58,8 @@ class Zone extends Building implements IZone {
     <span class="info-label">Road Access:</span>
     <span class="info-value">${this.hasRoadAccess}</span>
     <br>
-    <span class="info-label">Developed:</span>
-    <span class="info-value">${this.developed}</span>
+    <span class="info-label">development:</span>
+    <span class="info-value">${this.development}</span>
     <br>
     <span class="info-label">Level:</span>
     <span class="info-value">${this.level}</span>
