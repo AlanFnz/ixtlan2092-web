@@ -2,12 +2,17 @@ import { BuildingEntity, createBuilding } from '../building/buildingCreator';
 import { ICity } from '..';
 import { BuildingType } from '../building/constants';
 
+export interface RoadAccess {
+  value: boolean;
+}
+
 export interface ITile {
   id: string;
   x: number;
   y: number;
   terrain: string;
   building: BuildingEntity | null | undefined;
+  roadAccess: RoadAccess | null | undefined;
   distanceTo(tile: Tile): number;
   update(city: ICity): void;
   removeBuilding(): void;
@@ -21,7 +26,8 @@ export class Tile implements ITile {
   y: number;
   terrain: string;
   building: BuildingEntity | null | undefined;
-
+  roadAccess: RoadAccess | null | undefined;
+  
   constructor(x: number, y: number) {
     this.id = crypto.randomUUID();
     this.x = x;
