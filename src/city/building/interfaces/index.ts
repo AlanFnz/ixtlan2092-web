@@ -2,6 +2,7 @@ import { ICity } from '../..';
 import { ICitizen } from '../../citizen';
 import { DevelopmentAttribute } from '../attributes/development';
 import { JobsAttribute } from '../attributes/jobs';
+import { ResidentsAttribute } from '../attributes/residents';
 import { BuildingType } from '../constants';
 
 interface IBuilding {
@@ -30,8 +31,7 @@ interface IZone extends IBuilding {
 }
 
 interface IResidentialZone extends IZone {
-  residents: ICitizen[];
-  getMaxResidents(): number;
+  residents: ResidentsAttribute;
 }
 
 export interface ICommercialZone {

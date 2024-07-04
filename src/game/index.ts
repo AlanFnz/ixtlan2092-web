@@ -50,7 +50,7 @@ export class Game implements IGame {
 
   step(): void {
     if (this.isPaused) return;
-    this.city.step();
+    this.city.update();
     this.sceneManager.update(this.city);
     this.updateTitleBar();
     this.updateInfoOverlay();

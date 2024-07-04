@@ -12,7 +12,6 @@ export interface ICity {
   getTile(x: number, y: number): ITile | null;
   getPopulation(): string;
   update(): void;
-  step(): void;
   getTileByCoordinate(coordinate: ICoordinate): Tile | null;
   findTile(
     start: ICoordinate,
@@ -61,7 +60,7 @@ export class City implements ICity {
           tile?.building instanceof ResidentialZone &&
           tile.building.residents
         )
-          population += tile.building?.residents?.length ?? 0;
+          population += tile.building?.residents?.count ?? 0;
       }
     }
     return population.toString();
@@ -69,20 +68,6 @@ export class City implements ICity {
 
   update(): void {
     this.tiles.forEach((row) => row.forEach((tile) => tile.update(this)));
-  }
-
-  step(): void {
-    this.tiles.forEach((row) =>
-      row.forEach((tile) => {
-        tile.building?.step(this);
-        if (
-          tile?.building instanceof ResidentialZone &&
-          tile.building.residents
-        ) {
-          tile.building?.residents?.forEach((resident) => resident.step(this));
-        }
-      })
-    );
   }
 
   getTileByCoordinate(coordinate: ICoordinate) {

@@ -83,32 +83,39 @@ export class Citizen implements ICitizen {
     }
   }
 
-  dispose(): void {
-    this.workplace?.workers.splice(this.workplace.workers.indexOf(this), 1);
+  dispose() {
+    // Remove resident from its  workplace
+    const workerIndex = this.workplace?.jobs.workers.indexOf(this);
+
+    if (workerIndex !== undefined && workerIndex > -1 && this.workplace) {
+      this.workplace.jobs.workers.splice(workerIndex);
+    }
   }
 
   private findJob(city: ICity): CommercialZone | IndustrialZone | null {
+    let building: CommercialZone | IndustrialZone | null = null;
+
     const tile = city.findTile(
       { x: this.residence.x, y: this.residence.y },
       (tile: ITile) => {
-        // search for an industrial or commercial building with at least one available job
-        const building = tile.building as CommercialZone | IndustrialZone;
+        const potentialBuilding = tile.building;
         if (
-          building?.type &&
-          checkIsWorkplace(building.type) &&
-          building.numberOfJobsAvailable() > 0
+          potentialBuilding instanceof CommercialZone ||
+          potentialBuilding instanceof IndustrialZone
         ) {
-          return true;
+          if (potentialBuilding.jobs.availableJobs > 0) {
+            building = potentialBuilding;
+            return true;
+          }
         }
         return false;
       },
       CONFIG.CITIZEN.MAX_JOB_SEARCH_DISTANCE
     );
 
-    if (tile && tile.building && checkIsWorkplace(tile.building.type)) {
+    if (tile && building) {
       // employ the citizen at the building
-      const building = tile.building as CommercialZone | IndustrialZone;
-      building.workers.push(this);
+      (building as CommercialZone | IndustrialZone).jobs.workers.push(this);
       return building;
     } else {
       return null;

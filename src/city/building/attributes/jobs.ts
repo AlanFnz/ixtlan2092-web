@@ -13,7 +13,7 @@ export class JobsAttribute {
   }
 
   get maxWorkers(): number {
-    // If building is not developed, there are no available jobs
+    // if building is not developed, there are no available jobs
     if (
       this.zone.development.state === DevelopmentState.ABANDONED ||
       this.zone.development.state === DevelopmentState.UNDEVELOPED
