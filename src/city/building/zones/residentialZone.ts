@@ -1,12 +1,8 @@
-import CONFIG from '../../config';
 import { Zone } from './zone';
-import { IResidentialZone } from './interfaces';
-import { BUILDING_TYPE } from './constants';
-import { Citizen, ICitizen } from '../citizen';
-import { ICity } from '..';
-import config from '../../config';
-import { DevelopmentState } from './attributes/development';
-import { ResidentsAttribute } from './attributes/residents';
+import { IResidentialZone } from '../interfaces';
+import { BUILDING_TYPE } from '../constants';
+import { ICity } from '../..';
+import { ResidentsAttribute } from '../attributes/residents';
 
 export class ResidentialZone extends Zone implements IResidentialZone {
   residents: ResidentsAttribute;

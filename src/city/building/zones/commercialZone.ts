@@ -1,9 +1,9 @@
 import { Zone } from './zone';
-import { generateCommericalBuildingName } from './utils';
-import { BUILDING_TYPE } from './constants';
-import { ICommercialZone } from './interfaces';
-import { ICity } from '..';
-import { JobsAttribute } from './attributes/jobs';
+import { generateCommericalBuildingName } from '../utils';
+import { BUILDING_TYPE } from '../constants';
+import { ICommercialZone } from '../interfaces';
+import { ICity } from '../..';
+import { JobsAttribute } from '../attributes/jobs';
 
 export class CommercialZone extends Zone implements ICommercialZone {
   jobs: JobsAttribute;

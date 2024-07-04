@@ -1,8 +1,8 @@
 import { ICity } from '../..';
 import CONFIG from '../../../config';
 import { Citizen } from '../../citizen';
-import { ResidentialZone } from '../residentialZone';
-import { Zone } from '../zone';
+import { ResidentialZone } from '../zones/residentialZone';
+import { Zone } from '../zones/zone';
 
 export class ResidentsAttribute {
   private zone: Zone;

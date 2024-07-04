@@ -1,9 +1,9 @@
-import { ICity } from '..';
-import CONFIG from '../../config';
-import { DevelopmentAttribute } from './attributes/development';
-import { Building } from './building';
-import { BUILDING_TYPE } from './constants';
-import { IZone } from './interfaces';
+import { ICity } from '../..';
+import CONFIG from '../../../config';
+import { DevelopmentAttribute } from '../attributes/development';
+import { Building } from '../building';
+import { BUILDING_TYPE } from '../constants';
+import { IZone } from '../interfaces';
 
 class Zone extends Building implements IZone {
   style: string;

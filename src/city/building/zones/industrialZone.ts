@@ -1,10 +1,10 @@
 import { Zone } from './zone';
-import { generateIndustrialBuildingName } from './utils';
-import { IIndustrialZone } from './interfaces';
-import { BUILDING_TYPE } from './constants';
-import { ICity } from '..';
-import config from '../../config';
-import { JobsAttribute } from './attributes/jobs';
+import { generateIndustrialBuildingName } from '../utils';
+import { IIndustrialZone } from '../interfaces';
+import { BUILDING_TYPE } from '../constants';
+import { ICity } from '../..';
+import config from '../../../config';
+import { JobsAttribute } from '../attributes/jobs';
 
 export class IndustrialZone extends Zone implements IIndustrialZone {
   jobs: JobsAttribute;

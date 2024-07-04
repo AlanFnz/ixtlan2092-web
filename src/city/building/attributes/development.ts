@@ -1,6 +1,6 @@
 import { ICity } from '../..';
 import CONFIG from '../../../config';
-import { Zone } from '../zone';
+import { Zone } from '../zones/zone';
 
 export enum DevelopmentState {
   UNDEVELOPED = 'undeveloped',

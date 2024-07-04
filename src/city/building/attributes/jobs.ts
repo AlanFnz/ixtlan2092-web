@@ -1,7 +1,7 @@
 
 import CONFIG from '../../../config';
 import { Citizen } from '../../citizen';
-import { Zone } from '../zone';
+import { Zone } from '../zones/zone';
 import { DevelopmentState } from './development';
 
 export class JobsAttribute {

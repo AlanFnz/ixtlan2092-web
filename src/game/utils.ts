@@ -1,4 +1,3 @@
-import { IGame } from '.';
 import { BUILDING_TYPE } from '../city/building/constants';
 import { ISceneManager } from '../sceneManager';
 

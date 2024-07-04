@@ -1,8 +1,8 @@
 import { ICity } from '..';
 import CONFIG from '../../config';
-import { CommercialZone } from '../building/commercialZone';
-import { IndustrialZone } from '../building/industrialZone';
-import { ResidentialZone } from '../building/residentialZone';
+import { CommercialZone } from '../building/zones/commercialZone';
+import { IndustrialZone } from '../building/zones/industrialZone';
+import { ResidentialZone } from '../building/zones/residentialZone';
 import { checkIsWorkplace } from '../building/utils';
 import { ITile } from '../tile';
 import { CITIZEN_STATE, CitizenState } from './constants';

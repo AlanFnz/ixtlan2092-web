@@ -1,4 +1,4 @@
-import { ResidentialZone } from './building/residentialZone';
+import { ResidentialZone } from './building/zones/residentialZone';
 import { ITile, Tile } from './tile';
 
 export interface ICoordinate {
