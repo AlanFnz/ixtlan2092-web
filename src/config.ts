@@ -5,13 +5,19 @@ export default {
     MAX_JOB_SEARCH_DISTANCE: 4,
   },
   ZONE: {
-    ABANDONMENT_THRESHOLD: 10, // number of days before abandonment
+    // chances
     ABANDONMENT_CHANCE: 0.25,
+    LEVEL_UP_CHANCE: 0.05,
+    REDEVELOP_CHANCE: 0.25, // probability of building being re-developed after it is no longer meeting the abandonment criteria
     DEVELOPMENT_CHANCE: 0.25,
+
+    // props
+    ABANDONMENT_THRESHOLD: 10, // number of days before abandonment
     MAX_ROAD_SEARCH_DISTANCE: 3, // max distance between buildng and road
     MAX_RESIDENTS: 2, // used as exponential
     MAX_WORKERS: 2, // used as exponential
     RESIDENT_MOVE_IN_CHANCE: 0.5,
+    CONSTRUCTION_TIME: 3 // number of days it takes to build
   },
   CITY: {
     SIZE: 16,
