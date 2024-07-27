@@ -1,6 +1,6 @@
 @font-face {
   font-family: Bebas-Regular;
-  src: url('./assetManager/fonts/Bebas-Regular.otf') format('opentype');
+  src: url("./assetManager/fonts/Bebas-Regular.otf") format("opentype");
 }
 
 html,
@@ -233,4 +233,3 @@ h1 {
   justify-content: flex-start;
   gap: 16px;
 }
-

@@ -1,12 +1,12 @@
-import CONFIG from '../config';
-import { getIcon } from '../assetManager/icons';
-import { City, ICity } from '../city';
-import { BuildingEntity } from '../city/building/buildingCreator';
-import { ITile } from '../city/tile';
-import { ISceneManager, SceneManager } from '../sceneManager';
-import { createUi } from '../ui';
-import { TOOLBAR_BUTTONS, ToggleButton } from '../ui/constants';
-import { setupEventListeners } from './utils';
+import CONFIG from "../config";
+import { getIcon } from "../assetManager/icons";
+import { City, ICity } from "../city";
+import { BuildingEntity } from "../city/building/buildingCreator";
+import { ITile } from "../city/tile";
+import { ISceneManager, SceneManager } from "../sceneManager";
+import { createUi } from "../ui";
+import { TOOLBAR_BUTTONS, ToggleButton } from "../ui/constants";
+import { setupEventListeners } from "./utils";
 
 export interface IGame {
   selectedControl: HTMLElement | null;
@@ -28,7 +28,7 @@ export class Game implements IGame {
   lastMove: number = Date.now();
   private city: ICity = new City(CONFIG.CITY.SIZE);
   private sceneManager: ISceneManager = new SceneManager(this.city, () => {
-    console.log('scene loaded');
+    console.log("scene loaded");
     this.sceneManager.start();
     setInterval(this.step.bind(this), 1000);
   });
@@ -38,7 +38,7 @@ export class Game implements IGame {
     createUi();
 
     this.selectedControl = document.getElementById(TOOLBAR_BUTTONS.SELECT.id);
-    this.selectedControl?.classList.add('selected');
+    this.selectedControl?.classList.add("selected");
     setupEventListeners(
       this.sceneManager,
       this.onMouseDown.bind(this),
@@ -58,11 +58,11 @@ export class Game implements IGame {
 
   onToolSelected(event: MouseEvent): void {
     if (this.selectedControl) {
-      this.selectedControl.classList.remove('selected');
+      this.selectedControl.classList.remove("selected");
     }
     this.selectedControl = event.target as HTMLElement;
-    this.selectedControl.classList.add('selected');
-    this.activeToolId = this.selectedControl.getAttribute('data-type') || null;
+    this.selectedControl.classList.add("selected");
+    this.activeToolId = this.selectedControl.getAttribute("data-type") || null;
     this.sceneManager.deactivateObject();
   }
 
@@ -82,12 +82,12 @@ export class Game implements IGame {
         this.isPaused ? toggleButtonInfo.iconPlay : toggleButtonInfo.iconPause
       );
 
-      toggleButton.innerHTML = `<img src="${newIcon}" alt="${newState}" style="width: 100%; height: 100%; pointer-events: none;">`;
+      toggleButton.innerHTML = `<img src="${newIcon}" alt="${newState}" class="toolbar-icon" style="width: 100%; height: 100%; pointer-events: none;">`;
       toggleButton.dataset.state = newState;
       if (this.isPaused) {
-        toggleButton.classList.add('selected');
+        toggleButton.classList.add("selected");
       } else {
-        toggleButton.classList.remove('selected');
+        toggleButton.classList.remove("selected");
       }
     }
   }
@@ -143,23 +143,22 @@ export class Game implements IGame {
   }
 
   private updateInfoOverlay(clear?: boolean): void {
-    const infoOverlayDetails = document.getElementById('info-overlay-details');
+    const infoOverlayDetails = document.getElementById("info-overlay-details");
     const tile = clear ? null : this.focusedObject || null;
     if (infoOverlayDetails)
-      infoOverlayDetails.innerHTML = tile ? tile.toHTML() : '';
+      infoOverlayDetails.innerHTML = tile ? tile.toHTML() : "";
   }
 
   private updateTitleBar(): void {
-    const populationCounter = document.getElementById('population-counter');
+    const populationCounter = document.getElementById("population-counter");
     if (populationCounter)
       populationCounter.textContent = this.city.getPopulation();
   }
 
   private isEventFromUiElement(event: Event): boolean {
-    const uiElements = ['ui-topbar', 'ui-toolbar', 'ui-info-overlay'];
+    const uiElements = ["ui-topbar", "ui-toolbar", "ui-info-overlay"];
     return uiElements.some((id) =>
       (event.target as HTMLElement).closest(`#${id}`)
     );
   }
 }
-
