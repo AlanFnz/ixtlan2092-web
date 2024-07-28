@@ -50,7 +50,7 @@ export class VehicleGraphTile extends THREE.Group {
   }
 
   disconnectAll(): void {
-    for (const node of this.children) {
+    for (let node of this.children) {
       if (node instanceof VehicleGraphNode) {
         node.disconnectAll();
         node.removeFromParent();

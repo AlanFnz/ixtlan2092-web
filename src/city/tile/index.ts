@@ -1,6 +1,7 @@
 import { BuildingEntity, createBuilding } from '../building/buildingCreator';
 import { ICity } from '..';
 import { BuildingType } from '../building/constants';
+import { RoadAccessAttribute } from '../building/attributes/roadAccess';
 
 export interface RoadAccess {
   value: boolean;
@@ -34,6 +35,7 @@ export class Tile implements ITile {
     this.y = y;
     this.terrain = 'ground';
     this.building = null;
+    this.roadAccess = new RoadAccessAttribute(this);
   }
 
   distanceTo(tile: Tile): number {

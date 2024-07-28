@@ -1,4 +1,9 @@
 export default {
+  ATTRIBUTES: {
+    ROAD_ACCESS: {
+      SEARCH_DISTANCE: 3,
+    },
+  },
   CITIZEN: {
     MIN_WORKING_AGE: 16,
     RETIREMENT_AGE: 65,
@@ -17,7 +22,7 @@ export default {
     MAX_RESIDENTS: 2, // used as exponential
     MAX_WORKERS: 2, // used as exponential
     RESIDENT_MOVE_IN_CHANCE: 0.5,
-    CONSTRUCTION_TIME: 3 // number of days it takes to build
+    CONSTRUCTION_TIME: 3, // number of days it takes to build
   },
   CITY: {
     SIZE: 16,
@@ -30,4 +35,3 @@ export default {
     SPAWN_INTERVAL: 1000, // how often vehicles are spawned in milliseconds
   },
 };
-
