@@ -47,9 +47,9 @@ export class Vehicle extends THREE.Group {
   getCycleTime(): number {
     const distance = this.originToDestination.length();
     const cycleDuration = distance / CONFIG.VEHICLE.SPEED;
-    const cycleTime = (Date.now() - this.cycleStartTime) / cycleDuration;
+    const value = (Date.now() - this.cycleStartTime) / cycleDuration;
 
-    return Math.max(0, Math.min(cycleTime, 1));
+    return Math.max(0, Math.min(value, 1));
   }
 
   getAge(): number {
@@ -58,6 +58,11 @@ export class Vehicle extends THREE.Group {
 
   update(): void {
     if (!this.origin || !this.destination) {
+      this.dispose();
+      return;
+    }
+
+    if (!this.destination.parent) {
       this.dispose();
       return;
     }
