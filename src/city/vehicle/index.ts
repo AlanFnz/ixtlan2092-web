@@ -1,6 +1,7 @@
-import * as THREE from 'three';
-import { VehicleGraphNode } from './vehicleGraphNode';
-import CONFIG from '../../config';
+import * as THREE from "three";
+import { VehicleGraphNode } from "./vehicleGraphNode";
+import CONFIG from "../../config";
+import { IAssetManager } from "../../assetManager";
 
 const FORWARD = new THREE.Vector3(1, 0, 0);
 
@@ -13,11 +14,12 @@ export class Vehicle extends THREE.Group {
   private destinationWorldPosition: THREE.Vector3;
   private originToDestination: THREE.Vector3;
   private orientation: THREE.Vector3;
+  private mesh: THREE.Mesh | null;
 
   constructor(
     origin: VehicleGraphNode,
     destination: VehicleGraphNode,
-    mesh: THREE.Mesh
+    assetManager: IAssetManager
   ) {
     super();
 
@@ -32,7 +34,12 @@ export class Vehicle extends THREE.Group {
     this.originToDestination = new THREE.Vector3();
     this.orientation = new THREE.Vector3();
 
-    this.add(mesh);
+    this.mesh = assetManager.createRandomVehicleMesh();
+    if (this.mesh) {
+      this.add(this.mesh);
+    } else {
+      console.error("Failed to create a random vehicle mesh.");
+    }
 
     this.updateWorldPositions();
   }
@@ -129,4 +136,3 @@ export class Vehicle extends THREE.Group {
     this.removeFromParent();
   }
 }
-
