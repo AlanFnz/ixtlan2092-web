@@ -17,7 +17,7 @@ class Building implements IBuilding {
   /**
    * update the state of this building by one simulation step
    */
-  step(city: ICity): void {}
+  simulate(city: ICity): void {}
 
   /**
    * cleanup before building removal

@@ -14,7 +14,7 @@ interface IBuilding {
   isMeshOutOfDate: boolean;
   hideTerrain: boolean;
   update(city: ICity): void;
-  step(city: ICity): void;
+  simulate(city: ICity): void;
   dispose(): void;
   toHTML(): string;
 }

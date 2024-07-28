@@ -50,7 +50,7 @@ export class Game implements IGame {
 
   step(): void {
     if (this.isPaused) return;
-    this.city.update();
+    this.city.simulate();
     this.sceneManager.update(this.city);
     this.updateTitleBar();
     this.updateInfoOverlay();
@@ -133,11 +133,11 @@ export class Game implements IGame {
       tile.building
     ) {
       tile.removeBuilding();
-      this.city.update();
+      this.city.simulate();
       this.sceneManager.update(this.city);
     } else if (!tile.building) {
       tile.placeBuilding && tile.placeBuilding(this.activeToolId);
-      this.city.update();
+      this.city.simulate();
       this.sceneManager.update(this.city);
     }
   }

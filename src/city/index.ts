@@ -11,7 +11,7 @@ export interface ICity {
   tiles: ITile[][];
   getTile(x: number, y: number): ITile | null;
   getPopulation(): string;
-  update(): void;
+  simulate(): void;
   getTileByCoordinate(coordinate: ICoordinate): ITile | null;
   findTile(
     start: ICoordinate,
@@ -66,8 +66,8 @@ export class City implements ICity {
     return population.toString();
   }
 
-  update(): void {
-    this.tiles.forEach((row) => row.forEach((tile) => tile.update(this)));
+  simulate(): void {
+    this.tiles.forEach((row) => row.forEach((tile) => tile.simulate(this)));
   }
 
   getTileByCoordinate(coordinate: ICoordinate) {

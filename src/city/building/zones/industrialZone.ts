@@ -18,8 +18,8 @@ export class IndustrialZone extends Zone implements IIndustrialZone {
     this.jobs = new JobsAttribute(this);
   }
 
-  step(city: ICity): void {
-    super.step(city);
+  simulate(city: ICity): void {
+    super.simulate(city);
     this.jobs.update();
   }
 

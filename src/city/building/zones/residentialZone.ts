@@ -15,8 +15,8 @@ export class ResidentialZone extends Zone implements IResidentialZone {
     this.maxLevel = 3;
   }
 
-  step(city: ICity): void {
-    super.step(city);
+  simulate(city: ICity): void {
+    super.simulate(city);
     this.residents.update(city);
   }
 

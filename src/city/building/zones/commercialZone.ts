@@ -17,8 +17,8 @@ export class CommercialZone extends Zone implements ICommercialZone {
     this.jobs = new JobsAttribute(this);
   }
 
-  step(city: ICity): void {
-    super.step(city);
+  simulate(city: ICity): void {
+    super.simulate(city);
     this.jobs.update();
   }
 

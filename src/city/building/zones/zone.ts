@@ -27,8 +27,8 @@ class Zone extends Building implements IZone {
     this.abandonmentCounter = 0;
   }
 
-  step(city: ICity): void {
-    super.step(city);
+  simulate(city: ICity): void {
+    super.simulate(city);
     this.development.update(city);
   }
 
