@@ -1,7 +1,10 @@
-import { BuildingEntity, createBuilding } from '../building/buildingCreator';
-import { ICity } from '..';
-import { BuildingType } from '../building/constants';
-import { RoadAccessAttribute } from '../building/attributes/roadAccess';
+import { BuildingEntity, createBuilding } from "../building/buildingCreator";
+import { ICity } from "..";
+import { BuildingType } from "../building/constants";
+import {
+  IRoadAccessAttribute,
+  RoadAccessAttribute,
+} from "../building/attributes/roadAccess";
 
 export interface RoadAccess {
   value: boolean;
@@ -14,7 +17,7 @@ export interface ITile {
   terrain: string;
   building: BuildingEntity | null | undefined;
   roadAccess: RoadAccess | null | undefined;
-  distanceTo(tile: Tile): number;
+  distanceTo(tile: ITile): number;
   update(city: ICity): void;
   removeBuilding(): void;
   placeBuilding(type: string | null): void;
@@ -27,13 +30,13 @@ export class Tile implements ITile {
   y: number;
   terrain: string;
   building: BuildingEntity | null | undefined;
-  roadAccess: RoadAccess | null | undefined;
-  
+  roadAccess: IRoadAccessAttribute | null | undefined;
+
   constructor(x: number, y: number) {
     this.id = crypto.randomUUID();
     this.x = x;
     this.y = y;
-    this.terrain = 'ground';
+    this.terrain = "ground";
     this.building = null;
     this.roadAccess = new RoadAccessAttribute(this);
   }
@@ -43,9 +46,8 @@ export class Tile implements ITile {
   }
 
   update(city: ICity): void {
-    if (this.building) {
-      this.building.update(city);
-    }
+    this.building?.update(city);
+    this.roadAccess?.update(city);
   }
 
   removeBuilding(): void {
@@ -73,8 +75,7 @@ export class Tile implements ITile {
       html += this.building.toHTML();
     }
 
-    html += '</div>';
+    html += "</div>";
     return html;
   }
 }
-

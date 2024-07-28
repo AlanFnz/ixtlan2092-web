@@ -12,7 +12,7 @@ export interface ICity {
   getTile(x: number, y: number): ITile | null;
   getPopulation(): string;
   update(): void;
-  getTileByCoordinate(coordinate: ICoordinate): Tile | null;
+  getTileByCoordinate(coordinate: ICoordinate): ITile | null;
   findTile(
     start: ICoordinate,
     filter: (tile: ITile) => boolean,

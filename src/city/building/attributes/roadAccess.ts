@@ -3,8 +3,14 @@ import CONFIG from "../../../config";
 import { ITile } from "../../tile";
 import { BUILDING_TYPE } from "../constants";
 
+export interface IRoadAccessAttribute {
+  tile: ITile;
+  value: boolean;
+  update(city: ICity): void;
+}
+
 export class RoadAccessAttribute {
-  private tile: ITile;
+  tile: ITile;
   value: boolean;
 
   constructor(tile: ITile) {
