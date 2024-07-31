@@ -164,10 +164,13 @@ export class AssetManager implements IAssetManager {
     }
 
     let modelName = '';
-    if (zone.development.state === DevelopmentState.DEVELOPED) {
-      modelName = `${zone.type}-${zone.style}${zone.level}`;
-    } else {
-      modelName = 'UNDER-CONSTRUCTION';
+    switch (zone.development.state) {
+      case (DevelopmentState.UNDER_CONSTRUCTION, DevelopmentState.UNDEVELOPED):
+        modelName = 'UNDER-CONSTRUCTION';
+        break;
+      default:
+        modelName = `${zone.type}-${zone.style}${zone.development?.level}`;
+        break;
     }
 
     let mesh = this.cloneMesh(modelName as ModelKey);
@@ -176,9 +179,15 @@ export class AssetManager implements IAssetManager {
     mesh.rotation.set(0, (zone.rotation || 0) * DEG2RAD, 0);
     mesh.position.set(zone.x, 0, zone.y);
 
-    if (zone.abandoned) {
-      const material = mesh.material as THREE.MeshLambertMaterial;
-      material.color = new THREE.Color(0x707070);
+    if (zone.development?.state === DevelopmentState.ABANDONED) {
+      mesh.traverse((obj) => {
+        if (
+          obj instanceof THREE.Mesh &&
+          obj.material instanceof THREE.MeshLambertMaterial
+        ) {
+          obj.material.color = new THREE.Color(0x707070);
+        }
+      });
     }
 
     return mesh;
@@ -206,4 +215,3 @@ export class AssetManager implements IAssetManager {
     return this.cloneMesh(types[i], true);
   }
 }
-
