@@ -6,7 +6,7 @@ import { BUILDING_TYPE } from "../constants";
 export interface IRoadAccessAttribute {
   tile: ITile;
   value: boolean;
-  update(city: ICity): void;
+  simulate(city: ICity): void;
 }
 
 export class RoadAccessAttribute {
@@ -18,7 +18,7 @@ export class RoadAccessAttribute {
     this.value = false;
   }
 
-  update(city: ICity): void {
+  simulate(city: ICity): void {
     const road = city.findTile(
       this.tile,
       (tile) => tile.building?.type === BUILDING_TYPE.ROAD,

@@ -19,7 +19,7 @@ export class Road extends Building implements IRoad {
     this.hideTerrain = true;
   }
 
-  update(city: ICity): void {
+  simulate(city: ICity): void {
     // check which adjacent tiles are roads
     const top =
       city.getTile(this.x, this.y - 1)?.building?.type === this.type ?? false;

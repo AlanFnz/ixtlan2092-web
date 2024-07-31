@@ -39,7 +39,6 @@ export class SceneManager implements ISceneManager {
     this.scene = new THREE.Scene();
     this.gameWindow = document.getElementById('render-target') as HTMLElement;
     this.assetManager = new AssetManager(() => {
-      console.log('assets loaded');
       this.initialize(city);
       onLoad();
     });
@@ -131,7 +130,6 @@ export class SceneManager implements ISceneManager {
     );
     grid.position.set(city.size / 2 - 0.5, -0.04, city.size / 2 - 0.5);
     grid.userData.nonInteractive = true;
-    //grid.layers.set(1);
     this.scene.add(grid);
   }
 

@@ -10,9 +10,9 @@ export enum DevelopmentState {
 }
 
 export class DevelopmentAttribute {
-  zone: Zone;
-  state: DevelopmentState = DevelopmentState.UNDEVELOPED;
-  level: number = 1;
+  private zone: Zone;
+  private _state: DevelopmentState = DevelopmentState.UNDEVELOPED;
+  private _level: number = 1;
   maxLevel: number = 3;
 
   /**
@@ -28,25 +28,25 @@ export class DevelopmentAttribute {
     this.zone = zone;
   }
 
-  getLevel(): number {
-    return this.level;
+  get level(): number {
+    return this._level;
   }
 
-  setLevel(value: number): void {
-    this.level = value;
+  set level(value: number) {
+    this._level = value;
     this.zone.isMeshOutOfDate = true;
   }
 
-  getState(): string {
-    return this.state;
+  get state(): DevelopmentState {
+    return this._state;
   }
 
-  setState(value: DevelopmentState): void {
-    this.state = value;
+  set state(value: DevelopmentState) {
+    this._state = value;
     this.zone.isMeshOutOfDate = true;
   }
 
-  update(city: ICity): void {
+  simulate(city: ICity): void {
     this.checkAbandonmentCriteria(city);
 
     switch (this.state) {
@@ -120,4 +120,3 @@ export class DevelopmentAttribute {
       <br>`;
   }
 }
-

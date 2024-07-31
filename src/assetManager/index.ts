@@ -180,14 +180,8 @@ export class AssetManager implements IAssetManager {
     mesh.position.set(zone.x, 0, zone.y);
 
     if (zone.development?.state === DevelopmentState.ABANDONED) {
-      mesh.traverse((obj) => {
-        if (
-          obj instanceof THREE.Mesh &&
-          obj.material instanceof THREE.MeshLambertMaterial
-        ) {
-          obj.material.color = new THREE.Color(0x707070);
-        }
-      });
+      const material = mesh.material as THREE.MeshLambertMaterial;
+      material.color = new THREE.Color(0x707070);
     }
 
     return mesh;
@@ -211,7 +205,6 @@ export class AssetManager implements IAssetManager {
       .map(([key]) => key as ModelKey);
 
     const i = Math.floor(types.length * Math.random());
-    console.log('types[i]', types[i]);
     return this.cloneMesh(types[i], true);
   }
 }

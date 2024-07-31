@@ -28,7 +28,6 @@ export class Game implements IGame {
   lastMove: number = Date.now();
   private city: ICity = new City(CONFIG.CITY.SIZE);
   private sceneManager: ISceneManager = new SceneManager(this.city, () => {
-    console.log("scene loaded");
     this.sceneManager.start();
     setInterval(this.step.bind(this), 1000);
   });

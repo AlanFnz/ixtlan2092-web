@@ -19,7 +19,7 @@ export interface ITile {
   roadAccess: RoadAccess | null | undefined;
   distanceTo(tile: ITile): number;
   simulate(city: ICity): void;
-  update(city: ICity): void;
+  refresh(city: ICity): void;
   removeBuilding(): void;
   placeBuilding(type: string | null): void;
   toHTML(): string;
@@ -46,13 +46,13 @@ export class Tile implements ITile {
     return Math.abs(this.x - tile.x) + Math.abs(this.y - tile.y);
   }
 
-  simulate(city: ICity): void {
+  refresh(city: ICity): void {
     this.building?.simulate(city);
   }
 
-  update(city: ICity): void {
-    this.building?.update(city);
-    this.roadAccess?.update(city);
+  simulate(city: ICity): void {
+    this.building?.simulate(city);
+    this.roadAccess?.simulate(city);
   }
 
   removeBuilding(): void {

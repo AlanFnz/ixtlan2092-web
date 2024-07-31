@@ -49,7 +49,6 @@ export class VehicleGraph extends THREE.Group {
   }
 
   updateTile(x: number, y: number, road: IRoad | null) {
-    console.log(`updating vehicle graph at (x: ${x}, y: ${y})`);
 
     const existingTile = this.getTile(x, y);
     const leftTile = this.getTile(x - 1, y);
