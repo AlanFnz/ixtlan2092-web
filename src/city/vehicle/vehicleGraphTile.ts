@@ -5,12 +5,17 @@ import { ROAD_TYPE } from '../building/constants';
 const roadOffset = 0.05;
 const tileOffset = 0.25;
 
+interface VehicleGraphConnection {
+  in: VehicleGraphNode | null;
+  out: VehicleGraphNode | null;
+}
+
 export class VehicleGraphTile extends THREE.Group {
   roadRotation: number;
-  left: { in: VehicleGraphNode | null; out: VehicleGraphNode | null };
-  right: { in: VehicleGraphNode | null; out: VehicleGraphNode | null };
-  top: { in: VehicleGraphNode | null; out: VehicleGraphNode | null };
-  bottom: { in: VehicleGraphNode | null; out: VehicleGraphNode | null };
+  left: VehicleGraphConnection;
+  right: VehicleGraphConnection;
+  top: VehicleGraphConnection;
+  bottom: VehicleGraphConnection;
 
   constructor(x: number, y: number, rotation: number) {
     super();
@@ -44,13 +49,12 @@ export class VehicleGraphTile extends THREE.Group {
       case ROAD_TYPE.FOUR_WAY:
         return new FourWayRoadTile(x, y, rotation);
       default:
-        console.error(`Road type ${style} is not a known value`);
         return null;
     }
   }
 
   disconnectAll(): void {
-    for (let node of this.children) {
+    for (const node of this.children) {
       if (node instanceof VehicleGraphNode) {
         node.disconnectAll();
         node.removeFromParent();
@@ -162,8 +166,6 @@ export class EndRoadTile extends VehicleGraphTile {
     this.addNonNull(midpoint.in);
     this.addNonNull(midpoint.out);
 
-    // Connect together
-    // Path #1: U-turn
     this.bottom.in?.connect(midpoint.in);
     midpoint.in?.connect(midpoint.out);
     midpoint.out?.connect(this.bottom.out);
@@ -176,7 +178,6 @@ export class StraightRoadTile extends VehicleGraphTile {
 
     this.name = `StraightRoadTile (${this.position})`;
 
-    // Create nodes
     this.top = {
       in: new VehicleGraphNode(-roadOffset, -tileOffset),
       out: new VehicleGraphNode(roadOffset, -tileOffset),
@@ -366,4 +367,3 @@ export class FourWayRoadTile extends VehicleGraphTile {
     midpointTopLeft.connect(this.left.out);
   }
 }
-

@@ -104,7 +104,6 @@ export class AssetManager implements IAssetManager {
     if (!originalMesh) return null;
 
     const mesh = originalMesh.clone() as THREE.Mesh;
-    console.log('mesh', mesh);
 
     mesh.traverse((obj) => {
       if ((obj as THREE.Mesh).isMesh) {
@@ -186,7 +185,7 @@ export class AssetManager implements IAssetManager {
     let mesh = this.cloneMesh(modelName as ModelKey);
     if (!mesh) return null;
     mesh.traverse((obj) => (obj.userData = tile));
-    mesh.rotation.set(0, (zone.rotation || 0) * DEG2RAD, 0);
+    mesh.rotation.set(0, (zone.rotation?.y || 0) * DEG2RAD, 0);
     mesh.position.set(zone.x, 0, zone.y);
 
     if (zone.development.state === DevelopmentState.ABANDONED) {
@@ -208,7 +207,9 @@ export class AssetManager implements IAssetManager {
     const mesh = this.cloneMesh(`${road.type}-${road.style}` as ModelKey);
     if (!mesh) return null;
     mesh.traverse((obj) => (obj.userData = tile));
-    if (road.rotation) mesh.rotation.set(0, road.rotation * DEG2RAD, 0);
+    if (road.rotation?.y !== undefined) {
+      mesh.rotation.set(0, road.rotation.y * DEG2RAD, 0);
+    }
     mesh.position.set(road.x, 0.01, road.y);
     mesh.receiveShadow = true;
     return mesh;

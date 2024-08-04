@@ -12,6 +12,11 @@ const CONNECTED_MATERIAL = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 const DISCONNECTED_MATERIAL = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 
 export class VehicleGraphHelper extends THREE.Group {
+  constructor() {
+    super();
+    this.visible = false;
+  }
+
   // update the visualization of the vehicle graph
   update(graph: VehicleGraph) {
     this.clear(); // clear existing visualizations
@@ -87,4 +92,3 @@ export class VehicleGraphHelper extends THREE.Group {
     this.add(nodeMesh);
   }
 }
-

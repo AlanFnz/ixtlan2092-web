@@ -22,9 +22,6 @@ export class VehicleGraphNode extends THREE.Object3D {
     this.next = [];
   }
 
-  /**
-   * @returns {VehicleGraphNode | null}
-   */
   getRandomNextNode(): VehicleGraphNode | null {
     if (this.next.length === 0) {
       return null;

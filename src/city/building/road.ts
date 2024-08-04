@@ -1,15 +1,16 @@
 import { ICity } from '..';
 import { Building } from './building';
-import { BUILDING_TYPE, BuildingType, ROAD_TYPE } from './constants';
+import { BUILDING_TYPE, ROAD_TYPE } from './constants';
 
 export interface IRoad {
-  rotation?: number;
+  rotation?: { x: number; y: number };
   style: string;
 }
 
 export class Road extends Building implements IRoad {
   style: string;
   hideTerrain: boolean;
+  rotation: { x: number; y: number };
 
   constructor(x: number, y: number) {
     super(x, y);
@@ -17,10 +18,10 @@ export class Road extends Building implements IRoad {
     this.type = BUILDING_TYPE.ROAD;
     this.style = ROAD_TYPE.STRAIGHT;
     this.hideTerrain = true;
+    this.rotation = { x: 0, y: 0 }; // Ensure rotation is always defined
   }
 
   simulate(city: ICity): void {
-    // check which adjacent tiles are roads
     const top =
       city.getTile(this.x, this.y - 1)?.building?.type === this.type ?? false;
     const bottom =
@@ -30,76 +31,57 @@ export class Road extends Building implements IRoad {
     const right =
       city.getTile(this.x + 1, this.y)?.building?.type === this.type ?? false;
 
-    // check all combinations
-    // four-way intersection
     if (top && bottom && left && right) {
       this.style = ROAD_TYPE.FOUR_WAY;
-      this.rotation = 0;
-      // T intersection
+      this.rotation.y = 0;
     } else if (!top && bottom && left && right) {
-      // bottom-left-right
-      this.rotation = 0;
+      this.style = ROAD_TYPE.THREE_WAY;
+      this.rotation.y = 0;
     } else if (top && !bottom && left && right) {
-      // top-left-right
       this.style = ROAD_TYPE.THREE_WAY;
-      this.rotation = 180;
+      this.rotation.y = 180;
     } else if (top && bottom && !left && right) {
-      // top-bottom-right
       this.style = ROAD_TYPE.THREE_WAY;
-      this.rotation = 90;
+      this.rotation.y = 90;
     } else if (top && bottom && left && !right) {
-      // top-bottom-left
       this.style = ROAD_TYPE.THREE_WAY;
-      this.rotation = 270;
-      // corner
+      this.rotation.y = 270;
     } else if (top && !bottom && left && !right) {
-      // top-left
       this.style = ROAD_TYPE.CORNER;
-      this.rotation = 180;
+      this.rotation.y = 180;
     } else if (top && !bottom && !left && right) {
-      // top-right
       this.style = ROAD_TYPE.CORNER;
-      this.rotation = 90;
+      this.rotation.y = 90;
     } else if (!top && bottom && left && !right) {
-      // bottom-left
       this.style = ROAD_TYPE.CORNER;
-      this.rotation = 270;
+      this.rotation.y = 270;
     } else if (!top && bottom && !left && right) {
-      // bottom-right
       this.style = ROAD_TYPE.CORNER;
-      this.rotation = 0;
-      // Straight
+      this.rotation.y = 0;
     } else if (top && bottom && !left && !right) {
-      // top-bottom
       this.style = ROAD_TYPE.STRAIGHT;
-      this.rotation = 0;
+      this.rotation.y = 0;
     } else if (!top && !bottom && left && right) {
-      // left-right
       this.style = ROAD_TYPE.STRAIGHT;
-      this.rotation = 90;
-      // dead end
+      this.rotation.y = 90;
     } else if (top && !bottom && !left && !right) {
-      // top
       this.style = ROAD_TYPE.END;
-      this.rotation = 180;
+      this.rotation.y = 180;
     } else if (!top && bottom && !left && !right) {
-      // bottom
       this.style = ROAD_TYPE.END;
-      this.rotation = 0;
+      this.rotation.y = 0;
     } else if (!top && !bottom && left && !right) {
-      // left
       this.style = ROAD_TYPE.END;
-      this.rotation = 270;
+      this.rotation.y = 270;
     } else if (!top && !bottom && !left && right) {
-      // right
       this.style = ROAD_TYPE.END;
-      this.rotation = 90;
+      this.rotation.y = 90;
     }
 
     this.isMeshOutOfDate = true;
   }
 
-  toHTML() {
+  toHTML(): string {
     let html = super.toHTML();
     html += `
     <span class="info-label">Style </span>
@@ -109,4 +91,3 @@ export class Road extends Building implements IRoad {
     return html;
   }
 }
-

@@ -25,7 +25,7 @@ interface IZone extends IBuilding {
   development: DevelopmentAttribute;
   hasRoadAccess: boolean;
   level: number;
-  rotation: number;
+  rotation?: { x: number; y: number };
   maxLevel: number;
   abandonmentCounter: number;
 }
@@ -43,4 +43,3 @@ export interface IIndustrialZone {
 }
 
 export { IBuilding, IZone, IResidentialZone };
-

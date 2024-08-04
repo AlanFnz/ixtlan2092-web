@@ -64,7 +64,7 @@ export class VehicleGraph extends THREE.Group {
     bottomTile?.getWorldTopSide()?.out?.disconnectAll();
 
     if (road && road.rotation && road.style) {
-      const tile = VehicleGraphTile.create(x, y, road.rotation, road.style);
+      const tile = VehicleGraphTile.create(x, y, road.rotation.y, road.style);
 
       // connect tile to adjacent tiles
       if (leftTile) {

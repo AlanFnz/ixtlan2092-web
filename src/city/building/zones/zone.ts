@@ -1,3 +1,4 @@
+import { DEG2RAD } from 'three/src/math/MathUtils';
 import { ICity } from '../..';
 import { DevelopmentAttribute } from '../attributes/development';
 import { Building } from '../building';
@@ -9,7 +10,7 @@ class Zone extends Building implements IZone {
   development: DevelopmentAttribute;
   hasRoadAccess: boolean;
   level: number;
-  rotation: number;
+  rotation: { x: number; y: number };
   maxLevel: number;
   abandonmentCounter: number;
 
@@ -20,7 +21,7 @@ class Zone extends Building implements IZone {
     this.development = new DevelopmentAttribute(this);
     this.hasRoadAccess = false;
     this.level = 1;
-    this.rotation = 90 * Math.floor(4 * Math.random());
+    this.rotation = { x: 0, y: 90 * Math.floor(4 * Math.random()) * DEG2RAD }; // Initialize rotation properly
     this.maxLevel = 1;
     this.abandonmentCounter = 0;
   }
