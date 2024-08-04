@@ -116,6 +116,36 @@ const models: Record<ModelKey, ModelEntry> = {
     file: modelsFiles.INDUSTRY_WAREHOUSE,
     type: modelType.ZONE,
   },
+  [ModelKey.INDUSTRIAL_A2]: {
+    filename: 'industry-factory.glb',
+    file: modelsFiles.INDUSTRY_FACTORY,
+    type: modelType.ZONE,
+  },
+  [ModelKey.INDUSTRIAL_B2]: {
+    filename: 'industry-factory-old.glb',
+    file: modelsFiles.INDUSTRY_FACTORY_OLD,
+    type: modelType.ZONE,
+  },
+  [ModelKey.INDUSTRIAL_C2]: {
+    filename: 'industry-warehouse.glb',
+    file: modelsFiles.INDUSTRY_WAREHOUSE,
+    type: modelType.ZONE,
+  },
+  [ModelKey.INDUSTRIAL_A3]: {
+    filename: 'industry-factory.glb',
+    file: modelsFiles.INDUSTRY_FACTORY,
+    type: modelType.ZONE,
+  },
+  [ModelKey.INDUSTRIAL_B3]: {
+    filename: 'industry-factory-old.glb',
+    file: modelsFiles.INDUSTRY_FACTORY_OLD,
+    type: modelType.ZONE,
+  },
+  [ModelKey.INDUSTRIAL_C3]: {
+    filename: 'industry-warehouse.glb',
+    file: modelsFiles.INDUSTRY_WAREHOUSE,
+    type: modelType.ZONE,
+  },
   [ModelKey.ROAD_STRAIGHT]: {
     filename: 'tile-road-straight.glb',
     type: modelType.ROAD,
