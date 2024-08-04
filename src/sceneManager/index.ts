@@ -81,6 +81,7 @@ export class SceneManager implements ISceneManager {
         const tile = city.getTile(x, y);
         if (tile) {
           const mesh = this.assetManager.createGroundMesh(tile);
+          if (!mesh) return
           this.scene.add(mesh);
           column.push(mesh);
         }

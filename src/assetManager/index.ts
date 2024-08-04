@@ -11,7 +11,7 @@ import { DevelopmentState } from '../city/building/attributes/development';
 const DEG2RAD = Math.PI / 180.0;
 
 export interface IAssetManager {
-  createGroundMesh(tile: ITile): THREE.Mesh;
+  createGroundMesh(tile: ITile): THREE.Mesh | null;
   createBuildingMesh(tile: ITile): THREE.Mesh | null;
   createRandomVehicleMesh(): THREE.Mesh | null;
   textures: Record<string, THREE.Texture>;
@@ -95,7 +95,11 @@ export class AssetManager implements IAssetManager {
     );
   }
 
-  cloneMesh(name: ModelKey, transparent = false): THREE.Mesh | null {
+  cloneMesh(
+    name: ModelKey,
+    transparent: boolean | undefined = false,
+    receivedMaterial: THREE.MeshLambertMaterial | undefined = undefined
+  ): THREE.Mesh | null {
     const originalMesh = this.loadedModels[name];
     if (!originalMesh) return null;
 
@@ -105,9 +109,15 @@ export class AssetManager implements IAssetManager {
     mesh.traverse((obj) => {
       if ((obj as THREE.Mesh).isMesh) {
         const meshObj = obj as THREE.Mesh;
-        meshObj.material = Array.isArray(meshObj.material)
-          ? meshObj.material.map((material) => material.clone())
-          : (meshObj.material as THREE.Material).clone();
+        if (receivedMaterial) {
+          meshObj.material = Array.isArray(meshObj.material)
+            ? meshObj.material.map(() => receivedMaterial.clone())
+            : receivedMaterial.clone();
+        } else {
+          meshObj.material = Array.isArray(meshObj.material)
+            ? meshObj.material.map((material) => material.clone())
+            : (meshObj.material as THREE.Material).clone();
+        }
 
         if (Array.isArray(meshObj.material)) {
           meshObj.material.forEach((material) => {
@@ -123,13 +133,19 @@ export class AssetManager implements IAssetManager {
     return mesh;
   }
 
-  createGroundMesh(tile: ITile): THREE.Mesh {
+  createGroundMesh(tile: ITile): THREE.Mesh | null {
+    const texture = this.textures.grass.clone();
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(4, 4);
     const material = new THREE.MeshLambertMaterial({
-      map: this.textures.grass,
+      map: texture,
     });
-    const mesh = new THREE.Mesh(this.cubeGeometry, material);
+
+    const mesh = this.cloneMesh(ModelKey.GRASS, false, material);
+    if (!mesh) return null;
     mesh.traverse((obj) => (obj.userData = tile));
-    mesh.position.set(tile.x, -0.5, tile.y);
+    mesh.position.set(tile.x, 0, tile.y);
     mesh.receiveShadow = true;
     return mesh;
   }
@@ -204,7 +220,6 @@ export class AssetManager implements IAssetManager {
       .map(([key]) => key as ModelKey);
 
     const i = Math.floor(types.length * Math.random());
-    console.log('types', types[i]);
     return this.cloneMesh(types[i], true);
   }
 }
