@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import UNDER_CONSTRUCTION_MODEL from './models/under_construction.gltf';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { textures } from './textures';
 import { ITile } from '../city/tile';
@@ -21,9 +20,9 @@ export interface IAssetManager {
 export class AssetManager implements IAssetManager {
   private gltfLoader = new GLTFLoader();
   private cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-  private onLoad = () => {};
-  private modelCount = 0;
-  private loadedModelCount = 0;
+  private onLoad: () => void = () => {};
+  private modelCount: number = 0;
+  private loadedModelCount: number = 0;
   private loadedModels: Record<ModelKey, THREE.Mesh> = {} as Record<
     ModelKey,
     THREE.Mesh
@@ -36,7 +35,7 @@ export class AssetManager implements IAssetManager {
     specular: textures.SPECULAR,
   };
 
-  constructor(onLoad: any) {
+  constructor(onLoad: () => void) {
     this.modelCount = Object.keys(models).length;
     this.loadedModelCount = 0;
 
@@ -62,41 +61,25 @@ export class AssetManager implements IAssetManager {
       file,
       (glb) => {
         console.log(`Loaded file: ${file}`);
-        // try to find a mesh in the children of the scene
-        let mesh: THREE.Mesh | null = null;
-        glb.scene.traverse((child) => {
-          if ((child as THREE.Mesh).isMesh) {
-            mesh = child as THREE.Mesh;
-          }
-        });
+        let mesh: THREE.Object3D = glb.scene;
 
-        if (!mesh) {
-          console.error(`Model ${name} does not contain a mesh.`);
-          return;
-        }
-
-        (mesh as THREE.Object3D).traverse((node) => {
-          if ((node as THREE.Mesh).isMesh) {
-            (node as THREE.Mesh).material = new THREE.MeshLambertMaterial({
+        mesh.traverse((obj) => {
+          if ((obj as THREE.Mesh).isMesh) {
+            const material = new THREE.MeshLambertMaterial({
               map: this.textures.base,
               specularMap: this.textures.specular,
             });
-            node.receiveShadow = receiveShadow;
-            node.castShadow = castShadow;
+            (obj as THREE.Mesh).material = material;
+            obj.receiveShadow = receiveShadow;
+            obj.castShadow = castShadow;
           }
         });
 
-        (mesh as THREE.Object3D).position.set(0, 0, 0);
-        (mesh as THREE.Object3D).rotation.set(
-          0,
-          THREE.MathUtils.degToRad(rotation),
-          0
-        );
-        (mesh as THREE.Object3D).scale.set(scale / 30, scale / 30, scale / 30);
-        (mesh as THREE.Object3D).receiveShadow = receiveShadow;
-        (mesh as THREE.Object3D).castShadow = castShadow;
+        mesh.position.set(0, 0, 0);
+        mesh.rotation.set(0, THREE.MathUtils.degToRad(rotation), 0);
+        mesh.scale.set(scale / 30, scale / 30, scale / 30);
 
-        this.loadedModels[name] = mesh;
+        this.loadedModels[name] = mesh as THREE.Mesh;
 
         this.loadedModelCount++;
         if (this.loadedModelCount === this.modelCount) {
@@ -113,26 +96,36 @@ export class AssetManager implements IAssetManager {
   }
 
   cloneMesh(name: ModelKey, transparent = false): THREE.Mesh | null {
-    const mesh = this.loadedModels[name]?.clone() as THREE.Mesh;
-    if (!mesh) return null;
-    mesh.material = Array.isArray(mesh.material)
-      ? mesh.material.map((material) => material.clone())
-      : (mesh.material as THREE.Material).clone();
+    const originalMesh = this.loadedModels[name];
+    if (!originalMesh) return null;
 
-    if (Array.isArray(mesh.material)) {
-      mesh.material.forEach((material) => {
-        (material as THREE.MeshLambertMaterial).transparent = transparent;
-      });
-    } else {
-      (mesh.material as THREE.MeshLambertMaterial).transparent = transparent;
-    }
+    const mesh = originalMesh.clone() as THREE.Mesh;
+    console.log('mesh', mesh);
+
+    mesh.traverse((obj) => {
+      if ((obj as THREE.Mesh).isMesh) {
+        const meshObj = obj as THREE.Mesh;
+        meshObj.material = Array.isArray(meshObj.material)
+          ? meshObj.material.map((material) => material.clone())
+          : (meshObj.material as THREE.Material).clone();
+
+        if (Array.isArray(meshObj.material)) {
+          meshObj.material.forEach((material) => {
+            (material as THREE.MeshLambertMaterial).transparent = transparent;
+          });
+        } else {
+          (meshObj.material as THREE.MeshLambertMaterial).transparent =
+            transparent;
+        }
+      }
+    });
 
     return mesh;
   }
 
   createGroundMesh(tile: ITile): THREE.Mesh {
     const material = new THREE.MeshLambertMaterial({
-      map: this.textures['grass'],
+      map: this.textures.grass,
     });
     const mesh = new THREE.Mesh(this.cubeGeometry, material);
     mesh.traverse((obj) => (obj.userData = tile));
@@ -165,11 +158,12 @@ export class AssetManager implements IAssetManager {
 
     let modelName = '';
     switch (zone.development.state) {
-      case (DevelopmentState.UNDER_CONSTRUCTION, DevelopmentState.UNDEVELOPED):
+      case DevelopmentState.UNDER_CONSTRUCTION:
+      case DevelopmentState.UNDEVELOPED:
         modelName = 'UNDER-CONSTRUCTION';
         break;
       default:
-        modelName = `${zone.type}-${zone.style}${zone.development?.level}`;
+        modelName = `${zone.type}-${zone.style}${zone.development.level}`;
         break;
     }
 
@@ -179,9 +173,14 @@ export class AssetManager implements IAssetManager {
     mesh.rotation.set(0, (zone.rotation || 0) * DEG2RAD, 0);
     mesh.position.set(zone.x, 0, zone.y);
 
-    if (zone.development?.state === DevelopmentState.ABANDONED) {
-      const material = mesh.material as THREE.MeshLambertMaterial;
-      material.color = new THREE.Color(0x707070);
+    if (zone.development.state === DevelopmentState.ABANDONED) {
+      mesh.traverse((obj) => {
+        if ((obj as THREE.Mesh).isMesh) {
+          const material = (obj as THREE.Mesh)
+            .material as THREE.MeshLambertMaterial;
+          material.color = new THREE.Color(0x707070);
+        }
+      });
     }
 
     return mesh;
@@ -205,6 +204,7 @@ export class AssetManager implements IAssetManager {
       .map(([key]) => key as ModelKey);
 
     const i = Math.floor(types.length * Math.random());
+    console.log('types', types[i]);
     return this.cloneMesh(types[i], true);
   }
 }
