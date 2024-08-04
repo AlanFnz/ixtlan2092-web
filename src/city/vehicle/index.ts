@@ -62,7 +62,7 @@ export class Vehicle extends THREE.Group {
       return;
     }
     
-    //FIXME: #20 | here is no parent reference
+    //FIXME: #20 | there is no parent reference
     if (!this.destination.parent) {
       this.dispose();
       return;
