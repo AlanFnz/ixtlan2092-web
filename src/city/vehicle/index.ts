@@ -61,12 +61,13 @@ export class Vehicle extends THREE.Group {
       this.dispose();
       return;
     }
-
+    
+    //FIXME: #20 | here is no parent reference
     if (!this.destination.parent) {
       this.dispose();
       return;
     }
-
+    
     if (this.age > CONFIG.VEHICLE.MAX_LIFETIME) {
       this.dispose();
       return;
@@ -108,6 +109,7 @@ export class Vehicle extends THREE.Group {
   pickNewDestination(): void {
     this.origin = this.destination;
     this.destination = this.origin?.getRandomNextNode() || null;
+    console.log('destination', this.destination)
     this.updateWorldPositions();
     this.cycleStartTime = Date.now();
   }
