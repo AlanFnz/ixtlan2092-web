@@ -109,7 +109,6 @@ export class Vehicle extends THREE.Group {
   pickNewDestination(): void {
     this.origin = this.destination;
     this.destination = this.origin?.getRandomNextNode() || null;
-    console.log('destination', this.destination)
     this.updateWorldPositions();
     this.cycleStartTime = Date.now();
   }
