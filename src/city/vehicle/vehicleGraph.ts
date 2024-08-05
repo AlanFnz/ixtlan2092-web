@@ -49,7 +49,6 @@ export class VehicleGraph extends THREE.Group {
   }
 
   updateTile(x: number, y: number, road: IRoad | null) {
-
     const existingTile = this.getTile(x, y);
     const leftTile = this.getTile(x - 1, y);
     const rightTile = this.getTile(x + 1, y);
@@ -57,11 +56,16 @@ export class VehicleGraph extends THREE.Group {
     const bottomTile = this.getTile(x, y + 1);
 
     // disconnect the existing tile and all adjacent tiles from each other
-    existingTile?.disconnectAll();
-    leftTile?.getWorldRightSide()?.out?.disconnectAll();
-    rightTile?.getWorldLeftSide()?.out?.disconnectAll();
-    topTile?.getWorldBottomSide()?.out?.disconnectAll();
-    bottomTile?.getWorldTopSide()?.out?.disconnectAll();
+    if (!road && existingTile) {
+      existingTile.disconnectAll();
+      leftTile?.getWorldRightSide()?.out?.disconnectAll();
+      rightTile?.getWorldLeftSide()?.out?.disconnectAll();
+      topTile?.getWorldBottomSide()?.out?.disconnectAll();
+      bottomTile?.getWorldTopSide()?.out?.disconnectAll();
+      this.tiles[x][y] = null;
+      this.helper.update(this);
+      return;
+    }
 
     if (road && road.rotation && road.style) {
       const tile = VehicleGraphTile.create(x, y, road.rotation.y, road.style);
@@ -150,4 +154,3 @@ export class VehicleGraph extends THREE.Group {
     }
   }
 }
-
