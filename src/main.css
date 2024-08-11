@@ -1,6 +1,6 @@
 @font-face {
   font-family: Bebas-Regular;
-  src: url("./assetManager/fonts/Bebas-Regular.otf") format("opentype");
+  src: url('./assetManager/fonts/Bebas-Regular.otf') format('opentype');
 }
 
 html,
@@ -29,6 +29,27 @@ h1 {
   height: 100%;
 }
 
+#instructions {
+  position: absolute;
+  color: white;
+  left: 0;
+  bottom: 0;
+  margin: 8px;
+}
+
+#loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: white;
+  font-size: 5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .container {
   background-color: #00000048;
   padding: 8px;
@@ -41,7 +62,7 @@ h1 {
 #ui-toolbar {
   position: absolute;
   height: auto;
-  top: 12vh;
+  top: 64px;
 
   display: flex;
   flex-direction: column;
@@ -101,13 +122,12 @@ h1 {
 }
 
 .ui-button.selected {
-  filter: brightness(1.1);
-  box-shadow: none;
+  background-color: #121622d3;
+  outline: 2px solid rgb(227, 227, 227);
 }
 
 .ui-button:not(.selected):hover {
-  filter: brightness(1.1);
-  box-shadow: none;
+  background-color: #121622d3;
 }
 
 .ui-container {
@@ -132,8 +152,8 @@ h1 {
   right: 0;
   height: 32px;
 
-  background-color: #487abf;
-  border-radius: 24px;
+  background-color: #00000048;
+  border-radius: 16px;
   color: white;
   padding: 8px;
   margin: 16px;
@@ -173,8 +193,10 @@ h1 {
   margin: 16px;
   padding: 12px;
   width: 300px;
+  border-radius: 14px;
 
   background-color: #00000048;
+  box-shadow: 0 2px 0 0px #000000b0;
 }
 
 .info-heading {
