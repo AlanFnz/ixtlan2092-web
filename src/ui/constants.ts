@@ -20,13 +20,13 @@ type ToolbarButtons = {
 const TOOLBAR_BUTTONS: ToolbarButtons = {
   SELECT: {
     id: 'SELECT',
-    icon: ICON_KEYS.SELECT,
+    icon: ICON_KEYS.SELECT_COLOR,
     uiText: 'SELECT',
   },
 
   RESIDENTIAL: {
     id: 'RESIDENTIAL',
-    icon: ICON_KEYS.HOUSE,
+    icon: ICON_KEYS.HOUSE_COLOR,
     uiText: 'RESIDENTIAL',
   },
   COMMERCIAL: {
@@ -36,25 +36,25 @@ const TOOLBAR_BUTTONS: ToolbarButtons = {
   },
   INDUSTRIAL: {
     id: 'INDUSTRIAL',
-    icon: ICON_KEYS.FACTORY,
+    icon: ICON_KEYS.FACTORY_COLOR,
     uiText: 'INDUSTRIAL',
   },
   ROAD: {
     id: 'ROAD',
-    icon: ICON_KEYS.ROAD,
+    icon: ICON_KEYS.ROAD_COLOR,
     uiText: 'ROAD',
   },
   BULLDOZE: {
     id: 'BULLDOZE',
-    icon: ICON_KEYS.BULLDOZER,
+    icon: ICON_KEYS.BULLDOZER_COLOR,
     uiText: 'BULLDOZE',
   },
 
   TOGGLE_PAUSE: {
     id: 'TOGGLE_PAUSE',
-    icon: ICON_KEYS.PAUSE, // fallback icon if needed
-    iconPlay: ICON_KEYS.PLAY,
-    iconPause: ICON_KEYS.PAUSE,
+    icon: ICON_KEYS.PAUSE_COLOR, // fallback icon if needed
+    iconPlay: ICON_KEYS.PLAY_COLOR,
+    iconPause: ICON_KEYS.PAUSE_COLOR,
     uiText: 'PAUSE', // fallback text if needed
     uiTextPlay: 'PLAY',
     uiTextPause: 'PAUSE',
@@ -70,4 +70,3 @@ export {
   TOOLBAR_BUTTONS,
   INFO_UI_TEXT,
 };
-
