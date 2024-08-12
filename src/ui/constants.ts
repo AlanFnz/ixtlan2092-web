@@ -31,7 +31,7 @@ const TOOLBAR_BUTTONS: ToolbarButtons = {
   },
   COMMERCIAL: {
     id: 'COMMERCIAL',
-    icon: ICON_KEYS.OFFICE,
+    icon: ICON_KEYS.STORE_COLOR,
     uiText: 'COMMERCIAL',
   },
   INDUSTRIAL: {
