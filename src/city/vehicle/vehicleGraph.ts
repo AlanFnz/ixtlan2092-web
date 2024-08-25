@@ -6,6 +6,7 @@ import { VehicleGraphHelper } from './vehicleGraphHelper';
 import { IRoad } from '../building/road';
 import { Vehicle } from '.';
 import { ICity } from '..';
+import { VehicleGraphNode } from './vehicleGraphNode';
 
 export class VehicleGraph extends THREE.Group {
   size: number;
@@ -41,6 +42,23 @@ export class VehicleGraph extends THREE.Group {
     this.helper.update(this);
 
     setInterval(this.spawnVehicle.bind(this), CONFIG.VEHICLE.SPAWN_INTERVAL);
+  }
+
+  private getValidPopulation(): number {
+    const population = parseInt(this.city.getPopulation());
+    return isNaN(population) ? 0 : population;
+  }
+
+  private calculateMaxVehicles(population: number): number {
+    return Math.floor((population / 4) * 2);
+  }
+
+  private spawnVehicleInstance(
+    origin: VehicleGraphNode,
+    destination: VehicleGraphNode
+  ): void {
+    const vehicle = new Vehicle(origin, destination, this.assetManager);
+    this.vehicles.add(vehicle);
   }
 
   updateVehicles() {
@@ -127,30 +145,25 @@ export class VehicleGraph extends THREE.Group {
   }
 
   spawnVehicle() {
-    const population = parseInt(this.city.getPopulation());
-
+    const population = this.getValidPopulation();
     if (population < 1) return;
 
-    const maxVehicles = Math.floor((population / 4) * 2);
+    const maxVehicles = this.calculateMaxVehicles(population);
     const currentVehicleCount = this.vehicles.children.length;
 
     if (currentVehicleCount >= maxVehicles) return;
 
     const spawnChance = Math.random();
+    if (spawnChance >= maxVehicles / population) return;
 
-    if (spawnChance < maxVehicles / population) {
-      const startingTile = this.getStartingTile();
+    const startingTile = this.getStartingTile();
+    if (!startingTile) return;
 
-      if (startingTile != null) {
-        const origin = startingTile.getRandomNode();
-        const destination = origin?.getRandomNextNode();
+    const origin = startingTile.getRandomNode();
+    const destination = origin?.getRandomNextNode();
+    if (!origin || !destination) return;
 
-        if (origin && destination) {
-          const vehicle = new Vehicle(origin, destination, this.assetManager);
-          this.vehicles.add(vehicle);
-        }
-      }
-    }
+    this.spawnVehicleInstance(origin, destination);
   }
 
   getStartingTile(): VehicleGraphTile | null {
