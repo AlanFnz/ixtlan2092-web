@@ -1,23 +1,26 @@
 import * as THREE from 'three';
+import CONFIG from '../../config';
 import { VehicleGraphTile } from './vehicleGraphTile';
 import { IAssetManager } from '../../assetManager';
 import { VehicleGraphHelper } from './vehicleGraphHelper';
 import { IRoad } from '../building/road';
-import CONFIG from '../../config';
 import { Vehicle } from '.';
+import { ICity } from '..';
 
 export class VehicleGraph extends THREE.Group {
   size: number;
   assetManager: IAssetManager;
+  city: ICity;
   tiles: (VehicleGraphTile | null)[][];
   vehicles: THREE.Group;
   helper: VehicleGraphHelper;
 
-  constructor(size: number, assetManager: IAssetManager) {
+  constructor(city: ICity, assetManager: IAssetManager) {
     super();
 
-    this.size = size;
+    this.size = city.size;
     this.assetManager = assetManager;
+    this.city = city;
     this.tiles = [];
 
     this.vehicles = new THREE.Group();
@@ -124,15 +127,28 @@ export class VehicleGraph extends THREE.Group {
   }
 
   spawnVehicle() {
-    const startingTile = this.getStartingTile();
+    const population = parseInt(this.city.getPopulation());
 
-    if (startingTile != null) {
-      const origin = startingTile.getRandomNode();
-      const destination = origin?.getRandomNextNode();
+    if (population < 1) return;
 
-      if (origin && destination) {
-        const vehicle = new Vehicle(origin, destination, this.assetManager);
-        this.vehicles.add(vehicle);
+    const maxVehicles = Math.floor((population / 4) * 2);
+    const currentVehicleCount = this.vehicles.children.length;
+
+    if (currentVehicleCount >= maxVehicles) return;
+
+    const spawnChance = Math.random();
+
+    if (spawnChance < maxVehicles / population) {
+      const startingTile = this.getStartingTile();
+
+      if (startingTile != null) {
+        const origin = startingTile.getRandomNode();
+        const destination = origin?.getRandomNextNode();
+
+        if (origin && destination) {
+          const vehicle = new Vehicle(origin, destination, this.assetManager);
+          this.vehicles.add(vehicle);
+        }
       }
     }
   }

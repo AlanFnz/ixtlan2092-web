@@ -69,7 +69,7 @@ export class SceneManager implements ISceneManager {
     this.root = new THREE.Group();
     this.scene.add(this.root);
 
-    this.vehicleGraph = new VehicleGraph(city.size, this.assetManager);
+    this.vehicleGraph = new VehicleGraph(city, this.assetManager);
     this.root.add(this.vehicleGraph);
 
     this.buildings = [];
